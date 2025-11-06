@@ -1,4 +1,4 @@
-package videoclub;
+package main;
 
 public class main {
 
