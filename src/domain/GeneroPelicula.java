@@ -1,0 +1,5 @@
+package domain;
+
+public enum GeneroPelicula {
+	TERROR, CIENCIAFICCION, ROMANCE, COMEDIA_ROMANTICA, ACCION, DRAMA, SUSPENSE;
+}

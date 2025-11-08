@@ -1,0 +1,5 @@
+package domain;
+
+public enum GeneroVideoJuego {
+	AVENTURA, ROL, ESTRATEGIA, SIMULACION, DEPORTES, SHOOTER, MUNDO_ABIERTO, ACCION;
+}
