@@ -3,14 +3,16 @@ package domain;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
+
 public class Videojuego extends Producto{
 	private GeneroVideoJuego genero;
 	private TipoConsola tipo;
 	private String autor;
 	
 	public Videojuego(String titulo, String sinopsis, float precio, int rating, ArrayList<Review> comentarios,
-			GeneroVideoJuego genero, TipoConsola tipo, String autor) {
-		super(titulo, sinopsis, precio, rating, comentarios);
+			GeneroVideoJuego genero, TipoConsola tipo, String autor, ImageIcon foto) {
+		super(titulo, sinopsis, precio, rating, comentarios, foto);
 		this.genero = genero;
 		this.tipo = tipo;
 		this.autor = autor;

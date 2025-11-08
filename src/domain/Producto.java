@@ -3,20 +3,24 @@ package domain;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import javax.swing.ImageIcon;
+
 public abstract class Producto implements Alquilable{
 	private String titulo;
 	private String sinopsis;
 	private float precio;
 	private int rating;
 	private ArrayList<Review> comentarios;
+	private ImageIcon foto;
 	
-	public Producto(String titulo, String sinopsis, float precio, int rating, ArrayList<Review> comentarios) {
+	public Producto(String titulo, String sinopsis, float precio, int rating, ArrayList<Review> comentarios, ImageIcon foto) {
 		super();
 		this.titulo = titulo;
 		this.sinopsis = sinopsis;
 		this.precio = precio;
 		this.rating = rating;
 		this.comentarios = comentarios;
+		this.foto= foto;
 	}
 	
 	public Producto() {
@@ -26,6 +30,7 @@ public abstract class Producto implements Alquilable{
 		this.precio = 0;
 		this.rating = 0;
 		this.comentarios = new ArrayList<Review>();
+		this.foto= null;
 	}
 
 	public String getTitulo() {
@@ -68,9 +73,17 @@ public abstract class Producto implements Alquilable{
 		this.comentarios = comentarios;
 	}
 	
+	public ImageIcon getFoto() {
+		return foto;
+	}
+
+	public void setFoto(ImageIcon foto) {
+		this.foto = foto;
+	}
+	
 	@Override
 	public int hashCode() {
-		return Objects.hash(comentarios, precio, rating, sinopsis, titulo);
+		return Objects.hash(comentarios, precio, rating, sinopsis, titulo, foto);
 	}
 
 	@Override
@@ -84,13 +97,14 @@ public abstract class Producto implements Alquilable{
 		Producto other = (Producto) obj;
 		return Objects.equals(comentarios, other.comentarios)
 				&& Float.floatToIntBits(precio) == Float.floatToIntBits(other.precio) && rating == other.rating
-				&& Objects.equals(sinopsis, other.sinopsis) && Objects.equals(titulo, other.titulo);
+				&& Objects.equals(sinopsis, other.sinopsis) && Objects.equals(titulo, other.titulo) 
+				&& Objects.equals(foto, other.foto);
 	}
 
 	@Override
 	public String toString() {
 		return "Producto [titulo=" + titulo + ", sinopsis=" + sinopsis + ", precio=" + precio + ", rating=" + rating
-				+ ", comentarios=" + comentarios + "]";
+				+ ", comentarios=" + comentarios + ", foto = " + foto +"]";
 	}
 	
 }
