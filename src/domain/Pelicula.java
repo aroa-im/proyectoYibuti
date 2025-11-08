@@ -5,15 +5,19 @@ public class Pelicula {
 	private String sinopsis;
 	private float precio;
 	private TipoPelicula tipo;
-	private Genero genero;
+	private GeneroPelicula genero;
+	private String director;
+	private Double rating;
 	
-	public Pelicula(String titulo, String sinopsis, float precio, TipoPelicula tipo, Genero genero) {
+	public Pelicula(String titulo, String sinopsis, float precio, TipoPelicula tipo, GeneroPelicula genero, String director, Double rating) {
 		super();
 		this.titulo = titulo;
 		this.sinopsis = sinopsis;
 		this.precio = precio;
 		this.tipo = tipo;
 		this.genero = genero;
+		this.director= director;
+		this.rating=rating;
 	}
 	
 	public Pelicula() {
@@ -22,7 +26,9 @@ public class Pelicula {
 		this.sinopsis = "";
 		this.precio = 0;
 		this.tipo = TipoPelicula.DVD;
-		this.genero = Genero.TERROR;
+		this.genero = GeneroPelicula.TERROR;
+		this.director = "";
+		this.rating= 0.0;
 	}
 
 	public String getTitulo() {
@@ -57,17 +63,32 @@ public class Pelicula {
 		this.tipo = tipo;
 	}
 	
-	public Genero getGenero() {
+	public GeneroPelicula getGenero() {
 		return genero;
 	}
 
-	public void setGenero(Genero genero) {
+	public void setGenero(GeneroPelicula genero) {
 		this.genero = genero;
+	}
+	
+	public String getAutor() {
+		return autor;
+	}
+
+	public void setDirector(String director) {
+		this.director = director;
+	}
+	
+	public Double getRating() {
+		return rating;
+	}
+	public void set(Double rating) {
+		this.rating = rating;
 	}
 
 	@Override
 	public String toString() {
-		return "Pelicula [titulo=" + titulo + ", sinopsis=" + sinopsis + ", precio=" + precio + ", tipo=" + tipo + ", genero=" + genero + "]";
+		return "Pelicula [titulo=" + titulo + ", sinopsis=" + sinopsis + ", precio=" + precio + ", tipo=" + tipo + ", genero=" + genero + ", director = " + director + ", rating = " + rating +"]";
 	}
 	
 }
