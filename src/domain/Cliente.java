@@ -3,31 +3,28 @@ package domain;
 import java.util.ArrayList;
 
 public class Cliente extends Usuario{
-	
-//	private ArrayList<Pelicula> historialPeliculas;
-//	private ArrayList<Videojuego> historialVideojuegos;
-	private ArrayList<Review> listaReviews;
+	private ArrayList<Producto> historial;
 	private int amonestaciones;
 	
-	public Cliente(String dni, String nombre, String email, String contrasena, ArrayList<Review> listaReviews,
+	public Cliente(String dni, String nombre, String email, String contrasena, ArrayList<Producto> historial,
 			int amonestaciones) {
 		super(dni, nombre, email, contrasena);
-		this.listaReviews = listaReviews;
+		this.historial = historial;
 		this.amonestaciones = amonestaciones;
 	}
 	
 	public Cliente() {
 		super();
-		this.listaReviews = new ArrayList<Review>();
+		this.historial = new ArrayList<Producto>();
 		this.amonestaciones = 0;
 	}
 
-	public ArrayList<Review> getListaReviews() {
-		return listaReviews;
+	public ArrayList<Producto> getHistorial() {
+		return historial;
 	}
 
-	public void setListaReviews(ArrayList<Review> listaReviews) {
-		this.listaReviews = listaReviews;
+	public void setHistorial(ArrayList<Producto> historial) {
+		this.historial = historial;
 	}
 
 	public int getAmonestaciones() {
