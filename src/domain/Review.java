@@ -3,16 +3,14 @@ package domain;
 import java.util.Objects;
 
 public class Review {
-	private Pelicula pelicula;
-	private Videojuego videojuego;
+	private Producto producto;
 	private Cliente cliente;
 	private String comentario;
 	private int rating;
 	
-	public Review(Pelicula pelicula, Videojuego videojuego, Cliente cliente, String comentario, int rating) {
+	public Review(Producto producto, Cliente cliente, String comentario, int rating) {
 		super();
-		this.pelicula = pelicula;
-		this.videojuego = videojuego;
+		this.producto = producto;
 		this.cliente = cliente;
 		this.comentario = comentario;
 		this.rating = rating;
@@ -20,42 +18,47 @@ public class Review {
 	
 	public Review() {
 		super();
-		this.pelicula = new Pelicula();
-		this.videojuego = new Videojuego();
+		this.producto = null;
 		this.cliente = new Cliente();
 		this.comentario = "";
 		this.rating = 0;
 	}
-	
-	public Pelicula getPelicula() {
-		return pelicula;
+
+	public Producto getProducto() {
+		return producto;
 	}
-	public void setPelicula(Pelicula pelicula) {
-		this.pelicula = pelicula;
+
+	public void setProducto(Producto producto) {
+		this.producto = producto;
 	}
-	public Videojuego getVideojuego() {
-		return videojuego;
-	}
-	public void setVideojuego(Videojuego videojuego) {
-		this.videojuego = videojuego;
-	}
+
 	public Cliente getCliente() {
 		return cliente;
 	}
+
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
+
 	public String getComentario() {
 		return comentario;
 	}
+
 	public void setComentario(String comentario) {
 		this.comentario = comentario;
 	}
+
 	public int getRating() {
 		return rating;
 	}
+
 	public void setRating(int rating) {
 		this.rating = rating;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(cliente, comentario, producto, rating);
 	}
 
 	@Override
@@ -68,14 +71,13 @@ public class Review {
 			return false;
 		Review other = (Review) obj;
 		return Objects.equals(cliente, other.cliente) && Objects.equals(comentario, other.comentario)
-				&& Objects.equals(pelicula, other.pelicula) && rating == other.rating
-				&& Objects.equals(videojuego, other.videojuego);
+				&& Objects.equals(producto, other.producto) && rating == other.rating;
 	}
 
 	@Override
 	public String toString() {
-		return "Review [pelicula=" + pelicula + ", videojuego=" + videojuego + ", cliente=" + cliente + ", comentario="
-				+ comentario + ", rating=" + rating + "]";
+		return "Review [producto=" + producto + ", cliente=" + cliente + ", comentario=" + comentario + ", rating="
+				+ rating + "]";
 	}
 	
 }

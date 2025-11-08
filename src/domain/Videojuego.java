@@ -1,18 +1,16 @@
 package domain;
 
-public class Videojuego {
-	private String titulo;
-	private String descripcion;
-	private float precio;
-	private GeneroPelicula genero;
+import java.time.LocalDate;
+import java.util.ArrayList;
+
+public class Videojuego extends Producto{
+	private GeneroVideoJuego genero;
 	private TipoConsola tipo;
 	private String autor;
 	
-	public Videojuego(String titulo, String descripcion, float precio, GeneroPelicula genero, TipoConsola tipo, String autor) {
-		super();
-		this.titulo = titulo;
-		this.descripcion = descripcion;
-		this.precio = precio;
+	public Videojuego(String titulo, String sinopsis, float precio, int rating, ArrayList<Review> comentarios,
+			GeneroVideoJuego genero, TipoConsola tipo, String autor) {
+		super(titulo, sinopsis, precio, rating, comentarios);
 		this.genero = genero;
 		this.tipo = tipo;
 		this.autor = autor;
@@ -20,54 +18,27 @@ public class Videojuego {
 	
 	public Videojuego() {
 		super();
-		this.titulo = "";
-		this.descripcion = "";
-		this.precio = 0;
-		this.genero = GeneroPelicula.TERROR;
-		this.tipo = TipoConsola.PC;
+		this.genero = null;
+		this.tipo = null;
 		this.autor = "";
 	}
 
-	public String getTitulo() {
-		return titulo;
-	}
-
-	public void setTitulo(String titulo) {
-		this.titulo = titulo;
-	}
-
-	public String getDescripcion() {
-		return descripcion;
-	}
-
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
-	}
-
-	public float getPrecio() {
-		return precio;
-	}
-
-	public void setPrecio(float precio) {
-		this.precio = precio;
-	}
-
-	public GeneroPelicula getGenero() {
+	public GeneroVideoJuego getGenero() {
 		return genero;
 	}
 
-	public void setGenero(GeneroPelicula genero) {
+	public void setGenero(GeneroVideoJuego genero) {
 		this.genero = genero;
 	}
-	
+
 	public TipoConsola getTipo() {
 		return tipo;
 	}
-	
+
 	public void setTipo(TipoConsola tipo) {
 		this.tipo = tipo;
 	}
-	
+
 	public String getAutor() {
 		return autor;
 	}
@@ -78,8 +49,27 @@ public class Videojuego {
 
 	@Override
 	public String toString() {
-		return "Videojuego [titulo=" + titulo + ", descripcion=" + descripcion + ", precio=" + precio + ", genero="
-				+ genero + ", tipo=" + tipo +", autor =" + autor +"]";
+		return "Videojuego [genero=" + genero + ", tipo=" + tipo + ", autor=" + autor + ", Titulo=" + getTitulo()
+				+ ", Sinopsis=" + getSinopsis() + ", Precio=" + getPrecio() + ", Rating=" + getRating()
+				+ ", Comentarios=" + getComentarios() + "]";
+	}
+
+	@Override
+	public boolean crearAlquiler(Cliente cliente, Producto producto, LocalDate fechaDevolucion) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean avisoAlquilerTarde(Cliente cliente, Producto producto) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean terminarAlquiler(Cliente cliente, LocalDate fechaDevolucion) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 }
