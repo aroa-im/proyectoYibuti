@@ -40,10 +40,8 @@ public class Cliente extends Usuario{
 
 	@Override
 	public String toString() {
-		return "Cliente [listaReviews=" + listaReviews + ", amonestaciones=" + amonestaciones + ", getDni()=" + getDni() + ", getNombre()=" + getNombre() + ", getEmail()="
-				+ getEmail() +  ", getContrasena()=" + getContrasena() + "]";
+		return "Cliente [historial=" + historial + ", amonestaciones=" + amonestaciones + ", Dni=" + getDni()
+		+ ", Nombre=" + getNombre() + ", Email=" + getEmail() + ", Contrasena=" + getContrasena() + "]";
 	}
 	
-	
-
 }
