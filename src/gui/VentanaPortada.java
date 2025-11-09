@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -14,8 +16,8 @@ import javax.swing.border.EmptyBorder;
 import utils.Utils;
 
 public class VentanaPortada extends JFrame{
-
-	private static final long serialVersionUID = 1L;
+	private JFrame currentWindow = this;
+	private static final long serialVersionUID = -7861052196761464371L;
 
 	public VentanaPortada() {
 		setTitle("Portada");
@@ -33,7 +35,12 @@ public class VentanaPortada extends JFrame{
 		ImageIcon usuarioIcono = Utils.loadImage("user.png", 80, 80); // Cambia el tamaño
 		JLabel usuarioLabel = new JLabel();
 		usuarioLabel.setIcon(usuarioIcono);
-		
+		usuarioLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+            	new VentanaIniciarSesion(currentWindow);
+            }
+		});
 		// Imagen de la pelicula
 		ImageIcon peliculaIcono = Utils.loadImage("peliculas.png", 200, 200); // Cambia el tamaño
 		JLabel peliculaLabel = new JLabel();
