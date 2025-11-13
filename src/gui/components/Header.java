@@ -56,13 +56,12 @@ public class Header extends JPanel {
         textLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                VentanaPortada ventanaPortada = new VentanaPortada();
+                VentanaPortada ventanaPortada = new VentanaPortada(usuario);
                 ventanaPortada.setVisible(true);
                 // Aquí puedes agregar la lógica que necesites
                 ventana.dispose();
             }
         });
-        
         
         if (tieneImagen) {
             panelIzquierdo.add(iconLabel, gbc);
