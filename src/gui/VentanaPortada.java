@@ -13,34 +13,53 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import domain.Admin;
+import domain.Cliente;
+import domain.Usuario;
 import utils.Utils;
 
 public class VentanaPortada extends JFrame{
 	private JFrame currentWindow = this;
 	private static final long serialVersionUID = -7861052196761464371L;
 
-	public VentanaPortada() {
-		setTitle("Portada");
+	public VentanaPortada(Usuario usuario) {
+		
+		setTitle("Videoclub - Portada");
 		setSize(1200, 800); 
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
-		JPanel top = new JPanel(new BorderLayout());
+		JPanel top = new JPanel();
+		top.setLayout(new BorderLayout());
 		JPanel topUsuario = new JPanel();
 		JPanel topTitulo = new JPanel();
-		JLabel YibutiLabel = new JLabel("Yibuti");
+		JLabel YibutiLabel = new JLabel("Videoclub");
 		
 		// PROCESO DE ABRIR LAS IMAGENES Y ASIGNARLAS A SUS LABELS:
 		// Imagen del usuario
-		ImageIcon usuarioIcono = Utils.loadImage("user.png", 80, 80); // Cambia el tamaño
+		ImageIcon usuarioIcono = null; // Cambia el tamaño
+		if (usuario instanceof Admin) {
+			usuarioIcono = Utils.loadImage("adminUser.png", 80, 80);
+		} else if (usuario instanceof Cliente){
+			usuarioIcono = Utils.loadImage("user.png", 80, 80);
+		}else {
+			usuarioIcono = Utils.loadImage("noUser.png", 80, 80);
+		}
+		
 		JLabel usuarioLabel = new JLabel();
 		usuarioLabel.setIcon(usuarioIcono);
+		
 		usuarioLabel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-            	new VentanaIniciarSesion(currentWindow);
-            }
+		    @Override
+		    public void mouseClicked(MouseEvent e) {
+		        if (usuario == null) {
+		            new VentanaIniciarSesion(currentWindow);
+		            setVisible(true);
+		        }
+		    }
 		});
+		
 		// Imagen de la pelicula
 		ImageIcon peliculaIcono = Utils.loadImage("peliculas.png", 200, 200); // Cambia el tamaño
 		JLabel peliculaLabel = new JLabel();
@@ -69,6 +88,16 @@ public class VentanaPortada extends JFrame{
 		JPanel mid = new JPanel();
 		JButton peliculasButton = new JButton("Peliculas");
 		JButton videojuegosButton = new JButton("Videojuegos");
+		
+		peliculasButton.addActionListener(e -> {
+		    new VentanaPeliculas(usuario);
+		    dispose();
+		});
+		
+//		videojuegosButton.addActionListener(e -> {
+//		    new VentanaVideojuegos(usuario);
+//		    dispose();
+//		});
 		
 		JPanel peliculasButtonPanel = new JPanel();
 		JPanel videojuegosButtonPanel = new JPanel();
@@ -107,6 +136,8 @@ public class VentanaPortada extends JFrame{
 	}
 	
 	public static void main(String[] args) {
-		VentanaPortada portada = new VentanaPortada();
+		new VentanaPortada(null);
+//		new VentanaPortada(new Cliente());
+//		new VentanaPortada(new Admin());
 	}
 }
