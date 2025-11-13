@@ -25,15 +25,15 @@ import javax.swing.event.PopupMenuListener;
 import domain.Admin;
 import domain.Cliente;
 import domain.Seccion;
-import domain.TipoPelicula;
+import domain.TipoConsola;
 import domain.Usuario;
 import gui.components.Header;
 import utils.Utils;
 
-public class VentanaPeliculas extends JFrame {
+public class VentanaVideojuegos extends JFrame {
 	private static final long serialVersionUID = 1L;
 
-	public VentanaPeliculas(Usuario usuario) {
+	public VentanaVideojuegos(Usuario usuario) {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		if (usuario == null) {
 			setTitle("Videoclub - No logueado");
@@ -46,7 +46,7 @@ public class VentanaPeliculas extends JFrame {
 		setLocationRelativeTo(null);
 
 		// Panel superior que contendrá el header
-		JPanel panelSuperior = new Header(Seccion.PELICULA, usuario, this);
+		JPanel panelSuperior = new Header(Seccion.VIDEOJUEGO, usuario, this);
 		add(panelSuperior, BorderLayout.NORTH);
 
 		// Panel inferior
@@ -55,11 +55,12 @@ public class VentanaPeliculas extends JFrame {
 		JPanel subPanelContenido1 = new JPanel(new BorderLayout());
 		panelContenido.add(subPanelContenido1, BorderLayout.NORTH);
 
-		TipoPelicula[] array = new TipoPelicula[2];
+		// Cambio principal: usar TipoConsola en lugar de TipoPelicula
+		TipoConsola[] array = new TipoConsola[TipoConsola.values().length];
 		int contador = 0;
 
-		for (TipoPelicula metodo : TipoPelicula.values()) {
-			array[contador] = metodo;
+		for (TipoConsola consola : TipoConsola.values()) {
+			array[contador] = consola;
 			contador++;
 		}
 
@@ -74,7 +75,6 @@ public class VentanaPeliculas extends JFrame {
 				if (ordenar.getItemAt(0).equals("Ordenar")) {
 					ordenar.removeItemAt(0);
 				}
-				;
 			}
 
 			@Override
@@ -107,17 +107,17 @@ public class VentanaPeliculas extends JFrame {
 
 		subPanelContenido1.add(buscador, BorderLayout.CENTER);
 
-		// Añadir pelicula
+		// Añadir videojuego
 		if (usuario instanceof Admin) {
-			JPanel panelAddPelicula = createPanelAddPelicula();
-			subPanelContenido1.add(panelAddPelicula, BorderLayout.WEST);
+			JPanel panelAddVideojuego = createPanelAddVideojuego();
+			subPanelContenido1.add(panelAddVideojuego, BorderLayout.WEST);
 		}
 
 		JPanel subPanelContenido2 = new JPanel(new GridLayout(0, 4));
 		// subPanelContenido2.setBackground(Color.orange);
 		for (int i = 1; i < 200; i++) {
-			JPanel panelCentrarPelicula = crearPanePeliculaCentrada(i);
-			subPanelContenido2.add(panelCentrarPelicula);
+			JPanel panelCentrarVideojuego = crearPaneVideojuegoCentrada(i);
+			subPanelContenido2.add(panelCentrarVideojuego);
 		}
 
 		JScrollPane scrollBar = new JScrollPane(subPanelContenido2);
@@ -128,43 +128,43 @@ public class VentanaPeliculas extends JFrame {
 		setVisible(true);
 	}
 	
-	private JPanel crearPanePeliculaCentrada(int i) {
-		JPanel panelCentrarPelicula = new JPanel(new FlowLayout(FlowLayout.CENTER));
+	private JPanel crearPaneVideojuegoCentrada(int i) {
+		JPanel panelCentrarVideojuego = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		
-		JPanel panelPelicula = new JPanel();
-		panelPelicula.setLayout(new BoxLayout(panelPelicula,BoxLayout.Y_AXIS));
+		JPanel panelVideojuego = new JPanel();
+		panelVideojuego.setLayout(new BoxLayout(panelVideojuego,BoxLayout.Y_AXIS));
 		
-		JLabel tituloLibro = new JLabel("Título "+ i);
-		panelPelicula.add(tituloLibro);
+		JLabel tituloVideojuego = new JLabel("Título "+ i);
+		panelVideojuego.add(tituloVideojuego);
 		
-		panelCentrarPelicula.add(panelPelicula);
+		panelCentrarVideojuego.add(panelVideojuego);
 		
-		panelPelicula.addMouseListener(new MouseAdapter(){
+		panelVideojuego.addMouseListener(new MouseAdapter(){
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				JLabel labelTitulo = (JLabel) panelPelicula.getComponent(1);
+				JLabel labelTitulo = (JLabel) panelVideojuego.getComponent(0);
 				String titulo = labelTitulo.getText();
 				System.out.println(titulo);
 				super.mouseClicked(e);
 			}
 		});
-		return panelCentrarPelicula;
+		return panelCentrarVideojuego;
 	}
 
-	private JPanel createPanelAddPelicula() {
-		JPanel panelAddPelicula = new JPanel(new GridBagLayout());
+	private JPanel createPanelAddVideojuego() {
+		JPanel panelAddVideojuego = new JPanel(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(0, -5, 0, 5); // Margen entre componentes (icono y texto)
 	    gbc.anchor = GridBagConstraints.CENTER; // Centrar verticalmente y horizontalmente
 
-		ImageIcon iconoAddPelicula = Utils.loadImage("peliculas.png",36,36);
-	    JLabel iconLabel = new JLabel(iconoAddPelicula);
+		ImageIcon iconoAddVideojuego = Utils.loadImage("videojuegos.png",36,36);
+	    JLabel iconLabel = new JLabel(iconoAddVideojuego);
 
-	    JLabel textLabel = new JLabel("Añadir pelicula");
+	    JLabel textLabel = new JLabel("Añadir videojuego");
 
 	    // Añadir mouse listener para el panel
-	    panelAddPelicula.addMouseListener(new MouseAdapter() {
+	    panelAddVideojuego.addMouseListener(new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent e) {
 	        	System.out.println("Panel clickeado");
@@ -172,16 +172,16 @@ public class VentanaPeliculas extends JFrame {
         	}
 	    });
 
-	    panelAddPelicula.add(iconLabel, gbc);
+	    panelAddVideojuego.add(iconLabel, gbc);
 	    gbc.gridx = 1; // Segunda columna
-	    panelAddPelicula.add(textLabel, gbc);
-	    return panelAddPelicula;
+	    panelAddVideojuego.add(textLabel, gbc);
+	    return panelAddVideojuego;
 	}
 
 	public static void main(String[] args) {
-		VentanaPeliculas ventana = new VentanaPeliculas(null);
-//		VentanaPeliculas ventana2 = new VentanaPeliculas(new Cliente());
-//		VentanaPeliculas ventana3 = new VentanaPeliculas(new Admin());
+		VentanaVideojuegos ventana = new VentanaVideojuegos(null);
+//		VentanaVideojuegos ventana2 = new VentanaVideojuegos(new Cliente());
+//		VentanaVideojuegos ventana3 = new VentanaVideojuegos(new Admin());
 
 	}
 }
