@@ -35,11 +35,12 @@ import main.main;
 public class VentanaConfirmacionReservaVideojuego extends JFrame {
 	
 	private JPanel pOeste, pEste, pSur, pCentro, pHeader;
-	private Usuario usuario = main.getUsuario();
-
+//	private Usuario usuario = main.getUsuario();
+	private Usuario usuario;
 	private static final long serialVersionUID = -5490640345084381273L;
 	
-	public VentanaConfirmacionReservaVideojuego(Videojuego videojuego) {
+	public VentanaConfirmacionReservaVideojuego(Videojuego videojuego,Usuario usuario) {
+		this.usuario=usuario;
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setTitle("Confirmación de reserva");
 		setSize(1280, 720);
@@ -70,8 +71,8 @@ public class VentanaConfirmacionReservaVideojuego extends JFrame {
 		pCentro.setBackground(Color.WHITE);
 		
 		//panel header
-		Header header = new Header(Seccion.VIDEOJUEGO, new Cliente(), this);
-		header.setBackground(Color.WHITE);
+//		Header header = new Header(Seccion.VIDEOJUEGO, new Cliente(), this);
+//		header.setBackground(Color.WHITE);
 		
 		//panel de imagen
 		
@@ -162,18 +163,18 @@ public class VentanaConfirmacionReservaVideojuego extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				VentanaInformacionProducto nuevaVentana = new VentanaInformacionProducto(videojuego);
+				VentanaInformacionProducto nuevaVentana = new VentanaInformacionProducto(videojuego,usuario);
 				nuevaVentana.setVisible(true);
 				dispose();
 			}
 			
 		});
 		
-		add(header,BorderLayout.NORTH);
+//		add(header,BorderLayout.NORTH);
 
 		setVisible(true);
 	} 
 	public static void main(String[] args) {
-		new VentanaInformacionProducto(new Videojuego());
+		new VentanaInformacionProducto(new Videojuego(),new Cliente());
 	}
 }

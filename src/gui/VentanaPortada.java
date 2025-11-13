@@ -55,7 +55,7 @@ public class VentanaPortada extends JFrame{
 		    public void mouseClicked(MouseEvent e) {
 		        if (usuario == null) {
 		            new VentanaIniciarSesion(currentWindow);
-		            setVisible(true);
+		            setVisible(false);
 		        }
 		    }
 		});
@@ -94,10 +94,10 @@ public class VentanaPortada extends JFrame{
 		    dispose();
 		});
 		
-//		videojuegosButton.addActionListener(e -> {
-//		    new VentanaVideojuegos(usuario);
-//		    dispose();
-//		});
+		videojuegosButton.addActionListener(e -> {
+		    new VentanaVideojuegos(usuario);
+		    dispose();
+		});
 		
 		JPanel peliculasButtonPanel = new JPanel();
 		JPanel videojuegosButtonPanel = new JPanel();
