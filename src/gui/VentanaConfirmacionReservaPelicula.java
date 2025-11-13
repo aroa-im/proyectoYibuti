@@ -35,16 +35,18 @@ import main.main;
 public class VentanaConfirmacionReservaPelicula extends JFrame {
 	
 	private JPanel pOeste, pEste, pSur, pCentro, pHeader;
-	private Usuario usuario = main.getUsuario();
-
+//	private Usuario usuario = main.getUsuario();
+	private Usuario usuario;
+	
 	private static final long serialVersionUID = -5490640345084381273L;
 	
-	public VentanaConfirmacionReservaPelicula(Pelicula pelicula) {
+	public VentanaConfirmacionReservaPelicula(Pelicula pelicula,Usuario usuario) {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setTitle("Confirmación de reserva");
 		setSize(1280, 720);
 		setLocationRelativeTo(null);
 		
+		this.usuario=usuario;
 		
 		getContentPane().setBackground(Color.WHITE);
 		
@@ -70,8 +72,8 @@ public class VentanaConfirmacionReservaPelicula extends JFrame {
 		pCentro.setBackground(Color.WHITE);
 		
 		//panel header
-		Header header = new Header(Seccion.PELICULA, new Cliente(), this);
-		header.setBackground(Color.WHITE);
+//		Header header = new Header(Seccion.PELICULA, new Cliente(), this);
+//		header.setBackground(Color.WHITE);
 		
 		//panel de imagen
 		
@@ -165,18 +167,18 @@ public class VentanaConfirmacionReservaPelicula extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				VentanaInformacionProducto nuevaVentana = new VentanaInformacionProducto(pelicula);
+				VentanaInformacionProducto nuevaVentana = new VentanaInformacionProducto(pelicula,usuario);
 				nuevaVentana.setVisible(true);
 				dispose();
 			}
 			
 		});
 		
-		add(header,BorderLayout.NORTH);
+//		add(header,BorderLayout.NORTH);
 
 		setVisible(true);
 	} 
 	public static void main(String[] args) {
-		new VentanaInformacionProducto(new Pelicula());
+		new VentanaInformacionProducto(new Pelicula(), new Cliente());
 	}
 }

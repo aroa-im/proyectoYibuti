@@ -6,6 +6,10 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
+import domain.Cliente;
+import domain.Usuario;
+import domain.UsuarioSimulacion;
+
 
 public class VentanaIniciarSesion extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -13,11 +17,14 @@ public class VentanaIniciarSesion extends JFrame {
 		setTitle("Iniciar Sesión");
 		setSize(650, 500);
 		setLocationRelativeTo(null);
-
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		
 		addWindowListener(new WindowAdapter() {
 			@Override
-			public void windowClosed(WindowEvent e) {
-				previousWindow.setVisible(true);
+			public void windowClosing(WindowEvent e) {
+				if(previousWindow !=null) {
+					previousWindow.setVisible(true);
+				}
 				dispose();
 			}
 		});
@@ -61,11 +68,13 @@ public class VentanaIniciarSesion extends JFrame {
 		
 		// Parte baja de la pantalla
 		JButton iniciarSesionButton = new JButton("Iniciar sesión");
+		
 		JLabel noCuentaLabel = new JLabel("¿No tienes cuenta?", SwingConstants.CENTER);
 		noCuentaLabel.setForeground(Color.blue);
 		noCuentaLabel.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
+                    	setVisible(false);
                         new VentanaRegistrarse(previousWindow);
 						dispose();
                     }
@@ -76,6 +85,37 @@ public class VentanaIniciarSesion extends JFrame {
 		
 		JPanel iniciarSesionButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		iniciarSesionButtonPanel.add(iniciarSesionButton);
+		iniciarSesionButton.addActionListener(e -> {
+            String dni = tfDNI.getText().trim();
+            String contrasena = new String(tfContrasena.getPassword());
+            
+            // Validar que los campos no estén vacíos
+            if (dni.isEmpty() || contrasena.isEmpty()) {
+                JOptionPane.showMessageDialog(this, 
+                    "Por favor, rellena todos los campos", 
+                    "Campos incompletos", 
+                    JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            
+            // Validar credenciales
+            Usuario usuario = UsuarioSimulacion.validarUsuario(dni, contrasena);
+            
+            if (usuario == null) {
+                JOptionPane.showMessageDialog(this, 
+                    "DNI o contraseña incorrectos", 
+                    "Error de autenticación", 
+                    JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            
+            if (previousWindow != null) {
+                previousWindow.dispose();
+            }
+            new VentanaPortada(usuario);
+            dispose();
+        });
 		
 		JPanel noCuentaLabelPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		noCuentaLabelPanel.add(noCuentaLabel);

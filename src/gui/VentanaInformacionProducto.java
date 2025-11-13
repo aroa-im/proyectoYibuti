@@ -45,8 +45,8 @@ public class VentanaInformacionProducto extends JFrame {
 	private JFrame vInformacionProducto;
 	private static final long serialVersionUID = 1647556562163809896L;
 	private JPanel pOeste, pEste, pSur, pCentro, pHeader;
-	private Usuario usuario = main.getUsuario();
-	
+//	private Usuario usuario = main.getUsuario();
+	private Usuario usuario;
 	public void setMainWindowProperties(Seccion seccion) {
 		
 		vInformacionProducto = this;
@@ -76,8 +76,8 @@ public class VentanaInformacionProducto extends JFrame {
 		getContentPane().add(pOeste, BorderLayout.WEST);
 	}
 		
-	public VentanaInformacionProducto(Pelicula pelicula) {
-		
+	public VentanaInformacionProducto(Pelicula pelicula,Usuario usuario) {
+		this.usuario=usuario;
 		setMainWindowProperties(Seccion.PELICULA);
 
 		setTitle ("Videoclub: " + pelicula.getTitulo());
@@ -274,8 +274,8 @@ public class VentanaInformacionProducto extends JFrame {
 		setVisible(true);
 	}
 	
-	public VentanaInformacionProducto(Videojuego videojuego) {
-
+	public VentanaInformacionProducto(Videojuego videojuego,Usuario usuario) {
+		this.usuario= usuario;
 		setMainWindowProperties(Seccion.VIDEOJUEGO);
 		setTitle ("Videoclub: " + videojuego.getTitulo());
 		//PANEL OESTE
