@@ -107,10 +107,10 @@ public class VentanaPeliculas extends JFrame {
 
 		subPanelContenido1.add(buscador, BorderLayout.CENTER);
 
-		// Añadir libro
+		// Añadir pelicula
 		if (usuario instanceof Admin) {
-			JPanel panelAddLibro = createPanelAddLibro();
-			subPanelContenido1.add(panelAddLibro, BorderLayout.WEST);
+			JPanel panelAddPelicula = createPanelAddPelicula();
+			subPanelContenido1.add(panelAddPelicula, BorderLayout.WEST);
 		}
 
 		JPanel subPanelContenido2 = new JPanel(new GridLayout(0, 4));
@@ -129,42 +129,42 @@ public class VentanaPeliculas extends JFrame {
 	}
 	
 	private JPanel crearPanePeliculaCentrada(int i) {
-		JPanel panelCentrarLibro = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		JPanel panelCentrarPelicula = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		
-		JPanel panelLibro = new JPanel();
-		panelLibro.setLayout(new BoxLayout(panelLibro,BoxLayout.Y_AXIS));
+		JPanel panelPelicula = new JPanel();
+		panelPelicula.setLayout(new BoxLayout(panelPelicula,BoxLayout.Y_AXIS));
 		
 		JLabel tituloLibro = new JLabel("Título "+ i);
-		panelLibro.add(tituloLibro);
+		panelPelicula.add(tituloLibro);
 		
-		panelCentrarLibro.add(panelLibro);
+		panelCentrarPelicula.add(panelPelicula);
 		
-		panelLibro.addMouseListener(new MouseAdapter(){
+		panelPelicula.addMouseListener(new MouseAdapter(){
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				JLabel labelTitulo = (JLabel) panelLibro.getComponent(1);
+				JLabel labelTitulo = (JLabel) panelPelicula.getComponent(1);
 				String titulo = labelTitulo.getText();
 				System.out.println(titulo);
 				super.mouseClicked(e);
 			}
 		});
-		return panelCentrarLibro;
+		return panelCentrarPelicula;
 	}
 
-	private JPanel createPanelAddLibro() {
-		JPanel panelAddLibro = new JPanel(new GridBagLayout());
+	private JPanel createPanelAddPelicula() {
+		JPanel panelAddPelicula = new JPanel(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(0, -5, 0, 5); // Margen entre componentes (icono y texto)
 	    gbc.anchor = GridBagConstraints.CENTER; // Centrar verticalmente y horizontalmente
 
-		ImageIcon iconoAddLibro = Utils.loadImage("add.png",36,36);
-	    JLabel iconLabel = new JLabel(iconoAddLibro);
+		ImageIcon iconoAddPelicula = Utils.loadImage("peliculas.png",36,36);
+	    JLabel iconLabel = new JLabel(iconoAddPelicula);
 
-	    JLabel textLabel = new JLabel("Añadir libro");
+	    JLabel textLabel = new JLabel("Añadir pelicula");
 
 	    // Añadir mouse listener para el panel
-	    panelAddLibro.addMouseListener(new MouseAdapter() {
+	    panelAddPelicula.addMouseListener(new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent e) {
 	        	System.out.println("Panel clickeado");
@@ -172,10 +172,10 @@ public class VentanaPeliculas extends JFrame {
         	}
 	    });
 
-	    panelAddLibro.add(iconLabel, gbc);
+	    panelAddPelicula.add(iconLabel, gbc);
 	    gbc.gridx = 1; // Segunda columna
-	    panelAddLibro.add(textLabel, gbc);
-	    return panelAddLibro;
+	    panelAddPelicula.add(textLabel, gbc);
+	    return panelAddPelicula;
 	}
 
 	public static void main(String[] args) {
