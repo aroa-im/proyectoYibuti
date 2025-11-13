@@ -23,6 +23,6 @@ public class main {
 		usuario = null;
              
         // Inicio de la interfaz gráfica
-    	SwingUtilities.invokeLater(() -> new VentanaPortada());
+    	SwingUtilities.invokeLater(() -> new VentanaPortada(usuario));
 	}
 }
