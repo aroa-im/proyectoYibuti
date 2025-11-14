@@ -20,7 +20,7 @@ public class Utils {
 		ImageIcon result;
 		BufferedImage bi = null;
 		try {
-			bi = ImageIO.read(new File("resources/" + imageName));
+			bi = ImageIO.read(new File("resources/images/" + imageName));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -19,12 +19,12 @@ public class ImageCellRenderer extends JLabel implements TableCellRenderer {
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
 			int row, int column) {
-		String 	ubicacionImagen ="books/small/" + value;
+		String 	ubicacionImagen ="peliculas/" + value;
 		ImageIcon imagenLibro = null;
 		try {
 			imagenLibro = Utils.loadImage( ubicacionImagen,50,74);
 		} catch (Exception e) {
-			imagenLibro = Utils.loadImage("books/noImagen.jpg",50,74);
+			imagenLibro = Utils.loadImage("peliculas/pelicula.jpg",50,74);
 		}
 	    JLabel iconLabel = new JLabel(imagenLibro);
 

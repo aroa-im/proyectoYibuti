@@ -158,7 +158,7 @@ public class VentanaPeliculas extends JFrame {
 		gbc.insets = new Insets(0, -5, 0, 5); // Margen entre componentes (icono y texto)
 	    gbc.anchor = GridBagConstraints.CENTER; // Centrar verticalmente y horizontalmente
 
-		ImageIcon iconoAddPelicula = Utils.loadImage("peliculas.png",36,36);
+		ImageIcon iconoAddPelicula = Utils.loadImage("add.png",24,24);
 	    JLabel iconLabel = new JLabel(iconoAddPelicula);
 
 	    JLabel textLabel = new JLabel("Añadir pelicula");
@@ -179,9 +179,9 @@ public class VentanaPeliculas extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		VentanaPeliculas ventana = new VentanaPeliculas(null);
+//		VentanaPeliculas ventana = new VentanaPeliculas(null);
 //		VentanaPeliculas ventana2 = new VentanaPeliculas(new Cliente());
-//		VentanaPeliculas ventana3 = new VentanaPeliculas(new Admin());
+		VentanaPeliculas ventana3 = new VentanaPeliculas(new Admin());
 
 	}
 }
