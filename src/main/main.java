@@ -12,9 +12,9 @@ public class main {
 	
 	
 	
-//	public static Usuario getUsuario() {
-//		return usuario;
-//	}
+	public static Usuario getUsuario() {
+		return usuario;
+	}
 
 	public static void setUsuario(Usuario usuario) {
 		main.usuario = usuario;

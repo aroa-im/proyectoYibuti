@@ -25,12 +25,16 @@ import javax.swing.border.EmptyBorder;
 
 
 import domain.Cliente;
+import domain.GeneroVideoJuego;
 import domain.Pelicula;
+import domain.Review;
 import domain.Videojuego;
 import domain.Seccion;
+import domain.TipoConsola;
 import domain.Usuario;
 import gui.components.Header;
 import main.main;
+import utils.Utils;
 
 public class VentanaConfirmacionReservaVideojuego extends JFrame {
 	
@@ -39,8 +43,7 @@ public class VentanaConfirmacionReservaVideojuego extends JFrame {
 	private Usuario usuario;
 	private static final long serialVersionUID = -5490640345084381273L;
 	
-	public VentanaConfirmacionReservaVideojuego(Videojuego videojuego,Usuario usuario) {
-		this.usuario=usuario;
+	public VentanaConfirmacionReservaVideojuego(Videojuego videojuego) {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setTitle("Confirmación de reserva");
 		setSize(1280, 720);
@@ -163,7 +166,7 @@ public class VentanaConfirmacionReservaVideojuego extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				VentanaInformacionProducto nuevaVentana = new VentanaInformacionProducto(videojuego,usuario);
+				VentanaInformacionProducto nuevaVentana = new VentanaInformacionProducto(videojuego);
 				nuevaVentana.setVisible(true);
 				dispose();
 			}
@@ -175,6 +178,21 @@ public class VentanaConfirmacionReservaVideojuego extends JFrame {
 		setVisible(true);
 	} 
 	public static void main(String[] args) {
-		new VentanaInformacionProducto(new Videojuego(),new Cliente());
+		
+		 ImageIcon foto = Utils.loadImage("videojuegos/videojuego1.jpg", 128, 200);
+		    
+		    Videojuego videojuego = new Videojuego(
+		        "Videojuego1",             
+		        "Una aventura épica en un mundo abierto",               
+		        59.99f,                                                  
+		        10,                                                      
+		        new ArrayList<Review>(),                                 
+		        GeneroVideoJuego.AVENTURA,                             
+		        TipoConsola.NINTENDO,                            
+		        "Nintendo",                                              
+		        foto                                                     
+		    );
+		    
+		new VentanaConfirmacionReservaVideojuego(videojuego);
 	}
 }

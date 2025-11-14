@@ -24,16 +24,21 @@ import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+
 import domain.Admin;
 import domain.Cliente;
+import domain.GeneroVideoJuego;
 import domain.Pelicula;
 import domain.Videojuego;
 //import domain.Reserva;
 import domain.Review;
 import domain.Seccion;
+import domain.TipoConsola;
 import domain.Usuario;
 import gui.components.Header;
 import main.main;
+import utils.Utils; 
+import javax.swing.ImageIcon;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -76,8 +81,8 @@ public class VentanaInformacionProducto extends JFrame {
 		getContentPane().add(pOeste, BorderLayout.WEST);
 	}
 		
-	public VentanaInformacionProducto(Pelicula pelicula,Usuario usuario) {
-		this.usuario=usuario;
+	public VentanaInformacionProducto(Pelicula pelicula) {
+
 		setMainWindowProperties(Seccion.PELICULA);
 
 		setTitle ("Videoclub: " + pelicula.getTitulo());
@@ -274,8 +279,7 @@ public class VentanaInformacionProducto extends JFrame {
 		setVisible(true);
 	}
 	
-	public VentanaInformacionProducto(Videojuego videojuego,Usuario usuario) {
-		this.usuario= usuario;
+	public VentanaInformacionProducto(Videojuego videojuego) {
 		setMainWindowProperties(Seccion.VIDEOJUEGO);
 		setTitle ("Videoclub: " + videojuego.getTitulo());
 		//PANEL OESTE
@@ -467,5 +471,25 @@ public class VentanaInformacionProducto extends JFrame {
 		*/
 		
 		setVisible(true);
+	}
+	
+	public static void main(String[] args) {
+
+	    ImageIcon foto = Utils.loadImage("videojuegos/videojuego1.jpg", 128, 200);
+	    
+	    Videojuego videojuego = new Videojuego(
+	        "Videojuego1",             
+	        "Una aventura épica en un mundo abierto",               
+	        59.99f,                                                  
+	        10,                                                      
+	        new ArrayList<Review>(),                                 
+	        GeneroVideoJuego.AVENTURA,                             
+	        TipoConsola.NINTENDO,                            
+	        "Nintendo",                                              
+	        foto                                                     
+	    );
+	    
+
+	    new VentanaInformacionProducto(videojuego);
 	}
 }
