@@ -2,7 +2,6 @@ package gui;
 
 import gui.components.Header;
 import gui.renderers.*;
-import main.main;
 import domain.Cliente;
 import domain.Seccion;
 import domain.Usuario;
@@ -18,14 +17,14 @@ public class VentanaHistorialUsuario extends JFrame{
 	
 	private static final long serialVersionUID = 1L;
 	//private Usuario usuario = main.getUsuario();
-	Usuario usuario;
-	public VentanaHistorialUsuario() {
+	
+	public VentanaHistorialUsuario(Usuario usuario) {
 		if (!(usuario instanceof Cliente)) {
 			return ;
 		}
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(640,480);
-		setTitle("Historial de peliculas");
+		setTitle("Videoclub - Historial");
 		setLocationRelativeTo(null);
 		
 		//panel arriba
@@ -33,11 +32,11 @@ public class VentanaHistorialUsuario extends JFrame{
 		add(header,BorderLayout.NORTH);
 		
 		//Panel contenedor
-		String [][] tablaHistorial = new String [3013][3];
+		String [][] tablaHistorial = new String [200][3];
 				
-		for (int i = 0; i < 3013; i++) {
+		for (int i = 0; i < 200; i++) {
 			int numPelicula = i+1;
-			String[] pelicula = {numPelicula + ".png" , "Descripcion pelicula " + numPelicula,"Review pelicula " + numPelicula};
+			String[] pelicula = {numPelicula + ".png" , "Descripcion pelicula " + numPelicula, "Review pelicula " + numPelicula};
 			tablaHistorial[i] = pelicula;
 		};
 		
@@ -66,7 +65,7 @@ public class VentanaHistorialUsuario extends JFrame{
 	}
 	
 	public static void main(String[] args) {
-		new VentanaHistorialUsuario();
+		new VentanaHistorialUsuario(new Cliente());
 	}
 
 }

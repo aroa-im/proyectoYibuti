@@ -134,6 +134,16 @@ public class VentanaVideojuegos extends JFrame {
 		JPanel panelVideojuego = new JPanel();
 		panelVideojuego.setLayout(new BoxLayout(panelVideojuego,BoxLayout.Y_AXIS));
 		
+		ImageIcon imagenVideojuego = null;
+		try {
+			imagenVideojuego = Utils.loadImage("videojuegos/videojuego" + i + ".png",115,160);
+		} catch (Exception e) {
+			imagenVideojuego = Utils.loadImage("books/noImagen.jpg",98,151);
+		}
+        JLabel iconLabel = new JLabel(imagenVideojuego);
+        panelVideojuego.add(iconLabel);
+		
+		
 		JLabel tituloVideojuego = new JLabel("Título "+ i);
 		panelVideojuego.add(tituloVideojuego);
 		
@@ -153,12 +163,13 @@ public class VentanaVideojuegos extends JFrame {
 	}
 
 	private JPanel createPanelAddVideojuego() {
+		JPanel panelCentrarVideojuego = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		JPanel panelAddVideojuego = new JPanel(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(0, -5, 0, 5); // Margen entre componentes (icono y texto)
 	    gbc.anchor = GridBagConstraints.CENTER; // Centrar verticalmente y horizontalmente
 
-		ImageIcon iconoAddVideojuego = Utils.loadImage("videojuegos.png",36,36);
+		ImageIcon iconoAddVideojuego = Utils.loadImage("add.png",24,24);
 	    JLabel iconLabel = new JLabel(iconoAddVideojuego);
 
 	    JLabel textLabel = new JLabel("Añadir videojuego");
