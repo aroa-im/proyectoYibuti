@@ -1,6 +1,10 @@
 package gui;
 
 import gui.components.Header;
+import gui.renderers.ButtonCellEditor;
+import gui.renderers.ButtonCellRenderer;
+import gui.renderers.ImageCellEditor;
+import gui.renderers.ImageCellRenderer;
 import main.main;
 import domain.Cliente;
 import domain.Seccion;
@@ -56,12 +60,12 @@ public class VentanaHistorialUsuario extends JFrame{
 		historial.setRowSelectionAllowed(false);
 		JScrollPane scrollPane = new JScrollPane(historial);
 		add(scrollPane);
-		/*
+		
 		historial.getColumnModel().getColumn(0).setCellRenderer(new ImageCellRenderer());
 		historial.getColumnModel().getColumn(0).setCellEditor(new ImageCellEditor());
 		historial.getColumnModel().getColumn(2).setCellRenderer(new ButtonCellRenderer());
 		historial.getColumnModel().getColumn(2).setCellEditor(new ButtonCellEditor());
-		*/
+		
 		setVisible(true);
 	}
 	
