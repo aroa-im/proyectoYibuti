@@ -40,13 +40,12 @@ public class VentanaConfirmacionReservaPelicula extends JFrame {
 	
 	private static final long serialVersionUID = -5490640345084381273L;
 	
-	public VentanaConfirmacionReservaPelicula(Pelicula pelicula,Usuario usuario) {
+	public VentanaConfirmacionReservaPelicula(Pelicula pelicula) {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setTitle("Confirmación de reserva");
 		setSize(1280, 720);
 		setLocationRelativeTo(null);
 		
-		this.usuario=usuario;
 		
 		getContentPane().setBackground(Color.WHITE);
 		
@@ -167,7 +166,7 @@ public class VentanaConfirmacionReservaPelicula extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				VentanaInformacionProducto nuevaVentana = new VentanaInformacionProducto(pelicula,usuario);
+				VentanaInformacionProducto nuevaVentana = new VentanaInformacionProducto(pelicula);
 				nuevaVentana.setVisible(true);
 				dispose();
 			}
@@ -179,6 +178,6 @@ public class VentanaConfirmacionReservaPelicula extends JFrame {
 		setVisible(true);
 	} 
 	public static void main(String[] args) {
-		new VentanaInformacionProducto(new Pelicula(), new Cliente());
+		//new VentanaConfirmacionReservaPelicula(pelicula);
 	}
 }
