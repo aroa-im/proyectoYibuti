@@ -1,10 +1,7 @@
 package gui;
 
 import gui.components.Header;
-import gui.renderers.ButtonCellEditor;
-import gui.renderers.ButtonCellRenderer;
-import gui.renderers.ImageCellEditor;
-import gui.renderers.ImageCellRenderer;
+import gui.renderers.*;
 import main.main;
 import domain.Cliente;
 import domain.Seccion;
@@ -17,7 +14,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-
 public class VentanaHistorialUsuario extends JFrame{
 	
 	private static final long serialVersionUID = 1L;
@@ -29,7 +25,7 @@ public class VentanaHistorialUsuario extends JFrame{
 		}
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(640,480);
-		setTitle("Historial de libros");
+		setTitle("Historial de peliculas");
 		setLocationRelativeTo(null);
 		
 		//panel arriba
@@ -40,14 +36,14 @@ public class VentanaHistorialUsuario extends JFrame{
 		String [][] tablaHistorial = new String [3013][3];
 				
 		for (int i = 0; i < 3013; i++) {
-			int numLibro = i+1;
-			String[] libro = {numLibro + ".jpg" , "Descripcion libro " + numLibro,"Review Libro " + numLibro};
-			tablaHistorial[i] = libro;
+			int numPelicula = i+1;
+			String[] pelicula = {numPelicula + ".png" , "Descripcion pelicula " + numPelicula,"Review pelicula " + numPelicula};
+			tablaHistorial[i] = pelicula;
 		};
 		
 		//String[] datos = {"Libro","Descripcion","review"};
 		DefaultTableModel modeloTablaHistorial = new DefaultTableModel();
-		modeloTablaHistorial.addColumn("Libro");
+		modeloTablaHistorial.addColumn("Pelicula");
 		modeloTablaHistorial.addColumn("Descripcion");
 		modeloTablaHistorial.addColumn("review");
 		
