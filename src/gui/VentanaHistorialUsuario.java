@@ -17,8 +17,8 @@ import javax.swing.table.DefaultTableModel;
 public class VentanaHistorialUsuario extends JFrame{
 	
 	private static final long serialVersionUID = 1L;
-	private Usuario usuario = main.getUsuario();
-
+	//private Usuario usuario = main.getUsuario();
+	Usuario usuario;
 	public VentanaHistorialUsuario() {
 		if (!(usuario instanceof Cliente)) {
 			return ;
