@@ -55,7 +55,7 @@ public class VentanaPeliculas extends JFrame {
 		JPanel subPanelContenido1 = new JPanel(new BorderLayout());
 		panelContenido.add(subPanelContenido1, BorderLayout.NORTH);
 
-		TipoPelicula[] array = new TipoPelicula[2];
+		TipoPelicula[] array = new TipoPelicula[TipoPelicula.values().length];
 		int contador = 0;
 
 		for (TipoPelicula metodo : TipoPelicula.values()) {
@@ -134,6 +134,18 @@ public class VentanaPeliculas extends JFrame {
 		JPanel panelPelicula = new JPanel();
 		panelPelicula.setLayout(new BoxLayout(panelPelicula,BoxLayout.Y_AXIS));
 		
+		ImageIcon imagenPelicula = null;
+		try {
+			imagenPelicula = Utils.loadImage("peliculas/pelicula" + i + ".jpg",115,160);
+		} catch (Exception e) {
+			imagenPelicula = Utils.loadImage("books/noImagen.jpg",98,151);
+		}
+        JLabel iconLabel = new JLabel(imagenPelicula);
+        panelPelicula.add(iconLabel);
+		
+		
+		
+		
 		JLabel tituloLibro = new JLabel("Título "+ i);
 		panelPelicula.add(tituloLibro);
 		
@@ -143,7 +155,7 @@ public class VentanaPeliculas extends JFrame {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				JLabel labelTitulo = (JLabel) panelPelicula.getComponent(1);
+				JLabel labelTitulo = (JLabel) panelPelicula.getComponent(0);
 				String titulo = labelTitulo.getText();
 				System.out.println(titulo);
 				super.mouseClicked(e);
