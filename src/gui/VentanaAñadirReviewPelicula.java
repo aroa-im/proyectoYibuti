@@ -108,7 +108,7 @@ public class VentanaAñadirReviewPelicula extends JFrame {
 		publicarButton.addActionListener(e -> {
 			comment = comentarioTextArea.getText();
 			
-			// TODO: Implementar cuando tengas los DTOs
+			// TODO: Implementar cuando tengamos los DTOs
 			/*
 			UsuarioDTO clienteDTO = new UsuarioDTO();
 			PeliculaDTO peliculaDTO = new PeliculaDTO();
@@ -135,7 +135,7 @@ public class VentanaAñadirReviewPelicula extends JFrame {
 			
 			pelicula.getComentarios().add(review);
 			
-			// TODO: Implementar cuando tengas el DAO
+			// TODO: Implementar cuando tengamos el DAO
 			// main.getReviewDAO().addReview(review);
 
 			dispose();
@@ -169,7 +169,6 @@ public class VentanaAñadirReviewPelicula extends JFrame {
 	}
 
 	public static void starAction(int starIndex, List<JLabel> starList) {
-		// Pinta las estrellas en función de la estrella de review seleccionada
 
 		for (int i = 0; i < 10; i++) {
 			starList.get(i).setIcon(Utils.loadImage("estrellaBlanca.png", 24, 24));
@@ -181,8 +180,7 @@ public class VentanaAñadirReviewPelicula extends JFrame {
 	}
 	
 	public static void main(String[] args) {
-		// Utils.loadImage busca automáticamente en resources/images/
-		// Solo necesitas pasar el nombre del archivo
+
 		ImageIcon foto = Utils.loadImage("peliculas.png", 115, 160);
 		
 		Pelicula pelicula = new Pelicula("Titulo1", "Sinopsis", 8.8f, 0, new ArrayList<Review>(), 

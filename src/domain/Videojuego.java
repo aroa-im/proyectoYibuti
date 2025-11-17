@@ -51,9 +51,26 @@ public class Videojuego extends Producto{
 
 	@Override
 	public String toString() {
-		return "Videojuego [genero=" + genero + ", tipo=" + tipo + ", autor=" + autor + ", Titulo=" + getTitulo()
-				+ ", Sinopsis=" + getSinopsis() + ", Precio=" + getPrecio() + ", Rating=" + getRating()
-				+ ", Comentarios=" + getComentarios() + "]";
+		
+		StringBuilder sb = new StringBuilder();
+
+	    sb.append("Videojuego [Titulo=").append(getTitulo())
+	      .append(", Sinopsis=").append(getSinopsis())
+	      .append(", Precio=").append(getPrecio())
+	      .append(", Rating=").append(getRating())
+	      .append(", Genero=").append(genero)
+	      .append(", Tipo de Consola=").append(tipo)
+	      .append(", Autor=").append(autor);
+
+	    if (getComentarios() != null && !getComentarios().isEmpty()) {
+	        sb.append(", Comentarios=").append(getComentarios().size()).append(" reseñas disponibles");
+	    } else {
+	        sb.append(", Comentarios=Sin reseñas");
+	    }
+	    
+	    sb.append("]");
+	    
+	    return sb.toString();
 	}
 
 	@Override

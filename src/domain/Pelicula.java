@@ -64,9 +64,30 @@ public class Pelicula extends Producto{
 
 	@Override
 	public String toString() {
-		return "Pelicula [tipo=" + tipo + ", genero=" + genero + ", director=" + director + ", Duración=" + duracion + ", Titulo=" + getTitulo()
-		+ ", Sinopsis=" + getSinopsis() + ", Precio=" + getPrecio() + ", Rating=" + getRating()
-		+ ", Comentarios=" + getComentarios() + "]";
+	    
+		//Con ayuda de IA hicimos este toString() para que no nos diese el stackOverflow en la clase VentanaAñadirReview
+	    StringBuilder sb = new StringBuilder();
+	    
+	   
+	    sb.append("Pelicula [tipo=").append(tipo)
+	      .append(", genero=").append(genero)
+	      .append(", director=").append(director)
+	      .append(", Duración=").append(duracion)
+	      .append(", Titulo=").append(getTitulo())
+	      .append(", Sinopsis=").append(getSinopsis())
+	      .append(", Precio=").append(getPrecio())
+	      .append(", Rating=").append(getRating());
+
+	    
+	    if (getComentarios() != null && !getComentarios().isEmpty()) {
+	        sb.append(", Comentarios=").append(getComentarios().size()).append(" reseñas disponibles");
+	    } else {
+	        sb.append(", Comentarios=Sin reseñas");
+	    }
+	    
+	    sb.append("]");
+	    
+	    return sb.toString();
 	}
 
 	@Override
