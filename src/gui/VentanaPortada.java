@@ -56,6 +56,8 @@ public class VentanaPortada extends JFrame{
 		        if (usuario == null) {
 		            new VentanaIniciarSesion(currentWindow);
 		            setVisible(false);
+		        } else {
+		        	new VentanaInformacionUsuario(currentWindow, usuario);
 		        }
 		    }
 		});
