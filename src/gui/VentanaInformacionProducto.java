@@ -69,13 +69,13 @@ public class VentanaInformacionProducto extends JFrame {
 	    //pHeader = new Header(usuario, this);
 	  
 	    pCentro.setBackground(Color.WHITE);
-        pSur.setBackground(Color.WHITE);
-        pHeader.setBackground(Color.WHITE);
+        //pSur.setBackground(Color.WHITE);
+        //pHeader.setBackground(Color.WHITE);
         pOeste.setBackground(Color.WHITE);
         pEste.setBackground(Color.WHITE);
         
 	    getContentPane().add(pCentro, BorderLayout.CENTER);
-	    getContentPane().add(pHeader, BorderLayout.NORTH);
+	    //getContentPane().add(pHeader, BorderLayout.NORTH);
 		getContentPane().add(pSur, BorderLayout.SOUTH);
 		getContentPane().add(pEste, BorderLayout.EAST);
 		getContentPane().add(pOeste, BorderLayout.WEST);
@@ -252,20 +252,20 @@ public class VentanaInformacionProducto extends JFrame {
 
 		pCentro.add(botonesPanel);
 		
-		/*botonReview.addActionListener(new ActionListener() {
+		botonReview.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new VentanaAñadirReview(pelicula);
+				new VentanaAñadirReviewPelicula(pelicula);
 			}
 			
 		});
-		*/
+		
 		
 		pOeste.setBorder(new EmptyBorder(0,20,0,0));
 		pCentro.setBorder(new EmptyBorder(70, 50, 0, 0));
 		
-		/*botonReservar.addActionListener(new ActionListener() {
+		botonReservar.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {				 
@@ -274,7 +274,7 @@ public class VentanaInformacionProducto extends JFrame {
 				vInformacionProducto.dispose();
 			}
 		});
-		*/
+		
 		
 		setVisible(true);
 	}
@@ -447,49 +447,49 @@ public class VentanaInformacionProducto extends JFrame {
 
 		pCentro.add(botonesPanel);
 		
-		/*botonReview.addActionListener(new ActionListener() {
+		botonReview.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new VentanaAñadirReview(libro);
+				new VentanaAñadirReviewVideojuego(videojuego);
 			}
 		});
-		*/
+		
 		
 		pOeste.setBorder(new EmptyBorder(0,20,0,0));
 		pCentro.setBorder(new EmptyBorder(70, 50, 0, 0));
 		
-		/*botonReservar.addActionListener(new ActionListener() {
+		botonReservar.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {				 
-				VentanaConfirmacionReservaVideojuego nuevaVentana = new VentanaConfirmacionReservaVideoJuego(videojuego);
+				VentanaConfirmacionReservaVideojuego nuevaVentana = new VentanaConfirmacionReservaVideojuego(videojuego);
 				nuevaVentana.setVisible(true);
 				vInformacionProducto.dispose();
 			}
 		});
-		*/
+		
 		
 		setVisible(true);
 	}
 	
 	public static void main(String[] args) {
-
-	    ImageIcon foto = Utils.loadImage("videojuegos/videojuego1.jpg", 128, 200);
-	    
+		
+	    ImageIcon foto = Utils.loadImage("videojuegos.png", 128, 200);
 	    Videojuego videojuego = new Videojuego(
-	        "Videojuego1",             
-	        "Una aventura épica en un mundo abierto",               
-	        59.99f,                                                  
-	        10,                                                      
-	        new ArrayList<Review>(),                                 
-	        GeneroVideoJuego.AVENTURA,                             
-	        TipoConsola.NINTENDO,                            
-	        "Nintendo",                                              
-	        foto                                                     
-	    );
+	            "Videojuego1",             
+	            "Una aventura épica en un mundo abierto",               
+	            59.99f,                                                  
+	            10,                                                      
+	            new ArrayList<Review>(),                                 
+	            GeneroVideoJuego.AVENTURA,                             
+	            TipoConsola.NINTENDO,                            
+	            "Nintendo",                                              
+	            foto                                                     
+	        );
+	        
+	     new VentanaInformacionProducto(videojuego);
 	    
 
-	    new VentanaInformacionProducto(videojuego);
 	}
 }
