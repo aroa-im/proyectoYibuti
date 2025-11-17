@@ -76,8 +76,7 @@ public class Review {
 
 	@Override
 	public String toString() {
-		return "Review [producto=" + producto + ", cliente=" + cliente + ", comentario=" + comentario + ", rating="
-				+ rating + "]";
+	    String nombreCliente = (cliente != null && cliente.getNombre() != null) ? cliente.getNombre() : "Anónimo";
+	    return String.format("- Usuario: %s  |  Comentario: %s  |  Rating: %d/10", nombreCliente, comentario, rating);
 	}
-	
 }
