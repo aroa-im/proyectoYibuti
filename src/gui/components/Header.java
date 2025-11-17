@@ -4,6 +4,8 @@ import domain.Admin;
 import domain.Cliente;
 import domain.Seccion;
 import domain.Usuario;
+import gui.VentanaInformacionUsuario;
+import gui.VentanaIniciarSesion;
 import gui.VentanaPortada;
 import utils.Utils;
 
@@ -84,11 +86,11 @@ public class Header extends JPanel {
             public void mouseClicked(MouseEvent e) {
 				switch(nombreIconoUsuario) {
 					case "noUser.png":
-						//new VentanaIniciarSesion(ventana);
+						new VentanaIniciarSesion(ventana);
 						ventana.setVisible(false);
 						break;
 					default:
-//						new VentanaInformacionUsuario(ventana);
+						new VentanaInformacionUsuario(ventana, usuario);
 						break;
 				}	
             }

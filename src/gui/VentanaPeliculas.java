@@ -146,8 +146,8 @@ public class VentanaPeliculas extends JFrame {
 		
 		
 		
-		JLabel tituloLibro = new JLabel("Título "+ i);
-		panelPelicula.add(tituloLibro);
+		JLabel tituloPelicula = new JLabel("Título "+ i);
+		panelPelicula.add(tituloPelicula);
 		
 		panelCentrarPelicula.add(panelPelicula);
 		
