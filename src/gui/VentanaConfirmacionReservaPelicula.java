@@ -24,13 +24,18 @@ import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
 
+
 import domain.Cliente;
+import domain.GeneroPelicula;
 import domain.Pelicula;
+import domain.Review;
 import domain.Videojuego;
 import domain.Seccion;
+import domain.TipoPelicula;
 import domain.Usuario;
 import gui.components.Header;
 import main.main;
+import utils.Utils;
 
 public class VentanaConfirmacionReservaPelicula extends JFrame {
 	
@@ -156,12 +161,13 @@ public class VentanaConfirmacionReservaPelicula extends JFrame {
 		pCentro.add(botonesPanel);
 		
 		//TODO: HACER EL LISTENER DEL BOTON
-		/*
+		
 		botonConfirmar.addActionListener(e -> {
-			
-			
+			dispose();
+			VentanaInformacionProducto redirectWindow = new VentanaInformacionProducto(pelicula);
+			JOptionPane.showMessageDialog(redirectWindow, "Gracias por hacer tu reserva!", "Reserva hecha correctamente", JOptionPane.INFORMATION_MESSAGE);
 		});
-		*/
+		
 		botonVolver.addActionListener(new ActionListener() {
 
 			@Override
@@ -178,6 +184,24 @@ public class VentanaConfirmacionReservaPelicula extends JFrame {
 		setVisible(true);
 	} 
 	public static void main(String[] args) {
-		//new VentanaConfirmacionReservaPelicula(pelicula);
+	    
+	    ImageIcon foto = Utils.loadImage("peliculas/pelicula1.jpg", 128, 200); 
+	    
+	    
+	    Pelicula pelicula = new Pelicula(
+	        "Pelicula1",                              
+	        "Una historia épica de acción y aventura", 
+	        19.99f,                                   
+	        8,                                        
+	        new ArrayList<Review>(),                  
+	        TipoPelicula.DVD,                        
+	        GeneroPelicula.ACCION,                    
+	        "Director Ejemplo",                      
+	        120,                                      
+	        foto                                      
+	    );
+	    
+	   
+	    new VentanaConfirmacionReservaPelicula(pelicula);
 	}
 }

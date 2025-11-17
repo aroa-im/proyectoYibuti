@@ -156,12 +156,14 @@ public class VentanaConfirmacionReservaVideojuego extends JFrame {
 		pCentro.add(botonesPanel);
 		
 		//TODO: HACER EL LISTENER DEL BOTON
-		/*
+		
 		botonConfirmar.addActionListener(e -> {
-			
+			dispose();
+			VentanaInformacionProducto redirectWindow = new VentanaInformacionProducto(videojuego);
+			JOptionPane.showMessageDialog(redirectWindow, "Gracias por hacer tu reserva!", "Reserva hecha correctamente", JOptionPane.INFORMATION_MESSAGE);
 			
 		});
-		*/
+		
 		botonVolver.addActionListener(new ActionListener() {
 
 			@Override
@@ -179,7 +181,7 @@ public class VentanaConfirmacionReservaVideojuego extends JFrame {
 	} 
 	public static void main(String[] args) {
 		
-		 ImageIcon foto = Utils.loadImage("videojuegos/videojuego1.jpg", 128, 200);
+		ImageIcon foto = Utils.loadImage("videojuegos/videojuego1.png", 128, 200);
 		    
 		    Videojuego videojuego = new Videojuego(
 		        "Videojuego1",             
