@@ -16,12 +16,15 @@ import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
+import javax.swing.SwingWorker;
 import javax.swing.border.EmptyBorder;
 
 import utils.Utils;
@@ -31,7 +34,7 @@ public class VentanaAñadirReviewVideojuego extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private Cliente cliente = (Cliente) main.getUsuario();
 	private int rating = 0;
-	private String comment = "";
+	private String comentario = "";
 
 	public VentanaAñadirReviewVideojuego(Videojuego videojuego) {
 		
@@ -40,24 +43,24 @@ public class VentanaAñadirReviewVideojuego extends JFrame {
 		setSize(500, 400);
 		setLocationRelativeTo(null);
 		
-		JLabel titleLabel = new JLabel("Añadir review", SwingConstants.CENTER);
-		titleLabel.setFont(new Font("Verdana", Font.BOLD, 32));
+		JLabel tituloLabel = new JLabel("Añadir review", SwingConstants.CENTER);
+		tituloLabel.setFont(new Font("Verdana", Font.BOLD, 32));
 		
-		JPanel leftPanel = new JPanel();
-		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
+		JPanel panelIzquierdo = new JPanel();
+		panelIzquierdo.setLayout(new BoxLayout(panelIzquierdo, BoxLayout.Y_AXIS));
 		
-		JLabel gameIcon = new JLabel();
-		gameIcon.setIcon(videojuego.getFoto());
+		JLabel iconoJuego = new JLabel();
+		iconoJuego.setIcon(videojuego.getFoto());
 		JLabel gameTitle = new JLabel(videojuego.getTitulo());	
 		
-		gameIcon.setAlignmentX(CENTER_ALIGNMENT);
+		iconoJuego.setAlignmentX(CENTER_ALIGNMENT);
 		gameTitle.setAlignmentX(CENTER_ALIGNMENT);
 		
-		leftPanel.add(gameIcon);
-		leftPanel.add(gameTitle);
+		panelIzquierdo.add(iconoJuego);
+		panelIzquierdo.add(gameTitle);
 		
-		JPanel rightPanel = new JPanel();
-		rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
+		JPanel panelDerecho = new JPanel();
+		panelDerecho.setLayout(new BoxLayout(panelDerecho, BoxLayout.Y_AXIS));
 		
 		JLabel comentarioLabel = new JLabel("Comentario");
 		
@@ -105,40 +108,66 @@ public class VentanaAñadirReviewVideojuego extends JFrame {
 		JButton publicarButton = new JButton("Publicar review");
 
 		publicarButton.addActionListener(e -> {
-			comment = comentarioTextArea.getText();
+			comentario = comentarioTextArea.getText();
 			
-			// TODO: Implementar cuando tengas los DTOs
-			/*
-			UsuarioDTO clienteDTO = new UsuarioDTO();
-			VideojuegoDTO videojuegoDTO = new VideojuegoDTO();
-			
-			clienteDTO.setAdmin(false);
-			clienteDTO.setAmonestaciones(cliente.getAmonestaciones());
-			clienteDTO.setDni(cliente.getDni());
-			clienteDTO.setNombre(cliente.getNombre());
-			
-			videojuegoDTO.setTitulo(videojuego.getTitulo());
-			videojuegoDTO.setSinopsis(videojuego.getSinopsis());
-			videojuegoDTO.setPrecio(videojuego.getPrecio());
-			videojuegoDTO.setRating(videojuego.getRating());
-			videojuegoDTO.setGenero(videojuego.getGenero());
-			videojuegoDTO.setTipo(videojuego.getTipo());
-			videojuegoDTO.setAutor(videojuego.getAutor());
-			
-			Review review = new Review(videojuegoDTO, clienteDTO, comment, rating);
-			*/
-			
-			// Opción temporal sin DTOs (ajusta según tu constructor de Review)
-			Review review = new Review(videojuego, cliente, comment, rating);
-			
-			videojuego.getComentarios().add(review);
-			
-			// TODO: Implementar cuando tengas el DAO
-			// main.getReviewDAO().addReview(review);
 
-			dispose();
-			VentanaInformacionProducto redirectWindow = new VentanaInformacionProducto(videojuego);
-			JOptionPane.showMessageDialog(redirectWindow, "Gracias por tu review!", "Review publicada correctamente", JOptionPane.INFORMATION_MESSAGE);
+			if (rating == 0) {
+				JOptionPane.showMessageDialog(this, "Por favor, selecciona una valoración", 
+					"Error", JOptionPane.WARNING_MESSAGE);
+				return;
+			}
+			
+
+			JDialog dialogoPorceso = new JDialog(this, "Publicando review...", true);
+			dialogoPorceso.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+			dialogoPorceso.setSize(400, 100);
+			dialogoPorceso.setLocationRelativeTo(this);
+			
+			JProgressBar progressBar = new JProgressBar(0, 100);
+			progressBar.setValue(0);
+			progressBar.setStringPainted(true);
+			
+			JPanel panelProgresoBarra = new JPanel(new BorderLayout());
+			panelProgresoBarra.setBorder(new EmptyBorder(20, 20, 20, 20));
+			panelProgresoBarra.add(progressBar, BorderLayout.CENTER);
+			
+			dialogoPorceso.add(panelProgresoBarra);
+			
+
+			SwingWorker<Void, Integer> worker = new SwingWorker<Void, Integer>() {
+				@Override
+				protected Void doInBackground() throws Exception {
+
+					for (int i = 0; i <= 100; i++) {
+						Thread.sleep(30); 
+						publish(i);
+					}
+					return null;
+				}
+				
+				@Override
+				protected void process(List<Integer> chunks) {
+
+					int valor = chunks.get(chunks.size() - 1);
+					progressBar.setValue(valor);
+				}
+				
+				@Override
+				protected void done() {
+
+					dialogoPorceso.dispose();
+
+					Review review = new Review(videojuego, cliente, comentario, rating);
+					videojuego.getComentarios().add(review);
+					
+					dispose();
+					VentanaInformacionProducto redirigirVentana = new VentanaInformacionProducto(videojuego);
+					JOptionPane.showMessageDialog(redirigirVentana, "Gracias por tu review!", 
+						"Review publicada correctamente", JOptionPane.INFORMATION_MESSAGE);
+				}
+			};
+			worker.execute();
+			dialogoPorceso.setVisible(true);
 		});
 		
 		comentarioLabel.setAlignmentX(CENTER_ALIGNMENT);
@@ -147,27 +176,26 @@ public class VentanaAñadirReviewVideojuego extends JFrame {
 		starPanel.setAlignmentX(CENTER_ALIGNMENT);
 		publicarButton.setAlignmentX(CENTER_ALIGNMENT);		
 				
-		rightPanel.add(comentarioLabel);
-		rightPanel.add(comentarioTextArea);
-		rightPanel.add(valoracionLabel);
-		rightPanel.add(starPanel);
-		rightPanel.add(publicarButton);
+		panelDerecho.add(comentarioLabel);
+		panelDerecho.add(comentarioTextArea);
+		panelDerecho.add(valoracionLabel);
+		panelDerecho.add(starPanel);
+		panelDerecho.add(publicarButton);
 		
 		comentarioLabel.setBorder(new EmptyBorder(0, 0, 5, 0));
 		valoracionLabel.setBorder(new EmptyBorder(5, 0, 0, 0));
-		leftPanel.setBorder(new EmptyBorder(50, 70, 0, 0));
-		rightPanel.setBorder(new EmptyBorder(0, 0, 20, 70));
+		panelIzquierdo.setBorder(new EmptyBorder(50, 70, 0, 0));
+		panelDerecho.setBorder(new EmptyBorder(0, 0, 20, 70));
 		starPanel.setBorder(new EmptyBorder(0, 0, 10, 0));
 		
-		add(titleLabel, BorderLayout.NORTH);
-		add(leftPanel, BorderLayout.WEST);
-		add(rightPanel, BorderLayout.EAST);
+		add(tituloLabel, BorderLayout.NORTH);
+		add(panelIzquierdo, BorderLayout.WEST);
+		add(panelDerecho, BorderLayout.EAST);
 
 		setVisible(true);
 	}
 
 	public static void starAction(int starIndex, List<JLabel> starList) {
-		// Pinta las estrellas en función de la estrella de review seleccionada
 
 		for (int i = 0; i < 10; i++) {
 			starList.get(i).setIcon(Utils.loadImage("estrellaBlanca.png", 24, 24));
@@ -179,11 +207,9 @@ public class VentanaAñadirReviewVideojuego extends JFrame {
 	}
 	
 	public static void main(String[] args) {
-		// Utils.loadImage busca automáticamente en resources/images/
-		// Solo necesitas pasar el nombre del archivo
+
 		ImageIcon foto = Utils.loadImage("videojuegos.png", 115, 160);
 		
-		// Constructor correcto: titulo, sinopsis, precio, rating, comentarios, genero, tipo, autor, foto
 		Videojuego videojuego = new Videojuego("Titulo1", "Sinopsis", 59.99f, 0, new ArrayList<Review>(), 
 											   GeneroVideoJuego.ACCION, TipoConsola.PS4, "Desarrollador1", foto);
 		new VentanaAñadirReviewVideojuego(videojuego);
