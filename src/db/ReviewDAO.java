@@ -1,0 +1,140 @@
+package db;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import domain.Review;
+import main.main;
+
+public class ReviewDAO implements ReviewDAOInterface { 
+	// Nota: Las Reviews no necesitan DTOs ya que todos los atributos de Review son visibles en la aplicación
+
+	private Connection conexionBD;
+	private Logger logger;
+	
+	public ReviewDAO() {
+		this.conexionBD = main.getConexionBD();
+		this.logger = main.getLogger();
+	}
+	
+	public ReviewDAO(Connection conexionBD, Logger logger) {
+		this.conexionBD = conexionBD;
+		this.logger = logger;
+	}
+
+	@Override
+	public boolean addReview(Review review) {
+		try {
+            String insertSQL = "INSERT INTO Review(comentario, rating, id_producto, dni_cliente) VALUES (?, ?, ?, ?)";
+            PreparedStatement preparedStmt = conexionBD.prepareStatement(insertSQL);
+            preparedStmt.setString(1, review.getComentario());
+            preparedStmt.setInt(2, review.getRating());
+            //preparedStmt.setLong(3, review.getProductoDTO().getId());
+            preparedStmt.setString(4, review.getCliente().getDni());
+
+            
+            preparedStmt.executeUpdate();
+
+            preparedStmt.close();
+            return true;
+        } catch (SQLException e) {
+            if (logger != null)
+                logger.log(Level.SEVERE, "Error al añadir el usuario: ", e);
+            return false;
+        }
+	}
+
+	@Override
+	public ArrayList<Review> getReviewsByUsuarioDni(String dniCliente) {
+		ArrayList<Review> result = null;
+		
+		String selectSQL = "SELECT * FROM Review WHERE dni_cliente = ?";
+        PreparedStatement preparedStmt;
+		try {
+			preparedStmt = conexionBD.prepareStatement(selectSQL);
+			preparedStmt.setString(1, dniCliente);
+
+	        try (ResultSet rs = preparedStmt.executeQuery()) {
+                
+	        	result = new ArrayList<>();
+                while (rs.next()) {
+                   Review review = new Review();
+                   
+                   //eview.setProductoDTO(main.getProductoDAO().getProducto(rs.getInt("id_producto")));
+                   //review.setCliente(main.getUsuarioDAO().getUsuario(rs.getString("dni_cliente")));
+                   review.setRating(rs.getInt("rating"));
+                   review.setComentario(rs.getString("comentario"));
+                   
+                   result.add(review);
+                }
+                
+    			preparedStmt.close();
+            }
+	        	        
+		} catch (SQLException e) {
+			if (logger != null) {
+				logger.log(Level.SEVERE, "Error al recuperar la sala: ", e);
+				return result;
+			}
+		} 
+		
+		return result;	
+	}
+
+	@Override
+	public ArrayList<Review> getReviewsProductoById(Long idproducto) {
+		ArrayList<Review> result = null;
+		
+		String selectSQL = "SELECT * FROM Review WHERE id_producto = ?";
+        PreparedStatement preparedStmt;
+		try {
+			preparedStmt = conexionBD.prepareStatement(selectSQL);
+			preparedStmt.setLong(1, idproducto);
+
+	        try (ResultSet rs = preparedStmt.executeQuery()) {
+                
+	        	result = new ArrayList<>();
+                while (rs.next()) {
+                   Review review = new Review();
+                   //review.setProductoDTO(main.getLibroDAO().getProducto(rs.getInt("id_producto")));
+                   //review.setCliente(main.getUsuarioDAO().getUsuario(rs.getString("dni_cliente")));
+                   review.setRating(rs.getInt("rating"));
+                   review.setComentario(rs.getString("comentario"));
+                   
+                   result.add(review);
+                }
+                
+    			preparedStmt.close();
+            }
+	        	        
+		} catch (SQLException e) {
+			if (logger != null) {
+				logger.log(Level.SEVERE, "Error al recuperar la sala: ", e);
+				return result;
+			}
+		} 
+		
+		return result;	
+	}
+	
+	@Override
+	public void borrarRegistros() {
+		try {
+			Statement stmt = conexionBD.createStatement();
+			String instruccion = "DELETE FROM Review;";
+			
+			stmt.executeUpdate(instruccion);
+			stmt.close();
+		} catch (SQLException e) {
+			if (logger != null)
+                logger.log(Level.SEVERE, "Error al borrar los registros: ", e);
+		}
+	}
+
+}
