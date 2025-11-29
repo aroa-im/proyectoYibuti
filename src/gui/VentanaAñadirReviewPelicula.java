@@ -16,14 +16,16 @@ import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
+import javax.swing.SwingWorker;
 import javax.swing.border.EmptyBorder;
-
 
 import utils.Utils;
 
@@ -32,7 +34,7 @@ public class VentanaAñadirReviewPelicula extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private Cliente cliente = (Cliente) main.getUsuario();
 	private int rating = 0;
-	private String comment = "";
+	private String comentario = "";
 
 	public VentanaAñadirReviewPelicula(Pelicula pelicula) {
 		
@@ -41,24 +43,24 @@ public class VentanaAñadirReviewPelicula extends JFrame {
 		setSize(500, 400);
 		setLocationRelativeTo(null);
 		
-		JLabel titleLabel = new JLabel("Añadir review", SwingConstants.CENTER);
-		titleLabel.setFont(new Font("Verdana", Font.BOLD, 32));
+		JLabel tituloLabel = new JLabel("Añadir review", SwingConstants.CENTER);
+		tituloLabel.setFont(new Font("Verdana", Font.BOLD, 32));
 		
-		JPanel leftPanel = new JPanel();
-		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
+		JPanel panelIzquierdo = new JPanel();
+		panelIzquierdo.setLayout(new BoxLayout(panelIzquierdo, BoxLayout.Y_AXIS));
 		
-		JLabel movieIcon = new JLabel();
-		movieIcon.setIcon(pelicula.getFoto());
+		JLabel iconoPelicula = new JLabel();
+		iconoPelicula.setIcon(pelicula.getFoto());
 		JLabel movieTitle = new JLabel(pelicula.getTitulo());	
 		
-		movieIcon.setAlignmentX(CENTER_ALIGNMENT);
+		iconoPelicula.setAlignmentX(CENTER_ALIGNMENT);
 		movieTitle.setAlignmentX(CENTER_ALIGNMENT);
 		
-		leftPanel.add(movieIcon);
-		leftPanel.add(movieTitle);
+		panelIzquierdo.add(iconoPelicula);
+		panelIzquierdo.add(movieTitle);
 		
-		JPanel rightPanel = new JPanel();
-		rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
+		JPanel panelDerecho = new JPanel();
+		panelDerecho.setLayout(new BoxLayout(panelDerecho, BoxLayout.Y_AXIS));
 		
 		JLabel comentarioLabel = new JLabel("Comentario");
 		
@@ -106,41 +108,68 @@ public class VentanaAñadirReviewPelicula extends JFrame {
 		JButton publicarButton = new JButton("Publicar review");
 
 		publicarButton.addActionListener(e -> {
-			comment = comentarioTextArea.getText();
-			
-			// TODO: Implementar cuando tengamos los DTOs
-			/*
-			UsuarioDTO clienteDTO = new UsuarioDTO();
-			PeliculaDTO peliculaDTO = new PeliculaDTO();
-			
-			clienteDTO.setAdmin(false);
-			clienteDTO.setAmonestaciones(cliente.getAmonestaciones());
-			clienteDTO.setDni(cliente.getDni());
-			clienteDTO.setNombre(cliente.getNombre());
-			
-			peliculaDTO.setTitulo(pelicula.getTitulo());
-			peliculaDTO.setSinopsis(pelicula.getSinopsis());
-			peliculaDTO.setPrecio(pelicula.getPrecio());
-			peliculaDTO.setRating(pelicula.getRating());
-			peliculaDTO.setTipo(pelicula.getTipo());
-			peliculaDTO.setGenero(pelicula.getGenero());
-			peliculaDTO.setDirector(pelicula.getDirector());
-			peliculaDTO.setDuracion(pelicula.getDuracion());
-			
-			Review review = new Review(peliculaDTO, clienteDTO, comment, rating);
-			*/
-			
-			// Opción temporal sin DTOs (ajusta según tu constructor de Review)
-			Review review = new Review(pelicula, cliente, comment, rating);
-			
-			pelicula.getComentarios().add(review);
-			
-			// TODO: Implementar cuando tengamos el DAO
-			// main.getReviewDAO().addReview(review);
+			comentario = comentarioTextArea.getText();
 
-			dispose();
-			VentanaInformacionProducto redirectWindow = new VentanaInformacionProducto(pelicula);
-			JOptionPane.showMessageDialog(redirectWindow, "Gracias por tu review!", "Review publicada correctamente", JOptionPane.INFORMATION_MESSAGE);
+			if (rating == 0) {
+				JOptionPane.showMessageDialog(this, "Por favor, selecciona una valoración", 
+					"Error", JOptionPane.WARNING_MESSAGE);
+				return;
+			}
+
+			JDialog dialogoPorgreso = new JDialog(this, "Publicando review...", true);
+			dialogoPorgreso.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+			dialogoPorgreso.setSize(400, 100);
+			dialogoPorgreso.setLocationRelativeTo(this);
+			
+			JProgressBar progressBar = new JProgressBar(0, 100);
+			progressBar.setValue(0);
+			progressBar.setStringPainted(true);
+			
+			JPanel progressPanel = new JPanel(new BorderLayout());
+			progressPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
+			progressPanel.add(progressBar, BorderLayout.CENTER);
+			
+			dialogoPorgreso.add(progressPanel);
+			
+
+			SwingWorker<Void, Integer> worker = new SwingWorker<Void, Integer>() {
+				@Override
+				protected Void doInBackground() throws Exception {
+
+					for (int i = 0; i <= 100; i++) {
+						Thread.sleep(30); 
+						publish(i);
+					}
+					return null;
+				}
+				
+				@Override
+				protected void process(List<Integer> chunks) {
+
+					int valor = chunks.get(chunks.size() - 1);
+					progressBar.setValue(valor);
+				}
+				
+				@Override
+				protected void done() {
+
+					dialogoPorgreso.dispose();
+					
+
+					Review review = new Review(pelicula, cliente, comentario, rating);
+					pelicula.getComentarios().add(review);
+					
+
+					dispose();
+					VentanaInformacionProducto redirigirVentana = new VentanaInformacionProducto(pelicula);
+					JOptionPane.showMessageDialog(redirigirVentana, "Gracias por tu review!", 
+						"Review publicada correctamente", JOptionPane.INFORMATION_MESSAGE);
+				}
+			};
+			
+
+			worker.execute();
+			dialogoPorgreso.setVisible(true);
 		});
 		
 		comentarioLabel.setAlignmentX(CENTER_ALIGNMENT);
@@ -149,21 +178,21 @@ public class VentanaAñadirReviewPelicula extends JFrame {
 		starPanel.setAlignmentX(CENTER_ALIGNMENT);
 		publicarButton.setAlignmentX(CENTER_ALIGNMENT);		
 				
-		rightPanel.add(comentarioLabel);
-		rightPanel.add(comentarioTextArea);
-		rightPanel.add(valoracionLabel);
-		rightPanel.add(starPanel);
-		rightPanel.add(publicarButton);
+		panelDerecho.add(comentarioLabel);
+		panelDerecho.add(comentarioTextArea);
+		panelDerecho.add(valoracionLabel);
+		panelDerecho.add(starPanel);
+		panelDerecho.add(publicarButton);
 		
 		comentarioLabel.setBorder(new EmptyBorder(0, 0, 5, 0));
 		valoracionLabel.setBorder(new EmptyBorder(5, 0, 0, 0));
-		leftPanel.setBorder(new EmptyBorder(50, 70, 0, 0));
-		rightPanel.setBorder(new EmptyBorder(0, 0, 20, 70));
+		panelIzquierdo.setBorder(new EmptyBorder(50, 70, 0, 0));
+		panelDerecho.setBorder(new EmptyBorder(0, 0, 20, 70));
 		starPanel.setBorder(new EmptyBorder(0, 0, 10, 0));
 		
-		add(titleLabel, BorderLayout.NORTH);
-		add(leftPanel, BorderLayout.WEST);
-		add(rightPanel, BorderLayout.EAST);
+		add(tituloLabel, BorderLayout.NORTH);
+		add(panelIzquierdo, BorderLayout.WEST);
+		add(panelDerecho, BorderLayout.EAST);
 
 		setVisible(true);
 	}
