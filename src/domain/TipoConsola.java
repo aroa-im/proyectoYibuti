@@ -1,6 +1,6 @@
 package domain;
 
 public enum TipoConsola {
-	PS4, PS3, PC, WII, NINTENDO;
+	PS4, PC, WII, NINTENDO;
 
 }
