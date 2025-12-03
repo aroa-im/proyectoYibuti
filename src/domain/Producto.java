@@ -6,6 +6,7 @@ import java.util.Objects;
 import javax.swing.ImageIcon;
 
 public abstract class Producto implements Alquilable{
+	private long id;
 	private String titulo;
 	private String sinopsis;
 	private float precio;
@@ -13,8 +14,9 @@ public abstract class Producto implements Alquilable{
 	private ArrayList<Review> comentarios;
 	private ImageIcon foto;
 	
-	public Producto(String titulo, String sinopsis, float precio, int rating, ArrayList<Review> comentarios, ImageIcon foto) {
+	public Producto(long id,String titulo, String sinopsis, float precio, int rating, ArrayList<Review> comentarios, ImageIcon foto) {
 		super();
+		this.id = id;
 		this.titulo = titulo;
 		this.sinopsis = sinopsis;
 		this.precio = precio;
@@ -25,6 +27,7 @@ public abstract class Producto implements Alquilable{
 	
 	public Producto() {
 		super();
+		this.id= 0;
 		this.titulo = "";
 		this.sinopsis = "";
 		this.precio = 0;
@@ -33,6 +36,14 @@ public abstract class Producto implements Alquilable{
 		this.foto= null;
 	}
 
+	public long getId() {
+	    return id;
+	}
+
+	public void setId(long id) {
+	    this.id = id;
+	}
+	
 	public String getTitulo() {
 		return titulo;
 	}

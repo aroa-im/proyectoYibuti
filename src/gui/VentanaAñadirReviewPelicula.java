@@ -212,9 +212,19 @@ public class VentanaAñadirReviewPelicula extends JFrame {
 
 		ImageIcon foto = Utils.loadImage("peliculas.png", 115, 160);
 		
-		Pelicula pelicula = new Pelicula("Titulo1", "Sinopsis", 8.8f, 0, new ArrayList<Review>(), 
-										  TipoPelicula.DVD, GeneroPelicula.ACCION, "Director1", 200, foto);
+		Pelicula pelicula = new Pelicula(
+            1L, 
+            "Titulo1", 
+            "Sinopsis", 
+            8.8f, 
+            0, 
+            new ArrayList<Review>(), 
+            TipoPelicula.DVD, 
+            GeneroPelicula.ACCION, 
+            "Director1", 
+            200, 
+            foto
+        );
 		new VentanaAñadirReviewPelicula(pelicula);
 	}
-
 }

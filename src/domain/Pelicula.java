@@ -11,9 +11,9 @@ public class Pelicula extends Producto{
 	private String director;
 	private int duracion;
 	
-	public Pelicula(String titulo, String sinopsis, float precio, int rating, ArrayList<Review> comentarios,
+	public Pelicula(long id,String titulo, String sinopsis, float precio, int rating, ArrayList<Review> comentarios,
 			TipoPelicula tipo, GeneroPelicula genero, String director, int duracion, ImageIcon foto) {
-		super(titulo, sinopsis, precio, rating, comentarios, foto);
+		super(id,titulo, sinopsis, precio, rating, comentarios, foto);
 		this.tipo = tipo;
 		this.genero = genero;
 		this.director = director;

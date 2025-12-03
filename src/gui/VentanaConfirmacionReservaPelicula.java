@@ -184,24 +184,25 @@ public class VentanaConfirmacionReservaPelicula extends JFrame {
 		setVisible(true);
 	} 
 	public static void main(String[] args) {
-	    
-	    ImageIcon foto = Utils.loadImage("peliculas/pelicula1.jpg", 128, 200); 
-	    
-	    
-	    Pelicula pelicula = new Pelicula(
-	        "Pelicula1",                              
-	        "Una historia épica de acción y aventura", 
-	        19.99f,                                   
-	        8,                                        
-	        new ArrayList<Review>(),                  
-	        TipoPelicula.DVD,                        
-	        GeneroPelicula.ACCION,                    
-	        "Director Ejemplo",                      
-	        120,                                      
-	        foto                                      
-	    );
-	    
-	   
-	    new VentanaConfirmacionReservaPelicula(pelicula);
-	}
+		    
+		    ImageIcon foto = Utils.loadImage("peliculas/pelicula1.jpg", 128, 200); 
+		    
+		    
+		    Pelicula pelicula = new Pelicula(
+	            1L,
+		        "Pelicula1",                              
+		        "Una historia épica de acción y aventura", 
+		        19.99f,                                   
+		        8,                                        
+		        new ArrayList<Review>(),                  
+		        TipoPelicula.DVD,                        
+		        GeneroPelicula.ACCION,                    
+		        "Director Ejemplo",                      
+		        120,                                      
+		        foto                                      
+		    );
+		    
+		   
+		    new VentanaConfirmacionReservaPelicula(pelicula);
+		}
 }

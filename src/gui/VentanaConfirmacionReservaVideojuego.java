@@ -180,21 +180,22 @@ public class VentanaConfirmacionReservaVideojuego extends JFrame {
 		setVisible(true);
 	} 
 	public static void main(String[] args) {
-		
-		ImageIcon foto = Utils.loadImage("videojuegos/videojuego1.png", 128, 200);
-		    
-		    Videojuego videojuego = new Videojuego(
-		        "Videojuego1",             
-		        "Una aventura épica en un mundo abierto",               
-		        59.99f,                                                  
-		        10,                                                      
-		        new ArrayList<Review>(),                                 
-		        GeneroVideoJuego.AVENTURA,                             
-		        TipoConsola.NINTENDO,                            
-		        "Nintendo",                                              
-		        foto                                                     
-		    );
-		    
-		new VentanaConfirmacionReservaVideojuego(videojuego);
-	}
+			
+			ImageIcon foto = Utils.loadImage("videojuegos/videojuego1.png", 128, 200);
+			    
+			    Videojuego videojuego = new Videojuego(
+	                1L,
+			        "Videojuego1",             
+			        "Una aventura épica en un mundo abierto",               
+			        59.99f,                                                  
+			        10,                                                      
+			        new ArrayList<Review>(),                                 
+			        GeneroVideoJuego.AVENTURA,                             
+			        TipoConsola.NINTENDO,                            
+			        "Nintendo",                                              
+			        foto                                                     
+			    );
+			    
+			new VentanaConfirmacionReservaVideojuego(videojuego);
+		}
 }

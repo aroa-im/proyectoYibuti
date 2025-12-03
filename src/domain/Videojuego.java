@@ -10,9 +10,9 @@ public class Videojuego extends Producto{
 	private TipoConsola tipo;
 	private String autor;
 	
-	public Videojuego(String titulo, String sinopsis, float precio, int rating, ArrayList<Review> comentarios,
+	public Videojuego(long id, String titulo, String sinopsis, float precio, int rating, ArrayList<Review> comentarios,
 			GeneroVideoJuego genero, TipoConsola tipo, String autor, ImageIcon foto) {
-		super(titulo, sinopsis, precio, rating, comentarios, foto);
+		super(id,titulo, sinopsis, precio, rating, comentarios, foto);
 		this.genero = genero;
 		this.tipo = tipo;
 		this.autor = autor;

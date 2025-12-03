@@ -205,14 +205,22 @@ public class VentanaAñadirReviewVideojuego extends JFrame {
 			starList.get(i).setIcon(Utils.loadImage("estrellaNegra.png", 24, 24));
 		}
 	}
-	
 	public static void main(String[] args) {
 
 		ImageIcon foto = Utils.loadImage("videojuegos.png", 115, 160);
 		
-		Videojuego videojuego = new Videojuego("Titulo1", "Sinopsis", 59.99f, 0, new ArrayList<Review>(), 
-											   GeneroVideoJuego.ACCION, TipoConsola.PS4, "Desarrollador1", foto);
+		Videojuego videojuego = new Videojuego(
+            1L,
+            "Titulo1", 
+            "Sinopsis", 
+            59.99f, 
+            0, 
+            new ArrayList<Review>(), 
+            GeneroVideoJuego.ACCION, 
+            TipoConsola.PS4, 
+            "Desarrollador1", 
+            foto
+        );
 		new VentanaAñadirReviewVideojuego(videojuego);
 	}
-
 }

@@ -460,42 +460,45 @@ public class VentanaInformacionProducto extends JFrame {
 	}
 	
 	public static void main(String[] args) {
-		
-		
-		
-	    ImageIcon fotoVide = Utils.loadImage("videojuegos.png", 128, 200);
-	    Videojuego videojuego = new Videojuego(
-	            "Videojuego1",             
-	            "Una aventura épica en un mundo abierto",               
-	            59.99f,                                                  
-	            10,                                                      
-	            new ArrayList<Review>(),                                 
-	            GeneroVideoJuego.AVENTURA,                             
-	            TipoConsola.NINTENDO,                            
-	            "Nintendo",                                              
-	            fotoVide                                                     
-	        );
-	    
-	    ImageIcon fotoPeli = Utils.loadImage("peliculas/pelicula1.jpg", 128, 200); 
-	    
-	    
-	    Pelicula pelicula = new Pelicula(
-	        "Pelicula1",                              
-	        "Una historia épica de acción y aventura", 
-	        19.99f,                                   
-	        8,                                        
-	        new ArrayList<Review>(),                  
-	        TipoPelicula.DVD,                        
-	        GeneroPelicula.ACCION,                    
-	        "Director Ejemplo",                      
-	        120,                                      
-	        fotoPeli                                      
-	    );
-	        
-	     new VentanaInformacionProducto(videojuego);
-//	     new VentanaInformacionProducto(pelicula);
+			
+			
+			
+		    ImageIcon fotoVide = Utils.loadImage("videojuegos.png", 128, 200);
+		    Videojuego videojuego = new Videojuego(
+	            // ID añadido (1L)
+	            1L,
+		        "Videojuego1",             
+		        "Una aventura épica en un mundo abierto",               
+		        59.99f,                                                  
+		        10,                                                      
+		        new ArrayList<Review>(),                                 
+		        GeneroVideoJuego.AVENTURA,                             
+		        TipoConsola.NINTENDO,                            
+		        "Nintendo",                                              
+		        fotoVide                                                     
+		    );
 		    
-	    
-
-	}
+		    ImageIcon fotoPeli = Utils.loadImage("peliculas/pelicula1.jpg", 128, 200); 
+		    
+		    
+		    Pelicula pelicula = new Pelicula(
+	            2L,
+		        "Pelicula1",                              
+		        "Una historia épica de acción y aventura", 
+		        19.99f,                                   
+		        8,                                        
+		        new ArrayList<Review>(),                  
+		        TipoPelicula.DVD,                        
+		        GeneroPelicula.ACCION,                    
+		        "Director Ejemplo",                      
+		        120,                                      
+		        fotoPeli                                      
+		    );
+		        
+		     new VentanaInformacionProducto(videojuego);
+		     new VentanaInformacionProducto(pelicula);
+			    
+		    
+	
+		}
 }
