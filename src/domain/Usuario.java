@@ -2,6 +2,8 @@ package domain;
 
 import java.util.Objects;
 
+import db.UsuarioDTO;
+
 public abstract class Usuario {
 	private String dni;
 	private String nombre;
@@ -21,6 +23,13 @@ public abstract class Usuario {
 		this.dni = "";
 		this.nombre = "";
 		this.email = "";
+		this.contrasena = "";
+	}
+	public Usuario(UsuarioDTO usuarioDTO) {
+		super();
+		this.dni = usuarioDTO.getDni();
+		this.nombre = usuarioDTO.getNombre();
+		this.email = usuarioDTO.getEmail();
 		this.contrasena = "";
 	}
 

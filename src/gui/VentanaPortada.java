@@ -17,13 +17,15 @@ import javax.swing.border.EmptyBorder;
 import domain.Admin;
 import domain.Cliente;
 import domain.Usuario;
+import main.main;
 import utils.Utils;
 
 public class VentanaPortada extends JFrame{
 	private JFrame currentWindow = this;
+	private Usuario usuario = main.getUsuario();
 	private static final long serialVersionUID = -7861052196761464371L;
 
-	public VentanaPortada(Usuario usuario) {
+	public VentanaPortada() {
 		
 		setTitle("Videoclub - Portada");
 		setSize(1200, 800); 
@@ -55,9 +57,9 @@ public class VentanaPortada extends JFrame{
 		    public void mouseClicked(MouseEvent e) {
 		        if (usuario == null) {
 		            new VentanaIniciarSesion(currentWindow);
-		            setVisible(false);
+		            
 		        } else {
-		        	new VentanaInformacionUsuario(currentWindow, usuario);
+		        	new VentanaInformacionUsuario(currentWindow);
 		        }
 		    }
 		});
@@ -92,12 +94,12 @@ public class VentanaPortada extends JFrame{
 		JButton videojuegosButton = new JButton("Videojuegos");
 		
 		peliculasButton.addActionListener(e -> {
-		    new VentanaPeliculas(usuario);
+		    new VentanaPeliculas();
 		    dispose();
 		});
 		
 		videojuegosButton.addActionListener(e -> {
-		    new VentanaVideojuegos(usuario);
+		    new VentanaVideojuegos();
 		    dispose();
 		});
 		
@@ -138,8 +140,6 @@ public class VentanaPortada extends JFrame{
 	}
 	
 	public static void main(String[] args) {
-		new VentanaPortada(null);
-//		new VentanaPortada(new Cliente());
-//		new VentanaPortada(new Admin());
+		new VentanaPortada();
 	}
 }

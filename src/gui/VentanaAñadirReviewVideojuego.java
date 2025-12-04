@@ -161,7 +161,7 @@ public class VentanaAñadirReviewVideojuego extends JFrame {
 					videojuego.getComentarios().add(review);
 					
 					dispose();
-					VentanaInformacionProducto redirigirVentana = new VentanaInformacionProducto(videojuego);
+					VentanaInformacionRecurso redirigirVentana = new VentanaInformacionRecurso(videojuego);
 					JOptionPane.showMessageDialog(redirigirVentana, "Gracias por tu review!", 
 						"Review publicada correctamente", JOptionPane.INFORMATION_MESSAGE);
 				}

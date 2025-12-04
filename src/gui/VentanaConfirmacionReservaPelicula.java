@@ -164,7 +164,7 @@ public class VentanaConfirmacionReservaPelicula extends JFrame {
 		
 		botonConfirmar.addActionListener(e -> {
 			dispose();
-			VentanaInformacionProducto redirectWindow = new VentanaInformacionProducto(pelicula);
+			VentanaInformacionRecurso redirectWindow = new VentanaInformacionRecurso(pelicula);
 			JOptionPane.showMessageDialog(redirectWindow, "Gracias por hacer tu reserva!", "Reserva hecha correctamente", JOptionPane.INFORMATION_MESSAGE);
 		});
 		
@@ -172,7 +172,7 @@ public class VentanaConfirmacionReservaPelicula extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				VentanaInformacionProducto nuevaVentana = new VentanaInformacionProducto(pelicula);
+				VentanaInformacionRecurso nuevaVentana = new VentanaInformacionRecurso(pelicula);
 				nuevaVentana.setVisible(true);
 				dispose();
 			}

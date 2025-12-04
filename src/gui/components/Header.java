@@ -58,7 +58,7 @@ public class Header extends JPanel {
         textLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                VentanaPortada ventanaPortada = new VentanaPortada(usuario);
+                VentanaPortada ventanaPortada = new VentanaPortada();
                 ventanaPortada.setVisible(true);
                 // Aquí puedes agregar la lógica que necesites
                 ventana.dispose();
@@ -90,7 +90,7 @@ public class Header extends JPanel {
 						ventana.setVisible(false);
 						break;
 					default:
-						new VentanaInformacionUsuario(ventana, usuario);
+						new VentanaInformacionUsuario(ventana);
 						break;
 				}	
             }

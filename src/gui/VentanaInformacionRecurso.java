@@ -41,7 +41,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 
-public class VentanaInformacionProducto extends JFrame {
+public class VentanaInformacionRecurso extends JFrame {
     
     private JFrame vInformacionProducto;
     private static final long serialVersionUID = 1647556562163809896L;
@@ -78,7 +78,7 @@ public class VentanaInformacionProducto extends JFrame {
         getContentPane().add(pOeste, BorderLayout.WEST);
     }
     
-    public VentanaInformacionProducto(Pelicula pelicula) {
+    public VentanaInformacionRecurso(Pelicula pelicula) {
     	
 
         setMainWindowProperties(Seccion.PELICULA);
@@ -265,7 +265,7 @@ public class VentanaInformacionProducto extends JFrame {
     }
 
 	
-	public VentanaInformacionProducto(Videojuego videojuego) {
+	public VentanaInformacionRecurso(Videojuego videojuego) {
 		setMainWindowProperties(Seccion.VIDEOJUEGO);
 		setTitle ("Videoclub: " + videojuego.getTitulo());
 		//PANEL OESTE
@@ -495,8 +495,8 @@ public class VentanaInformacionProducto extends JFrame {
 		        fotoPeli                                      
 		    );
 		        
-		     new VentanaInformacionProducto(videojuego);
-		     new VentanaInformacionProducto(pelicula);
+		     new VentanaInformacionRecurso(videojuego);
+		     new VentanaInformacionRecurso(pelicula);
 			    
 		    
 	

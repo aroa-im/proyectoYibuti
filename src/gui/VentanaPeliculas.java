@@ -23,17 +23,17 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
 import domain.Admin;
-import domain.Cliente;
 import domain.Seccion;
 import domain.TipoPelicula;
 import domain.Usuario;
+import main.main;
 import gui.components.Header;
 import utils.Utils;
 
 public class VentanaPeliculas extends JFrame {
 	private static final long serialVersionUID = 1L;
-
-	public VentanaPeliculas(Usuario usuario) {
+	Usuario usuario= main.getUsuario();
+	public VentanaPeliculas() {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		if (usuario == null) {
 			setTitle("Videoclub - No logueado");
@@ -115,7 +115,7 @@ public class VentanaPeliculas extends JFrame {
 
 		JPanel subPanelContenido2 = new JPanel(new GridLayout(0, 4));
 		// subPanelContenido2.setBackground(Color.orange);
-		for (int i = 1; i < 200; i++) {
+		for (int i = 1; i < 61; i++) {
 			JPanel panelCentrarPelicula = crearPanePeliculaCentrada(i);
 			subPanelContenido2.add(panelCentrarPelicula);
 		}
@@ -136,7 +136,7 @@ public class VentanaPeliculas extends JFrame {
 		
 		ImageIcon imagenPelicula = null;
 		try {
-			imagenPelicula = Utils.loadImage("peliculas/pelicula" + i + ".jpg",115,160);
+			imagenPelicula = Utils.loadImage("peliculas/" + i + ".jpg",115,160);
 		} catch (Exception e) {
 			imagenPelicula = Utils.loadImage("books/noImagen.jpg",98,151);
 		}
@@ -192,7 +192,7 @@ public class VentanaPeliculas extends JFrame {
 
 	public static void main(String[] args) {
 //		VentanaPeliculas ventana = new VentanaPeliculas(null);
-		VentanaPeliculas ventana2 = new VentanaPeliculas(new Cliente());
+		VentanaPeliculas ventana2 = new VentanaPeliculas();
 //		VentanaPeliculas ventana3 = new VentanaPeliculas(new Admin());
 
 	}

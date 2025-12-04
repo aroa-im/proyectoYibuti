@@ -100,9 +100,9 @@ public class VentanaEditarPelicula extends JFrame{
         @Override
         public void windowClosing(WindowEvent e) {
         	if (previousWindow instanceof VentanaPeliculas) {
-        		new VentanaPeliculas(usuario);
+        		new VentanaPeliculas();
         	} else {
-        		new VentanaInformacionProducto(peliculaAEditar);
+        		new VentanaInformacionRecurso(peliculaAEditar);
         	}
         	dispose();
         	}
