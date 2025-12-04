@@ -1,40 +1,10 @@
-/*
-package main;
-
-import javax.swing.SwingUtilities;
-
-import domain.Usuario;
-import gui.VentanaPortada;
-
-public class main {
-	
-	private static Usuario usuario;
-	
-	
-	
-	
-	public static Usuario getUsuario() {
-		return usuario;
-	}
-
-	public static void setUsuario(Usuario usuario) {
-		main.usuario = usuario;
-	}
-	public static void main(String[] args) {
-		usuario = null;
-             
-        
-    	SwingUtilities.invokeLater(() -> new VentanaPortada(usuario));
-	}
-	
-}
-*/
-
 package main;
 
 import domain.Usuario;
 
 import gui.VentanaPortada;
+//import io.CargarDatosEnBBDD;
+import io.CrearBBDD;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -52,7 +22,6 @@ import javax.swing.SwingUtilities;
 
 import db.ProductoDAO;
 import db.ProductoDAOInterface;
-import db.ReviewDAO;
 import db.ReviewDAOInterface;
 import db.UsuarioDAO;
 import db.UsuarioDAOInterface;
@@ -98,11 +67,11 @@ public class main {
 		main.usuario = usuario;
 	}
 	
-	public static ProductoDAOInterface getLibroDAO() {
+	public static ProductoDAOInterface getProductoDAO() {
 		return productoDAO;
 	}
 	
-	public static void setLibroDAO(ProductoDAOInterface productoDAO) {
+	public static void setProductoDAO(ProductoDAOInterface productoDAO) {
 		main.productoDAO = productoDAO;
 	}
 
@@ -159,18 +128,18 @@ public class main {
     	// Inicialización de DAOs
         usuarioDAO = new UsuarioDAO();
         //reviewDAO = new ReviewDAO();
-        //productoDAO = new ProductoDAO();
+        productoDAO = new ProductoDAO();
         
         // Inicialización de la lista de threads
         threads = new ArrayList<>();
         
         // Carga de datos del .csv a la BD (Si esto está comentado es que ya está creada)
-        //new CrearBBDD();
-        //new CargarDatosEnBBDD();
+        new CrearBBDD();
+      //  new CargarDatosEnBBDD();
     	    
              
         // Inicio de la interfaz gráfica
-    	SwingUtilities.invokeLater(() -> new VentanaPortada(usuario));
+    	SwingUtilities.invokeLater(() -> new VentanaPortada());
     }
 }
 

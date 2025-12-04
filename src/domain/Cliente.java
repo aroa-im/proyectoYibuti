@@ -2,6 +2,8 @@ package domain;
 
 import java.util.ArrayList;
 
+import db.UsuarioDTO;
+
 public class Cliente extends Usuario{
 	private ArrayList<Producto> historial;
 	private int amonestaciones;
@@ -18,7 +20,12 @@ public class Cliente extends Usuario{
 		this.historial = new ArrayList<Producto>();
 		this.amonestaciones = 0;
 	}
-
+	public Cliente(UsuarioDTO usuarioDTO) {
+		super(usuarioDTO);
+		this.historial = new ArrayList<>();
+		//this.listaReviews = main.getReviewDAO().getReviewsByUsuarioDni(usuarioDTO.getDni());
+		this.amonestaciones = usuarioDTO.getAmonestaciones();
+	}
 	public ArrayList<Producto> getHistorial() {
 		return historial;
 	}
@@ -42,3 +49,4 @@ public class Cliente extends Usuario{
 	}
 	
 }
+

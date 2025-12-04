@@ -161,7 +161,7 @@ public class VentanaAñadirReviewPelicula extends JFrame {
 					
 
 					dispose();
-					VentanaInformacionProducto redirigirVentana = new VentanaInformacionProducto(pelicula);
+					VentanaInformacionRecurso redirigirVentana = new VentanaInformacionRecurso(pelicula);
 					JOptionPane.showMessageDialog(redirigirVentana, "Gracias por tu review!", 
 						"Review publicada correctamente", JOptionPane.INFORMATION_MESSAGE);
 				}

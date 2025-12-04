@@ -126,7 +126,7 @@ public class UsuarioDAO implements UsuarioDAOInterface {
 	public UsuarioDTO getUsuario(String dni) {
 		UsuarioDTO usuario = null;
 
-		String insertSQL = "SELECT nombre, email, fechaCreacion FROM Usuario WHERE dni = ?";
+		String insertSQL = "SELECT nombre, email FROM Usuario WHERE dni = ?";
 		PreparedStatement preparedStmt;
 		try {
 			preparedStmt = conexionBD.prepareStatement(insertSQL);
@@ -138,12 +138,10 @@ public class UsuarioDAO implements UsuarioDAOInterface {
 					usuario = new UsuarioDTO();
 					String nombre = rs.getString("nombre");
 					String email = rs.getString("email");
-					String fechaCreacion = rs.getString("fechaCreacion");
 
 					usuario.setDni(dni);
 					usuario.setNombre(nombre);
 					usuario.setEmail(email);
-					usuario.setFechaCreacion(LocalDate.parse(fechaCreacion));
 				}
 			}
 
@@ -164,7 +162,7 @@ public class UsuarioDAO implements UsuarioDAOInterface {
 		ArrayList<Usuario> result = new ArrayList<>();
 		
 		String selectSQL = "SELECT "
-				+ "Usuario.dni, Usuario.nombre, Usuario.email, Usuario.fechaCreacion, Usuario.contrasena, IFNULL(Cliente.amonestaciones, 'Es admin') as amonestaciones "
+				+ "Usuario.dni, Usuario.nombre, Usuario.email, Usuario.contrasena, IFNULL(Cliente.amonestaciones, 'Es admin') as amonestaciones "
 				+ "FROM Usuario LEFT JOIN Cliente ON Usuario.dni = Cliente.dni LEFT JOIN Admin ON Usuario.dni = Admin.dni;";
 		try {
 			PreparedStatement preparedStmt = conexionBD.prepareStatement(selectSQL);
@@ -174,7 +172,7 @@ public class UsuarioDAO implements UsuarioDAOInterface {
 				if (rs.getString("amonestaciones").equals("Es admin")) {
 					//result.add(new Admin(rs.getString("dni"), rs.getString("nombre"), rs.getString("email"), LocalDate.parse(rs.getString("fechaCreacion")), rs.getString("contrasena"), getLogAccionesByAdminDni(rs.getString("dni"))));
 				} else {
-					ArrayList<ProductoDTO> bufferDTO = main.getLibroDAO().getHistorialByCliente(selectSQL);
+					ArrayList<ProductoDTO> bufferDTO = main.getProductoDAO().getHistorialByCliente(selectSQL);
 					ArrayList<Producto> historial = new ArrayList<>();
 					
 					for(ProductoDTO productoDTO : bufferDTO) {

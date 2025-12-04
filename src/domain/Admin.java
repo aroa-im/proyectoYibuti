@@ -2,12 +2,15 @@ package domain;
 
 import java.util.ArrayList;
 
+import db.UsuarioDTO;
+import main.main;
+
 public class Admin extends Usuario {
 	private ArrayList<String> horasDisponibles;
-	private ArrayList<String> logAcciones;
+	private ArrayList<LogAccion> logAcciones;
 	
 	public Admin(String dni, String nombre, String email, String contrasena, ArrayList<String> horasDisponibles,
-			ArrayList<String> logAcciones) {
+			ArrayList<LogAccion> logAcciones) {
 		super(dni, nombre, email, contrasena);
 		this.horasDisponibles = horasDisponibles;
 		this.logAcciones = logAcciones;
@@ -16,7 +19,7 @@ public class Admin extends Usuario {
 	public Admin() {
 		super();
 		this.horasDisponibles = new ArrayList<String>();
-		this.logAcciones = new ArrayList<String>();
+		this.logAcciones = new ArrayList<LogAccion>();
 	}
 
 	public ArrayList<String> getHorasDisponibles() {
@@ -26,12 +29,17 @@ public class Admin extends Usuario {
 	public void setHorasDisponibles(ArrayList<String> horasDisponibles) {
 		this.horasDisponibles = horasDisponibles;
 	}
+	
+	public Admin(UsuarioDTO usuarioDTO) {
+		super(usuarioDTO);
+		this.logAcciones = main.getUsuarioDAO().getLogAccionesByAdminDni(usuarioDTO.getDni());
+	}
 
-	public ArrayList<String> getLogAcciones() {
+	public ArrayList<LogAccion> getLogAcciones() {
 		return logAcciones;
 	}
 
-	public void setLogAcciones(ArrayList<String> logAcciones) {
+	public void setLogAcciones(ArrayList<LogAccion> logAcciones) {
 		this.logAcciones = logAcciones;
 	}
 

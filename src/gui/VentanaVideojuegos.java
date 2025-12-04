@@ -23,17 +23,17 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
 import domain.Admin;
-import domain.Cliente;
 import domain.Seccion;
 import domain.TipoConsola;
 import domain.Usuario;
+import main.main;
 import gui.components.Header;
 import utils.Utils;
 
 public class VentanaVideojuegos extends JFrame {
 	private static final long serialVersionUID = 1L;
-
-	public VentanaVideojuegos(Usuario usuario) {
+	Usuario usuario= main.getUsuario();
+	public VentanaVideojuegos() {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		if (usuario == null) {
 			setTitle("Videoclub - No logueado");
@@ -115,7 +115,7 @@ public class VentanaVideojuegos extends JFrame {
 
 		JPanel subPanelContenido2 = new JPanel(new GridLayout(0, 4));
 		// subPanelContenido2.setBackground(Color.orange);
-		for (int i = 1; i < 200; i++) {
+		for (int i = 1; i < 61; i++) {
 			JPanel panelCentrarVideojuego = crearPaneVideojuegoCentrada(i);
 			subPanelContenido2.add(panelCentrarVideojuego);
 		}
@@ -136,7 +136,7 @@ public class VentanaVideojuegos extends JFrame {
 		
 		ImageIcon imagenVideojuego = null;
 		try {
-			imagenVideojuego = Utils.loadImage("videojuegos/videojuego" + i + ".png",115,160);
+			imagenVideojuego = Utils.loadImage("videojuegos/" + i + ".jpg",115,160);
 		} catch (Exception e) {
 			imagenVideojuego = Utils.loadImage("books/noImagen.jpg",98,151);
 		}
@@ -190,9 +190,10 @@ public class VentanaVideojuegos extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		VentanaVideojuegos ventana = new VentanaVideojuegos(null);
+		VentanaVideojuegos ventana = new VentanaVideojuegos();
 //		VentanaVideojuegos ventana2 = new VentanaVideojuegos(new Cliente());
 //		VentanaVideojuegos ventana3 = new VentanaVideojuegos(new Admin());
 
 	}
 }
+
