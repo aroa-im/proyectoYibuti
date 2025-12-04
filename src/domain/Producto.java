@@ -9,12 +9,12 @@ public abstract class Producto implements Alquilable{
 	private long id;
 	private String titulo;
 	private String sinopsis;
-	private float precio;
+	private double precio;
 	private int rating;
 	private ArrayList<Review> comentarios;
 	private ImageIcon foto;
 	
-	public Producto(long id,String titulo, String sinopsis, float precio, int rating, ArrayList<Review> comentarios, ImageIcon foto) {
+	public Producto(long id,String titulo, String sinopsis, double precio, int rating, ArrayList<Review> comentarios, ImageIcon foto) {
 		super();
 		this.id = id;
 		this.titulo = titulo;
@@ -60,11 +60,11 @@ public abstract class Producto implements Alquilable{
 		this.sinopsis = sinopsis;
 	}
 
-	public float getPrecio() {
+	public double getPrecio() {
 		return precio;
 	}
 
-	public void setPrecio(float precio) {
+	public void setPrecio(double precio) {
 		this.precio = precio;
 	}
 
@@ -107,7 +107,7 @@ public abstract class Producto implements Alquilable{
 			return false;
 		Producto other = (Producto) obj;
 		return Objects.equals(comentarios, other.comentarios)
-				&& Float.floatToIntBits(precio) == Float.floatToIntBits(other.precio) && rating == other.rating
+				&& Double.doubleToLongBits(precio) == Double.doubleToLongBits(other.precio) && rating == other.rating
 				&& Objects.equals(sinopsis, other.sinopsis) && Objects.equals(titulo, other.titulo) 
 				&& Objects.equals(foto, other.foto);
 	}
