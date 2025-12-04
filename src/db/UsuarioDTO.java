@@ -1,12 +1,9 @@
 package db;
 
-import java.time.LocalDate;
-
 public class UsuarioDTO {
 	private String dni;
 	private String nombre;
 	private String email;
-	private LocalDate fechaCreacion;
 	private int amonestaciones;
 	private boolean admin;
 
@@ -15,17 +12,15 @@ public class UsuarioDTO {
 		this.dni = "";
 		this.nombre = "";
 		this.email = "";
-		this.fechaCreacion = LocalDate.now();
 		this.amonestaciones = 0;
 		this.admin = false;
 	}
 	
-	public UsuarioDTO(String dni, String nombre, String email, LocalDate fechaCreacion, int amonestaciones, boolean admin) {
+	public UsuarioDTO(String dni, String nombre, String email, int amonestaciones, boolean admin) {
 		super();
 		this.dni = dni;
 		this.nombre = nombre;
 		this.email = email;
-		this.fechaCreacion = fechaCreacion;
 		this.amonestaciones = amonestaciones;
 		this.admin = admin;
 	}
@@ -54,14 +49,6 @@ public class UsuarioDTO {
 		this.email = email;
 	}
 
-	public LocalDate getFechaCreacion() {
-		return fechaCreacion;
-	}
-
-	public void setFechaCreacion(LocalDate fechaCreacion) {
-		this.fechaCreacion = fechaCreacion;
-	}
-
 	public int getAmonestaciones() {
 		return amonestaciones;
 	}
@@ -80,7 +67,7 @@ public class UsuarioDTO {
 
 	@Override
 	public String toString() {
-		return "UsuarioDTO [dni=" + dni + ", nombre=" + nombre + ", email=" + email + ", fechaCreacion=" + fechaCreacion
+		return "UsuarioDTO [dni=" + dni + ", nombre=" + nombre + ", email=" + email
 				+ ", amonestaciones=" + amonestaciones + ", admin=" + admin + "]";
 	}	
 }
