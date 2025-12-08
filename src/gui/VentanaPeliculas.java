@@ -11,6 +11,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -22,7 +23,9 @@ import javax.swing.JTextField;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
+import db.ProductoDAO;
 import domain.Admin;
+import domain.Pelicula;
 import domain.Seccion;
 import domain.TipoPelicula;
 import domain.Usuario;
@@ -32,8 +35,15 @@ import utils.Utils;
 
 public class VentanaPeliculas extends JFrame {
 	private static final long serialVersionUID = 1L;
-	Usuario usuario= main.getUsuario();
+	private Usuario usuario = main.getUsuario();
+	private ProductoDAO productoDAO;
+	private ArrayList<Pelicula> peliculas;
+	
 	public VentanaPeliculas() {
+
+		this.productoDAO = new ProductoDAO();
+		this.peliculas = productoDAO.getPeliculas();
+		
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		if (usuario == null) {
 			setTitle("Videoclub - No logueado");
@@ -41,7 +51,6 @@ public class VentanaPeliculas extends JFrame {
 			setTitle("Videoclub - logueado" + usuario.getClass().toString());
 		}
 
-//		setExtendedState(MAXIMIZED_BOTH);
 		setSize(1200, 800);
 		setLocationRelativeTo(null);
 
@@ -74,7 +83,6 @@ public class VentanaPeliculas extends JFrame {
 				if (ordenar.getItemAt(0).equals("Ordenar")) {
 					ordenar.removeItemAt(0);
 				}
-				;
 			}
 
 			@Override
@@ -100,7 +108,6 @@ public class VentanaPeliculas extends JFrame {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					System.out.println(buscador.getText());
-					
 				}
 			}
 		});
@@ -114,9 +121,9 @@ public class VentanaPeliculas extends JFrame {
 		}
 
 		JPanel subPanelContenido2 = new JPanel(new GridLayout(0, 4));
-		// subPanelContenido2.setBackground(Color.orange);
-		for (int i = 1; i < 61; i++) {
-			JPanel panelCentrarPelicula = crearPanePeliculaCentrada(i);
+		
+		for (Pelicula pelicula : peliculas) {
+			JPanel panelCentrarPelicula = crearPanePeliculaCentrada(pelicula);
 			subPanelContenido2.add(panelCentrarPelicula);
 		}
 
@@ -128,39 +135,37 @@ public class VentanaPeliculas extends JFrame {
 		setVisible(true);
 	}
 	
-	private JPanel crearPanePeliculaCentrada(int i) {
+	private JPanel crearPanePeliculaCentrada(Pelicula pelicula) {
 		JPanel panelCentrarPelicula = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		
 		JPanel panelPelicula = new JPanel();
-		panelPelicula.setLayout(new BoxLayout(panelPelicula,BoxLayout.Y_AXIS));
+		panelPelicula.setLayout(new BoxLayout(panelPelicula, BoxLayout.Y_AXIS));
 		
-		ImageIcon imagenPelicula = null;
-		try {
-			imagenPelicula = Utils.loadImage("peliculas/" + i + ".jpg",115,160);
-		} catch (Exception e) {
-			imagenPelicula = Utils.loadImage("books/noImagen.jpg",98,151);
+		// Cargar imagen de la película
+		ImageIcon imagenPelicula = pelicula.getFoto();
+		if (imagenPelicula == null) {
+			imagenPelicula = Utils.loadImage("books/noImagen.jpg", 115, 160);
 		}
-        JLabel iconLabel = new JLabel(imagenPelicula);
-        panelPelicula.add(iconLabel);
 		
+		JLabel iconLabel = new JLabel(imagenPelicula);
+		panelPelicula.add(iconLabel);
 		
-		
-		
-		JLabel tituloPelicula = new JLabel("Título "+ i);
+		JLabel tituloPelicula = new JLabel(pelicula.getTitulo());
 		panelPelicula.add(tituloPelicula);
 		
 		panelCentrarPelicula.add(panelPelicula);
 		
-		panelPelicula.addMouseListener(new MouseAdapter(){
-
+		// MouseListener para abrir la ventana de información
+		panelPelicula.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				JLabel labelTitulo = (JLabel) panelPelicula.getComponent(0);
-				String titulo = labelTitulo.getText();
-				System.out.println(titulo);
-				super.mouseClicked(e);
+				dispose();
+				new VentanaInformacionRecurso(pelicula);
+				
+				
 			}
 		});
+		
 		return panelCentrarPelicula;
 	}
 
@@ -168,32 +173,27 @@ public class VentanaPeliculas extends JFrame {
 		JPanel panelAddPelicula = new JPanel(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(0, -5, 0, 5); 
-	    gbc.anchor = GridBagConstraints.CENTER; 
+		gbc.anchor = GridBagConstraints.CENTER; 
 
-		ImageIcon iconoAddPelicula = Utils.loadImage("add.png",24,24);
-	    JLabel iconLabel = new JLabel(iconoAddPelicula);
+		ImageIcon iconoAddPelicula = Utils.loadImage("add.png", 24, 24);
+		JLabel iconLabel = new JLabel(iconoAddPelicula);
 
-	    JLabel textLabel = new JLabel("Añadir pelicula");
+		JLabel textLabel = new JLabel("Añadir pelicula");
 
-	    
-	    panelAddPelicula.addMouseListener(new MouseAdapter() {
-        @Override
-        public void mouseClicked(MouseEvent e) {
-	        	System.out.println("Panel clickeado");
-	           
-        	}
-	    });
+		panelAddPelicula.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				System.out.println("Panel clickeado");
+			}
+		});
 
-	    panelAddPelicula.add(iconLabel, gbc);
-	    gbc.gridx = 1; 
-	    panelAddPelicula.add(textLabel, gbc);
-	    return panelAddPelicula;
+		panelAddPelicula.add(iconLabel, gbc);
+		gbc.gridx = 1; 
+		panelAddPelicula.add(textLabel, gbc);
+		return panelAddPelicula;
 	}
 
 	public static void main(String[] args) {
-//		VentanaPeliculas ventana = new VentanaPeliculas(null);
 		VentanaPeliculas ventana2 = new VentanaPeliculas();
-//		VentanaPeliculas ventana3 = new VentanaPeliculas(new Admin());
-
 	}
 }

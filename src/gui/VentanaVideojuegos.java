@@ -11,6 +11,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -22,18 +23,27 @@ import javax.swing.JTextField;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
+import db.ProductoDAO;
 import domain.Admin;
 import domain.Seccion;
 import domain.TipoConsola;
 import domain.Usuario;
+import domain.Videojuego;
 import main.main;
 import gui.components.Header;
 import utils.Utils;
 
 public class VentanaVideojuegos extends JFrame {
 	private static final long serialVersionUID = 1L;
-	Usuario usuario= main.getUsuario();
+	private Usuario usuario = main.getUsuario();
+	private ProductoDAO productoDAO;
+	private ArrayList<Videojuego> videojuegos;
+	
 	public VentanaVideojuegos() {
+		// Inicializar DAO y cargar videojuegos
+		this.productoDAO = new ProductoDAO();
+		this.videojuegos = productoDAO.getVideojuegos();
+		
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		if (usuario == null) {
 			setTitle("Videoclub - No logueado");
@@ -41,7 +51,6 @@ public class VentanaVideojuegos extends JFrame {
 			setTitle("Videoclub - logueado" + usuario.getClass().toString());
 		}
 
-//		setExtendedState(MAXIMIZED_BOTH);
 		setSize(1200, 800);
 		setLocationRelativeTo(null);
 
@@ -100,7 +109,7 @@ public class VentanaVideojuegos extends JFrame {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					System.out.println(buscador.getText());
-					// recargar pagina con la lista filtrada
+					
 				}
 			}
 		});
@@ -114,9 +123,10 @@ public class VentanaVideojuegos extends JFrame {
 		}
 
 		JPanel subPanelContenido2 = new JPanel(new GridLayout(0, 4));
-		// subPanelContenido2.setBackground(Color.orange);
-		for (int i = 1; i < 61; i++) {
-			JPanel panelCentrarVideojuego = crearPaneVideojuegoCentrada(i);
+		
+		// Cargar videojuegos desde la base de datos
+		for (Videojuego videojuego : videojuegos) {
+			JPanel panelCentrarVideojuego = crearPaneVideojuegoCentrada(videojuego);
 			subPanelContenido2.add(panelCentrarVideojuego);
 		}
 
@@ -128,72 +138,63 @@ public class VentanaVideojuegos extends JFrame {
 		setVisible(true);
 	}
 	
-	private JPanel crearPaneVideojuegoCentrada(int i) {
+	private JPanel crearPaneVideojuegoCentrada(Videojuego videojuego) {
 		JPanel panelCentrarVideojuego = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		
 		JPanel panelVideojuego = new JPanel();
-		panelVideojuego.setLayout(new BoxLayout(panelVideojuego,BoxLayout.Y_AXIS));
+		panelVideojuego.setLayout(new BoxLayout(panelVideojuego, BoxLayout.Y_AXIS));
 		
-		ImageIcon imagenVideojuego = null;
-		try {
-			imagenVideojuego = Utils.loadImage("videojuegos/" + i + ".jpg",115,160);
-		} catch (Exception e) {
-			imagenVideojuego = Utils.loadImage("books/noImagen.jpg",98,151);
+		// Cargar imagen del videojuego
+		ImageIcon imagenVideojuego = videojuego.getFoto();
+		if (imagenVideojuego == null) {
+			imagenVideojuego = Utils.loadImage("books/noImagen.jpg", 115, 160);
 		}
-        JLabel iconLabel = new JLabel(imagenVideojuego);
-        panelVideojuego.add(iconLabel);
 		
+		JLabel iconLabel = new JLabel(imagenVideojuego);
+		panelVideojuego.add(iconLabel);
 		
-		JLabel tituloVideojuego = new JLabel("Título "+ i);
+		JLabel tituloVideojuego = new JLabel(videojuego.getTitulo());
 		panelVideojuego.add(tituloVideojuego);
 		
 		panelCentrarVideojuego.add(panelVideojuego);
 		
-		panelVideojuego.addMouseListener(new MouseAdapter(){
-
+		panelVideojuego.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				JLabel labelTitulo = (JLabel) panelVideojuego.getComponent(0);
-				String titulo = labelTitulo.getText();
-				System.out.println(titulo);
-				super.mouseClicked(e);
+				dispose();
+
+				new VentanaInformacionRecurso(videojuego);
 			}
 		});
+		
 		return panelCentrarVideojuego;
 	}
 
 	private JPanel createPanelAddVideojuego() {
-		JPanel panelCentrarVideojuego = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		JPanel panelAddVideojuego = new JPanel(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.insets = new Insets(0, -5, 0, 5); // Margen entre componentes (icono y texto)
-	    gbc.anchor = GridBagConstraints.CENTER; // Centrar verticalmente y horizontalmente
+		gbc.insets = new Insets(0, -5, 0, 5);
+		gbc.anchor = GridBagConstraints.CENTER;
 
-		ImageIcon iconoAddVideojuego = Utils.loadImage("add.png",24,24);
-	    JLabel iconLabel = new JLabel(iconoAddVideojuego);
+		ImageIcon iconoAddVideojuego = Utils.loadImage("add.png", 24, 24);
+		JLabel iconLabel = new JLabel(iconoAddVideojuego);
 
-	    JLabel textLabel = new JLabel("Añadir videojuego");
+		JLabel textLabel = new JLabel("Añadir videojuego");
 
-	    // Añadir mouse listener para el panel
-	    panelAddVideojuego.addMouseListener(new MouseAdapter() {
-        @Override
-        public void mouseClicked(MouseEvent e) {
-	        	System.out.println("Panel clickeado");
-	            // Aquí puedes agregar la lógica que necesites
-        	}
-	    });
+		panelAddVideojuego.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				System.out.println("Panel clickeado");
+			}
+		});
 
-	    panelAddVideojuego.add(iconLabel, gbc);
-	    gbc.gridx = 1; // Segunda columna
-	    panelAddVideojuego.add(textLabel, gbc);
-	    return panelAddVideojuego;
+		panelAddVideojuego.add(iconLabel, gbc);
+		gbc.gridx = 1;
+		panelAddVideojuego.add(textLabel, gbc);
+		return panelAddVideojuego;
 	}
 
 	public static void main(String[] args) {
 		VentanaVideojuegos ventana = new VentanaVideojuegos();
-//		VentanaVideojuegos ventana2 = new VentanaVideojuegos(new Cliente());
-//		VentanaVideojuegos ventana3 = new VentanaVideojuegos(new Admin());
-
 	}
 }
-
