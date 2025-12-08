@@ -1,70 +1,3 @@
-/*package io;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Scanner;
-
-import javax.swing.ImageIcon;
-
-import domain.Libro;
-import domain.Pelicula;
-import domain.Review;
-import utils.Utils;
-
-public class inputUtils {
-	public static ArrayList<Pelicula> cargarPeliculas() {
-		ArrayList<Pelicula> listaPeliculas = new ArrayList<Pelicula>();
-		File f = new File("resources/data/peliculas.csv");
-		
-		try {
-			Scanner sc = new Scanner(f);
-			
-			if (sc.hasNextLine()) {
-	            sc.nextLine(); // Esta línea se usa para saltarse la primera línea (encabezados)
-	        }
-			
-			int indiceImagen = 1;
-			while (sc.hasNextLine() && indiceImagen<61) {
-				
-				String linea = sc.nextLine();
-				String[] datos = linea.split(";");
-				
-				try {
-//					long id = Long.parseLong(datos[0]);
-					String titulo = datos[0];
-					double precio = Double.parseDouble(datos[1]);
-					 String sinopsis = datos[2];
-	                String autor = datos[3];
-	                int duracion = Integer.parseInt(datos[4]);
-	                String tipo = datos[5];
-	                String genero = datos[6];
-
-	                ImageIcon foto = Utils.loadImage("peliculas/" + indiceImagen + ".jpg", 98, 151);
-	                ArrayList<Review> reviews = new ArrayList<>();
-
-	                Pelicula pelicula = new Pelicula(titulo, sinopsis, duracion, indiceImagen, reviews, null, null, autor, duracion, foto);
-	                listaPeliculas.add(pelicula);
-	                indiceImagen++;
-
-				} catch (Exception e) {
-				    System.err.println("Error al convertir un número en la línea: " + linea);
-				    e.printStackTrace();
-				}
-				
-//				String titulo, String autor, int numeroDePaginas, Image foto, int id, String sinopsis,
-//				ArrayList<Review> reviews, Genero genero, int rating
-				
-			}
-
-			sc.close();
-		} catch (FileNotFoundException e) {
-			System.err.println("ERROR: Archivo no encontrado");
-		}
-		return listaPeliculas;
-	}	
-}
-*/
 
 package io;
 
@@ -93,7 +26,7 @@ public class inputUtils {
 	    try {
 	        Scanner sc = new Scanner(f);
 
-	        // Saltar encabezado
+	      
 	        if (sc.hasNextLine()) sc.nextLine();
 
 	        while (sc.hasNextLine()) {
