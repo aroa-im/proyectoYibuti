@@ -6,37 +6,31 @@ import domain.TipoConsola;
 import domain.TipoPelicula;
 
 public class ProductoDTO {
-    // Campos de Producto (Superclase)
     private long id;
     private String titulo;
     private String sinopsis;
-    private float precio;
+    private double precio;
     private int rating;
     private String urlFoto; 
 
-    // Campo discriminador
+
     private String tipoProducto; 
 
-    // Campos específicos de Pelicula
+
     private TipoPelicula tipoPelicula;
     private GeneroPelicula generoPelicula;
     private String director;
     private int duracion; 
 
-    // Campos específicos de Videojuego
     private GeneroVideoJuego generoVideojuego;
     private TipoConsola tipoConsola;
     private String autorVideojuego; 
 
-    // Constructores, Getters, Setters y toString ...
-    
-    // (Contenido completo idéntico al de mi respuesta anterior, 
-    // ya que el DTO fue diseñado para contener el ID y todos los campos)
     
     public ProductoDTO() {
     }
 
-    public ProductoDTO(long id, String titulo, String sinopsis, float precio, int rating, String urlFoto, 
+    public ProductoDTO(long id, String titulo, String sinopsis, double precio, int rating, String urlFoto, 
                        String tipoProducto, TipoPelicula tipoPelicula, GeneroPelicula generoPelicula, 
                        String director, int duracion, GeneroVideoJuego generoVideojuego, 
                        TipoConsola tipoConsola, String autorVideojuego) {
@@ -80,11 +74,11 @@ public class ProductoDTO {
         this.sinopsis = sinopsis;
     }
     
-    public float getPrecio() {
+    public double getPrecio() {
         return precio;
     }
 
-    public void setPrecio(float precio) {
+    public void setPrecio(double precio) {
         this.precio = precio;
     }
 

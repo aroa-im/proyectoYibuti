@@ -3,7 +3,9 @@ package db;
 import java.util.ArrayList;
 
 import domain.Cliente;
+import domain.Pelicula;
 import domain.Producto;
+import domain.Videojuego;
 
 public interface ProductoDAOInterface {
 	boolean addProducto(Producto producto);
@@ -15,4 +17,8 @@ public interface ProductoDAOInterface {
 	boolean updateProducto(ProductoDTO producto, long idAntiguo);
 	boolean deleteProductoById(long idProducto);
 	void borrarRegistros();
+	Producto getProductoByTitulo(String titulo);
+	ArrayList<Pelicula> getPeliculas();
+	ArrayList<Videojuego> getVideojuegos();
+
 }
