@@ -37,23 +37,18 @@ public class ProductoDAO implements ProductoDAOInterface {
         this.conexionBD = conexionBD;
         this.logger = logger;
     }
-
-    // --- Métodos Auxiliares de Mapeo ---
     
-    /**
-     * Convierte un Producto de dominio a un ProductoDTO para persistencia.
-     */
+   
     private ProductoDTO crearDTODesdeProducto(Producto producto) {
         ProductoDTO dto = new ProductoDTO();
         
-        dto.setId(producto.getId()); // Se asume que el ID está en el objeto de dominio
+        dto.setId(producto.getId()); 
         dto.setTitulo(producto.getTitulo());
         dto.setSinopsis(producto.getSinopsis());
         dto.setPrecio(producto.getPrecio());
         dto.setRating(producto.getRating());
         
-        // La URL de la foto se guarda como String (ajustar la lógica si la foto es un campo estático)
-        // Usamos un placeholder si no hay una URL de foto explícita en Producto
+
         dto.setUrlFoto(producto instanceof Pelicula ? "peliculas/default.jpg" : "videojuegos/default.png");
         
         if (producto instanceof Pelicula) {
@@ -74,24 +69,19 @@ public class ProductoDAO implements ProductoDAOInterface {
         return dto;
     }
     
-    /**
-     * Convierte un ProductoDTO de la BD a la clase de dominio correcta (Pelicula o Videojuego).
-     */
+
     private Producto crearProductoDesdeDTO(ProductoDTO dto) {
-        // Cargar la imagen (asumo dimensiones de miniatura 115x160 como en VentanaVideojuegos)
+
         ImageIcon foto = Utils.loadImage(dto.getUrlFoto(), 115, 160);
         
-        // Cargar Reviews (se necesita el ReviewDAO)
-        // Nota: ReviewDAOInterface no está completa, asumimos un método getReviewsProductoById
         ArrayList<domain.Review> reviews = new ArrayList<>();
         if (main.getReviewDAO() != null) {
-             // Esto es una suposición de cómo se llamaría el método si ReviewDAO estuviera completo
-             // reviews = main.getReviewDAO().getReviewsProductoById(dto.getId()); 
+
         }
 
         if ("PELICULA".equals(dto.getTipoProducto())) {
             return new Pelicula(
-                dto.getId(), // ID añadido
+                dto.getId(), 
                 dto.getTitulo(),
                 dto.getSinopsis(),
                 dto.getPrecio(),
@@ -105,7 +95,7 @@ public class ProductoDAO implements ProductoDAOInterface {
             );
         } else if ("VIDEOJUEGO".equals(dto.getTipoProducto())) {
             return new Videojuego(
-                dto.getId(), // ID añadido
+                dto.getId(),
                 dto.getTitulo(),
                 dto.getSinopsis(),
                 dto.getPrecio(),
@@ -120,21 +110,18 @@ public class ProductoDAO implements ProductoDAOInterface {
         return null;
     }
     
-    /**
-     * Mapea un ResultSet a un ProductoDTO.
-     */
+ 
     private ProductoDTO mapearResultSetAProductoDTO(ResultSet rs) throws SQLException {
         ProductoDTO dto = new ProductoDTO();
         
         dto.setId(rs.getLong("id"));
         dto.setTitulo(rs.getString("titulo"));
         dto.setSinopsis(rs.getString("sinopsis"));
-        dto.setPrecio(rs.getFloat("precio"));
+        dto.setPrecio(rs.getDouble("precio"));
         dto.setRating(rs.getInt("rating"));
         dto.setUrlFoto(rs.getString("url_foto"));
         dto.setTipoProducto(rs.getString("tipo_producto"));
 
-        // Campos específicos de Pelicula
         String tipoPeliculaStr = rs.getString("tipo_pelicula");
         if (tipoPeliculaStr != null) {
             dto.setTipoPelicula(TipoPelicula.valueOf(tipoPeliculaStr));
@@ -146,7 +133,6 @@ public class ProductoDAO implements ProductoDAOInterface {
         dto.setDirector(rs.getString("director"));
         dto.setDuracion(rs.getInt("duracion"));
 
-        // Campos específicos de Videojuego
         String generoVideojuegoStr = rs.getString("genero_videojuego");
         if (generoVideojuegoStr != null) {
             dto.setGeneroVideojuego(GeneroVideoJuego.valueOf(generoVideojuegoStr));
@@ -160,21 +146,17 @@ public class ProductoDAO implements ProductoDAOInterface {
         return dto;
     }
 
-    // --- Implementación de ProductoDAOInterface ---
-
     @Override
     public boolean addProducto(Producto producto) {
         ProductoDTO dto = crearDTODesdeProducto(producto);
 
-        // Se insertan todos los campos. Los campos no aplicables (ej: Videojuego en Pelicula) serán NULL.
-        // Se incluye el ID en la inserción (asumo que se pre-asigna o es manual, similar a LibroDAO)
         String insertSQL = "INSERT INTO Producto (id, titulo, sinopsis, precio, rating, url_foto, tipo_producto, tipo_pelicula, genero_pelicula, director, duracion, genero_videojuego, tipo_consola, autor_videojuego) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement preparedStmt = conexionBD.prepareStatement(insertSQL)) {
 
-            preparedStmt.setLong(1, dto.getId()); // Se inserta el ID
+            preparedStmt.setLong(1, dto.getId()); 
             preparedStmt.setString(2, dto.getTitulo());
             preparedStmt.setString(3, dto.getSinopsis());
-            preparedStmt.setFloat(4, dto.getPrecio());
+            preparedStmt.setDouble(4, dto.getPrecio());
             preparedStmt.setInt(5, dto.getRating());
             preparedStmt.setString(6, dto.getUrlFoto());
             preparedStmt.setString(7, dto.getTipoProducto());
@@ -184,14 +166,14 @@ public class ProductoDAO implements ProductoDAOInterface {
                 preparedStmt.setString(9, dto.getGeneroPelicula() != null ? dto.getGeneroPelicula().toString() : null);
                 preparedStmt.setString(10, dto.getDirector());
                 preparedStmt.setInt(11, dto.getDuracion());
-                preparedStmt.setObject(12, null); // genero_videojuego
-                preparedStmt.setObject(13, null); // tipo_consola
-                preparedStmt.setObject(14, null); // autor_videojuego
+                preparedStmt.setObject(12, null); 
+                preparedStmt.setObject(13, null); 
+                preparedStmt.setObject(14, null); 
             } else if ("VIDEOJUEGO".equals(dto.getTipoProducto())) {
-                preparedStmt.setObject(8, null); // tipo_pelicula
-                preparedStmt.setObject(9, null); // genero_pelicula
-                preparedStmt.setObject(10, null); // director
-                preparedStmt.setObject(11, null); // duracion
+                preparedStmt.setObject(8, null); 
+                preparedStmt.setObject(9, null); 
+                preparedStmt.setObject(10, null);
+                preparedStmt.setObject(11, null);
                 preparedStmt.setString(12, dto.getGeneroVideojuego() != null ? dto.getGeneroVideojuego().toString() : null);
                 preparedStmt.setString(13, dto.getTipoConsola() != null ? dto.getTipoConsola().toString() : null);
                 preparedStmt.setString(14, dto.getAutorVideojuego());
@@ -256,8 +238,7 @@ public class ProductoDAO implements ProductoDAOInterface {
         LocalDate fechaReserva = LocalDate.now();
         LocalDate fechaDevolucion = fechaReserva.plusDays(diasDevolucion);
         
-        // Uso de una tabla genérica 'Reserva' o 'ReservaProducto'
-        // Nos basamos en la estructura de LibroDAO.añadirReserva (fecha_inicio, fecha_fin, id_producto, dni_cliente)
+
         String insertSQL = "INSERT INTO Reserva (fecha_inicio, fecha_fin, id_producto, dni_cliente) VALUES (?, ?, ?, ?)";
         
         try (PreparedStatement preparedStmt = conexionBD.prepareStatement(insertSQL)) {
@@ -279,7 +260,6 @@ public class ProductoDAO implements ProductoDAOInterface {
     public ArrayList<ProductoDTO> getHistorialByCliente(String dniCliente) {
         ArrayList<ProductoDTO> historialCliente = new ArrayList<>();
         
-        // Query adaptada de LibroDAO.getHistorialByCliente
         String insertSQL = "SELECT P.* FROM Reserva R, Producto P WHERE R.id_producto = P.id AND R.dni_cliente = ?;";
         
         try (PreparedStatement preparedStmt = conexionBD.prepareStatement(insertSQL)) {
@@ -300,7 +280,6 @@ public class ProductoDAO implements ProductoDAOInterface {
 
     @Override
     public boolean productoUsadoByDniCliente(String dniCliente, Long id) {
-        // Adaptado de LibroDAO.libroLeidoByDniCliente
         String query = "SELECT count(*) AS veces_usado FROM Reserva WHERE dni_cliente = ? AND id_producto = ?";
 
         try (PreparedStatement preparedStmt = conexionBD.prepareStatement(query)) {
@@ -321,7 +300,7 @@ public class ProductoDAO implements ProductoDAOInterface {
 
     @Override
     public boolean updateProducto(ProductoDTO producto, long idAntiguo) {
-        // Adaptado de LibroDAO.updateLibro
+
         String updateSQL = "UPDATE Producto SET id = ?, titulo = ?, sinopsis = ?, precio = ?, rating = ?, url_foto = ?, tipo_producto = ?, tipo_pelicula = ?, genero_pelicula = ?, director = ?, duracion = ?, genero_videojuego = ?, tipo_consola = ?, autor_videojuego = ? WHERE id = ?";
         
         try (PreparedStatement preparedStmt = conexionBD.prepareStatement(updateSQL)) {
@@ -329,12 +308,11 @@ public class ProductoDAO implements ProductoDAOInterface {
             preparedStmt.setLong(1, producto.getId());
             preparedStmt.setString(2, producto.getTitulo());
             preparedStmt.setString(3, producto.getSinopsis());
-            preparedStmt.setFloat(4, producto.getPrecio());
+            preparedStmt.setDouble(4, producto.getPrecio()); 
             preparedStmt.setInt(5, producto.getRating());
             preparedStmt.setString(6, producto.getUrlFoto());
             preparedStmt.setString(7, producto.getTipoProducto());
 
-            // Campos específicos
             if ("PELICULA".equals(producto.getTipoProducto())) {
                 preparedStmt.setString(8, producto.getTipoPelicula() != null ? producto.getTipoPelicula().toString() : null);
                 preparedStmt.setString(9, producto.getGeneroPelicula() != null ? producto.getGeneroPelicula().toString() : null);
@@ -371,24 +349,24 @@ public class ProductoDAO implements ProductoDAOInterface {
 
     @Override
     public boolean deleteProductoById(long idProducto) {
-        // Se debe borrar primero en las tablas que referencian a Producto (Reserva, Review)
+
         String deleteReservaSQL = "DELETE FROM Reserva WHERE id_producto = ?";
         String deleteReviewSQL = "DELETE FROM Review WHERE id_producto = ?";
         String deleteProductoSQL = "DELETE FROM Producto WHERE id = ?";
         
         try {
-            // Eliminar dependencias (asumiendo que la tabla de reservas se llama 'Reserva')
+
             try (PreparedStatement stmtReserva = conexionBD.prepareStatement(deleteReservaSQL)) {
                 stmtReserva.setLong(1, idProducto);
                 stmtReserva.executeUpdate();
             }
-            // Eliminar reviews
+
             try (PreparedStatement stmtReview = conexionBD.prepareStatement(deleteReviewSQL)) {
                 stmtReview.setLong(1, idProducto);
                 stmtReview.executeUpdate();
             }
 
-            // Eliminar producto
+
             try (PreparedStatement stmtProducto = conexionBD.prepareStatement(deleteProductoSQL)) {
                 stmtProducto.setLong(1, idProducto);
                 int filas = stmtProducto.executeUpdate();
@@ -403,7 +381,7 @@ public class ProductoDAO implements ProductoDAOInterface {
 
     @Override
     public void borrarRegistros() {
-        // Adaptado de LibroDAO.borrarRegistros
+
         try {
             Statement stmt = conexionBD.createStatement();
             String instruccion = "DELETE FROM Producto;";
@@ -414,5 +392,71 @@ public class ProductoDAO implements ProductoDAOInterface {
             if (logger != null)
                 logger.log(Level.SEVERE, "Error al borrar los registros de Producto: ", e);
         }
+    }
+    
+    @Override
+    public Producto getProductoByTitulo(String titulo) {
+        String selectSQL = "SELECT * FROM Producto WHERE titulo = ?";
+        
+        try (PreparedStatement preparedStmt = conexionBD.prepareStatement(selectSQL)) {
+            preparedStmt.setString(1, titulo);
+            
+            try (ResultSet rs = preparedStmt.executeQuery()) {
+                if (rs.next()) {
+                    ProductoDTO dto = mapearResultSetAProductoDTO(rs);
+                    return crearProductoDesdeDTO(dto);
+                }
+            }
+        } catch (SQLException e) {
+            if (logger != null)
+                logger.log(Level.SEVERE, "Error al obtener el producto con título: " + titulo, e);
+        }
+        return null;
+    }
+
+    @Override
+    public ArrayList<Pelicula> getPeliculas() {
+        ArrayList<Pelicula> peliculas = new ArrayList<>();
+        String selectSQL = "SELECT * FROM Producto WHERE tipo_producto = 'PELICULA'";
+        
+        try (Statement stmt = conexionBD.createStatement();
+             ResultSet rs = stmt.executeQuery(selectSQL)) {
+
+            while (rs.next()) {
+                ProductoDTO dto = mapearResultSetAProductoDTO(rs);
+                Producto producto = crearProductoDesdeDTO(dto);
+                
+                if (producto instanceof Pelicula) {
+                    peliculas.add((Pelicula) producto);
+                }
+            }
+        } catch (SQLException e) {
+            if (logger != null)
+                logger.log(Level.SEVERE, "Error al obtener todas las películas: ", e);
+        }
+        return peliculas;
+    }
+
+    @Override
+    public ArrayList<Videojuego> getVideojuegos() {
+        ArrayList<Videojuego> videojuegos = new ArrayList<>();
+        String selectSQL = "SELECT * FROM Producto WHERE tipo_producto = 'VIDEOJUEGO'";
+        
+        try (Statement stmt = conexionBD.createStatement();
+             ResultSet rs = stmt.executeQuery(selectSQL)) {
+
+            while (rs.next()) {
+                ProductoDTO dto = mapearResultSetAProductoDTO(rs);
+                Producto producto = crearProductoDesdeDTO(dto);
+                
+                if (producto instanceof Videojuego) {
+                    videojuegos.add((Videojuego) producto);
+                }
+            }
+        } catch (SQLException e) {
+            if (logger != null)
+                logger.log(Level.SEVERE, "Error al obtener todos los videojuegos: ", e);
+        }
+        return videojuegos;
     }
 }
