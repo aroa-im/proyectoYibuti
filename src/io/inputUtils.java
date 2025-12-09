@@ -1,9 +1,11 @@
 
 package io;
 
+import domain.Cliente;
 import domain.GeneroPelicula;
 import domain.GeneroVideoJuego;
 import domain.Pelicula;
+import domain.Producto;
 import domain.Review;
 import domain.TipoConsola;
 import domain.TipoPelicula;
@@ -12,6 +14,7 @@ import domain.Videojuego;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import javax.swing.ImageIcon;
 
@@ -143,6 +146,53 @@ public class inputUtils {
 
 	    return listaPeliculas;
 	}
+
+
+public static ArrayList<Review> cargarReviews(List<Producto> productos, List<Cliente> clientes) {
+    ArrayList<Review> listaReviews = new ArrayList<>();
+    File f = new File("resources/data/reviews.csv");
+
+    try (Scanner sc = new Scanner(f)) {
+        if (sc.hasNextLine()) sc.nextLine(); // Saltar cabecera
+
+        while (sc.hasNextLine()) {
+            String linea = sc.nextLine();
+            String[] datos = linea.split(";");
+
+            try {
+                long id = Long.parseLong(datos[0]);
+                long idProducto = Long.parseLong(datos[1]);
+                String dniCliente = datos[2];
+                String comentario = datos[3];
+                int rating = Integer.parseInt(datos[4]);
+
+                // Buscar producto y cliente
+                Producto producto = productos.stream()
+                    .filter(p -> p.getId() == idProducto)
+                    .findFirst()
+                    .orElse(null);
+
+                Cliente cliente = clientes.stream()
+                    .filter(c -> c.getDni().equals(dniCliente))
+                    .findFirst()
+                    .orElse(null);
+
+                Review review = new Review(id, producto, cliente, comentario, rating);
+                listaReviews.add(review);
+
+            } catch (Exception e) {
+                System.err.println("Error en línea: " + linea);
+                e.printStackTrace();
+            }
+        }
+    } catch (FileNotFoundException e) {
+        System.err.println("ERROR: Archivo de reviews no encontrado");
+    }
+
+    return listaReviews;
+}
+
+
 }
     	
     
