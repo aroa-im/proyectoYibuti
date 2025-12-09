@@ -43,7 +43,6 @@ public class inputUtils {
 	                String sinopsis = datos[2];
 	                float precio = Float.parseFloat(datos[3]);
 
-	                // Rating entre 0 y 5 (opcional ajustarlo)
 	                int rating = Integer.parseInt(datos[4]);
 
 	                GeneroVideoJuego genero = GeneroVideoJuego.valueOf(datos[5]);
@@ -148,49 +147,58 @@ public class inputUtils {
 	}
 
 
-public static ArrayList<Review> cargarReviews(List<Producto> productos, List<Cliente> clientes) {
-    ArrayList<Review> listaReviews = new ArrayList<>();
-    File f = new File("resources/data/reviews.csv");
-
-    try (Scanner sc = new Scanner(f)) {
-        if (sc.hasNextLine()) sc.nextLine(); // Saltar cabecera
-
-        while (sc.hasNextLine()) {
-            String linea = sc.nextLine();
-            String[] datos = linea.split(";");
-
-            try {
-                long id = Long.parseLong(datos[0]);
-                long idProducto = Long.parseLong(datos[1]);
-                String dniCliente = datos[2];
-                String comentario = datos[3];
-                int rating = Integer.parseInt(datos[4]);
-
-                // Buscar producto y cliente
-                Producto producto = productos.stream()
-                    .filter(p -> p.getId() == idProducto)
-                    .findFirst()
-                    .orElse(null);
-
-                Cliente cliente = clientes.stream()
-                    .filter(c -> c.getDni().equals(dniCliente))
-                    .findFirst()
-                    .orElse(null);
-
-                Review review = new Review(id, producto, cliente, comentario, rating);
-                listaReviews.add(review);
-
-            } catch (Exception e) {
-                System.err.println("Error en línea: " + linea);
-                e.printStackTrace();
-            }
-        }
-    } catch (FileNotFoundException e) {
-        System.err.println("ERROR: Archivo de reviews no encontrado");
-    }
-
-    return listaReviews;
-}
+	public static ArrayList<Review> cargarReviews(List<Producto> productos, List<Cliente> clientes) {
+	    ArrayList<Review> listaReviews = new ArrayList<>();
+	    File f = new File("resources/data/reviews.csv");
+	
+	    try (Scanner sc = new Scanner(f)) {
+	        if (sc.hasNextLine()) sc.nextLine();
+	
+	        while (sc.hasNextLine()) {
+	            String linea = sc.nextLine();
+	            String[] datos = linea.split(";");
+	
+	            try {
+	                long id = Long.parseLong(datos[0]);
+	                long idProducto = Long.parseLong(datos[1]);
+	                String dniCliente = datos[2];
+	                String comentario = datos[3];
+	                int rating = Integer.parseInt(datos[4]);
+	
+	                
+	                Producto producto = productos.stream()
+	                    .filter(p -> p.getId() == idProducto)
+	                    .findFirst()
+	                    .orElse(null);
+	
+	                Cliente cliente = clientes.stream()
+	                    .filter(c -> c.getDni().equals(dniCliente))
+	                    .findFirst()
+	                    .orElse(null);
+	
+	                Review review = new Review(id, producto, cliente, comentario, rating);
+	                listaReviews.add(review);
+	
+	            } catch (Exception e) {
+	                System.err.println("Error en línea: " + linea);
+	                e.printStackTrace();
+	            }
+	        }
+	    } catch (FileNotFoundException e) {
+	        System.err.println("ERROR: Archivo de reviews no encontrado");
+	    }
+	
+	    return listaReviews;
+	}
+	
+	public static Producto buscarProductoPorId(ArrayList<Producto> productos, String id) {
+	    for (Producto producto : productos) {
+	        if (String.valueOf(producto.getId()).equals(id)) {
+	            return producto;
+	        }
+	    }
+	    return null;
+	}
 
 
 }
