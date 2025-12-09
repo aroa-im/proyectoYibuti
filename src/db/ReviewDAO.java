@@ -137,4 +137,27 @@ public class ReviewDAO implements ReviewDAOInterface {
 		}
 	}
 
+
+	@Override
+	public long generarIdUnico() {
+	    long nuevoId = 1;
+	    String sql = "SELECT MAX(id) AS max_id FROM Review";
+	    try (Statement stmt = conexionBD.createStatement();
+	         ResultSet rs = stmt.executeQuery(sql)) {
+	        if (rs.next()) {
+	            long maxId = rs.getLong("max_id");
+	            if (!rs.wasNull()) {
+	                nuevoId = maxId + 1;
+	            }
+	        }
+	    } catch (SQLException e) {
+	        if (logger != null)
+	            logger.log(Level.SEVERE, "Error al generar id único: ", e);
+	    }
+	    return nuevoId;
+	}
 }
+
+
+
+

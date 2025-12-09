@@ -155,8 +155,8 @@ public class VentanaAñadirReviewPelicula extends JFrame {
 
 					dialogoPorgreso.dispose();
 					
-
-					Review review = new Review(pelicula, cliente, comentario, rating);
+					long id = main.getReviewDAO().generarIdUnico();
+					Review review = new Review(id, pelicula, cliente, comentario, rating);
 					pelicula.getReviews().add(review);
 					
 

@@ -157,7 +157,8 @@ public class VentanaAñadirReviewVideojuego extends JFrame {
 
 					dialogoPorceso.dispose();
 
-					Review review = new Review(videojuego, cliente, comentario, rating);
+					long id = main.getReviewDAO().generarIdUnico();
+					Review review = new Review(id,videojuego, cliente, comentario, rating);
 					videojuego.getReviews().add(review);
 					
 					dispose();

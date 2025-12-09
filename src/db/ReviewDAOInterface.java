@@ -9,4 +9,5 @@ public interface ReviewDAOInterface {
 	ArrayList<Review> getReviewsByUsuarioDni(String dniCliente);
 	void borrarRegistros();
 	ArrayList<Review> getReviewsProductoById(Long idProducto);
+	long generarIdUnico();
 }
