@@ -62,8 +62,8 @@ public class Videojuego extends Producto{
 	      .append(", Tipo de Consola=").append(tipo)
 	      .append(", Autor=").append(autor);
 
-	    if (getComentarios() != null && !getComentarios().isEmpty()) {
-	        sb.append(", Comentarios=").append(getComentarios().size()).append(" reseñas disponibles");
+	    if (getReviews() != null && !getReviews().isEmpty()) {
+	        sb.append(", Comentarios=").append(getReviews().size()).append(" reseñas disponibles");
 	    } else {
 	        sb.append(", Comentarios=Sin reseñas");
 	    }

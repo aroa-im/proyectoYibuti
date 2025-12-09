@@ -157,7 +157,7 @@ public class VentanaAñadirReviewPelicula extends JFrame {
 					
 
 					Review review = new Review(pelicula, cliente, comentario, rating);
-					pelicula.getComentarios().add(review);
+					pelicula.getReviews().add(review);
 					
 
 					dispose();

@@ -183,7 +183,7 @@ public class VentanaInformacionRecurso extends JFrame {
         reviews.add(tituloReviews);
         
         String stringReviews = "";
-        for (Review review : pelicula.getComentarios()) {
+        for (Review review : pelicula.getReviews()) {
             stringReviews += review.toString() + "\n";
         }
 
@@ -367,7 +367,7 @@ public class VentanaInformacionRecurso extends JFrame {
 		reviews.add(tituloReviews);
 		
 		String stringReviews = "";
-		for (Review review : videojuego.getComentarios()) {
+		for (Review review : videojuego.getReviews()) {
 			stringReviews += review.toString() + "\n";
 		}
 
