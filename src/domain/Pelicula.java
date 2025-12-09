@@ -79,8 +79,8 @@ public class Pelicula extends Producto{
 	      .append(", Rating=").append(getRating());
 
 	    
-	    if (getComentarios() != null && !getComentarios().isEmpty()) {
-	        sb.append(", Comentarios=").append(getComentarios().size()).append(" reseñas disponibles");
+	    if (getReviews() != null && !getReviews().isEmpty()) {
+	        sb.append(", Comentarios=").append(getReviews().size()).append(" reseñas disponibles");
 	    } else {
 	        sb.append(", Comentarios=Sin reseñas");
 	    }

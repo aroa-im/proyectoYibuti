@@ -128,7 +128,7 @@ public class VentanaRegistrarse extends JFrame {
 				// tfUsuarioEmail.getText(),new String(tfContrasena.getPassword()), new
 				// ArrayList<Producto>(), 0);
 				Cliente nuevoUsuario = new Cliente(tfDNI.getText(), tfNombre.getText(), tfUsuarioEmail.getText(),
-						new String(tfContrasena.getPassword()), new ArrayList<Producto>(), 0);
+						new String(tfContrasena.getPassword()), new ArrayList<Producto>(),new ArrayList<Review>(), 0);
 				if (!main.getUsuarioDAO().addUsuario(nuevoUsuario)) {
 					JOptionPane.showMessageDialog(this, "Ya hay un usuario/a registrado con este DNI", "Error",
 							JOptionPane.ERROR_MESSAGE);

@@ -158,7 +158,7 @@ public class VentanaAñadirReviewVideojuego extends JFrame {
 					dialogoPorceso.dispose();
 
 					Review review = new Review(videojuego, cliente, comentario, rating);
-					videojuego.getComentarios().add(review);
+					videojuego.getReviews().add(review);
 					
 					dispose();
 					VentanaInformacionRecurso redirigirVentana = new VentanaInformacionRecurso(videojuego);

@@ -5,13 +5,18 @@ import java.util.Objects;
 
 import javax.swing.ImageIcon;
 
+import db.ProductoDTO;
+import main.main;
+
 public abstract class Producto implements Alquilable{
 	private long id;
 	private String titulo;
 	private String sinopsis;
 	private double precio;
 	private int rating;
-	private ArrayList<Review> comentarios;
+	
+	//Campos no relacionados con la bbdd
+	private ArrayList<Review> reviews;
 	private ImageIcon foto;
 	
 	public Producto(long id,String titulo, String sinopsis, double precio, int rating, ArrayList<Review> comentarios, ImageIcon foto) {
@@ -21,7 +26,7 @@ public abstract class Producto implements Alquilable{
 		this.sinopsis = sinopsis;
 		this.precio = precio;
 		this.rating = rating;
-		this.comentarios = comentarios;
+		this.reviews = comentarios;
 		this.foto= foto;
 	}
 	
@@ -32,7 +37,17 @@ public abstract class Producto implements Alquilable{
 		this.sinopsis = "";
 		this.precio = 0;
 		this.rating = 0;
-		this.comentarios = new ArrayList<Review>();
+		this.reviews = new ArrayList<Review>();
+		this.foto= null;
+	}
+	public Producto(ProductoDTO productoDTO) {
+		super();
+		this.id= productoDTO.getId();
+		this.titulo = productoDTO.getTitulo();
+		this.sinopsis =productoDTO.getSinopsis();
+		this.precio =productoDTO.getPrecio();
+		this.rating = productoDTO.getRating();
+		this.reviews = main.getReviewDAO().getReviewsProductoById(productoDTO.getId());
 		this.foto= null;
 	}
 
@@ -76,14 +91,15 @@ public abstract class Producto implements Alquilable{
 		this.rating = rating;
 	}
 
-	public ArrayList<Review> getComentarios() {
-		return comentarios;
+	
+	public ArrayList<Review> getReviews() {
+		return reviews;
 	}
 
-	public void setComentarios(ArrayList<Review> comentarios) {
-		this.comentarios = comentarios;
+	public void setReviews(ArrayList<Review> reviews) {
+		this.reviews = reviews;
 	}
-	
+
 	public ImageIcon getFoto() {
 		return foto;
 	}
@@ -94,7 +110,7 @@ public abstract class Producto implements Alquilable{
 	
 	@Override
 	public int hashCode() {
-		return Objects.hash(comentarios, precio, rating, sinopsis, titulo, foto);
+		return Objects.hash(reviews, precio, rating, sinopsis, titulo, foto);
 	}
 
 	@Override
@@ -106,7 +122,7 @@ public abstract class Producto implements Alquilable{
 		if (getClass() != obj.getClass())
 			return false;
 		Producto other = (Producto) obj;
-		return Objects.equals(comentarios, other.comentarios)
+		return Objects.equals(reviews, other.reviews)
 				&& Double.doubleToLongBits(precio) == Double.doubleToLongBits(other.precio) && rating == other.rating
 				&& Objects.equals(sinopsis, other.sinopsis) && Objects.equals(titulo, other.titulo) 
 				&& Objects.equals(foto, other.foto);
@@ -115,7 +131,7 @@ public abstract class Producto implements Alquilable{
 	@Override
 	public String toString() {
 		return "Producto [titulo=" + titulo + ", sinopsis=" + sinopsis + ", precio=" + precio + ", rating=" + rating
-				+ ", comentarios=" + comentarios + ", foto = " + foto +"]";
+				+ ", comentarios=" + reviews + ", foto = " + foto +"]";
 	}
 	
 }
