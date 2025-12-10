@@ -20,8 +20,8 @@ import javax.swing.ImageIcon;
 
 import utils.Utils;
 
-public class inputUtils {
-	public static ArrayList<Videojuego> cargarVideojuego() {
+public class InputUtils {
+	public static ArrayList<Videojuego> cargarVideojuegos() {
 
 	    ArrayList<Videojuego> listaVideojuegos = new ArrayList<>();
 	    File f = new File("resources/data/videojuegos.csv");
