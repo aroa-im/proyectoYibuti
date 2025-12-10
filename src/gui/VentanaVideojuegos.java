@@ -66,9 +66,9 @@ public class VentanaVideojuegos extends JFrame {
 		panelJuego.setLayout(new BoxLayout(panelJuego, BoxLayout.Y_AXIS));
 
 
-		ImageIcon imagen = Utils.loadImage("images.videojuegos/" + videojuego.getId() + ".jpg", 115, 160);
+		ImageIcon imagen = Utils.loadImage("videojuegos/" + videojuego.getId() + ".jpg", 115, 160);
 		if (imagen == null)
-			imagen = Utils.loadImage("images/noImagen.jpg", 115, 160);
+			imagen = Utils.loadImage("noImagen.jpg", 115, 160);
 
 		JLabel imagenLabel = new JLabel(imagen);
 		JLabel titulo = new JLabel(videojuego.getTitulo());
