@@ -66,8 +66,7 @@ public class ReviewDAO implements ReviewDAOInterface {
                 while (rs.next()) {
                    Review review = new Review();
                    
-                   //eview.setProductoDTO(main.getProductoDAO().getProducto(rs.getInt("id_producto")));
-                   //review.setCliente(main.getUsuarioDAO().getUsuario(rs.getString("dni_cliente")));
+             
                    review.setRating(rs.getInt("rating"));
                    review.setComentario(rs.getString("comentario"));
                    
@@ -102,8 +101,7 @@ public class ReviewDAO implements ReviewDAOInterface {
 	        	result = new ArrayList<>();
                 while (rs.next()) {
                    Review review = new Review();
-                   //review.setProductoDTO(main.getLibroDAO().getProducto(rs.getInt("id_producto")));
-                   //review.setCliente(main.getUsuarioDAO().getUsuario(rs.getString("dni_cliente")));
+                  
                    review.setRating(rs.getInt("rating"));
                    review.setComentario(rs.getString("comentario"));
                    
