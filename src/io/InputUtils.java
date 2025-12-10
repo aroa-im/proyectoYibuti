@@ -95,11 +95,11 @@ public class InputUtils {
                 String titulo = datos[1];
                 String sinopsis = datos[2];
                 float precio = Float.parseFloat(datos[3]);
-                String autor = datos[4];  // ✅ Corregido
-                TipoConsola tipo = TipoConsola.valueOf(datos[5].toUpperCase());  // ✅ Corregido
-                GeneroVideoJuego genero = GeneroVideoJuego.valueOf(datos[6].toUpperCase());  // ✅ Corregido
+                String autor = datos[4]; 
+                TipoConsola tipo = TipoConsola.valueOf(datos[5].toUpperCase());  
+                GeneroVideoJuego genero = GeneroVideoJuego.valueOf(datos[6].toUpperCase());  
                 
-                int rating = 0;  // ✅ Rating por defecto
+                int rating = 0;  
 
                 // RUTA CORRECTA DE IMÁGENES
                 ImageIcon foto = Utils.loadImage("videojuegos/" + id + ".jpg", 98, 151);
