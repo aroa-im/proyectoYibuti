@@ -123,8 +123,8 @@ public class main {
 		productoDAO = new ProductoDAO();
 
 		threads = new ArrayList<>();
-
-		new CrearBBDD();
+		//descomentar la primera vez y tras esto volver a comentarlo 
+		//new CrearBBDD();
 
 		SwingUtilities.invokeLater(() -> new VentanaPortada());
 	}

@@ -46,8 +46,7 @@ public class VentanaInformacionRecurso extends JFrame {
     private JFrame vInformacionProducto;
     private static final long serialVersionUID = 1647556562163809896L;
     private JPanel pOeste, pEste, pSur, pCentro, pHeader;
-    //private Usuario usuario = main.getUsuario();
-    private Usuario usuario;
+    private Usuario usuario = main.getUsuario();
 
     public void setMainWindowProperties(Seccion seccion) {
         
@@ -63,16 +62,16 @@ public class VentanaInformacionRecurso extends JFrame {
         pSur = new JPanel();
         pEste = new JPanel();
         pOeste = new JPanel();
-        //pHeader = new Header(usuario, this);
+        pHeader = new Header(seccion,usuario,this);
       
         pCentro.setBackground(Color.WHITE);
-        //pSur.setBackground(Color.WHITE);
-        //pHeader.setBackground(Color.WHITE);
+        pSur.setBackground(Color.WHITE);
+        pHeader.setBackground(Color.WHITE);
         pOeste.setBackground(Color.WHITE);
         pEste.setBackground(Color.WHITE);
         
         getContentPane().add(pCentro, BorderLayout.CENTER);
-        //getContentPane().add(pHeader, BorderLayout.NORTH);
+        getContentPane().add(pHeader, BorderLayout.NORTH);
         getContentPane().add(pSur, BorderLayout.SOUTH);
         getContentPane().add(pEste, BorderLayout.EAST);
         getContentPane().add(pOeste, BorderLayout.WEST);
@@ -411,7 +410,7 @@ public class VentanaInformacionRecurso extends JFrame {
 		JButton botonEditar = new JButton("Editar");
 		/*botonEditar.addActionListener(e -> {
 			dispose();
-			new VentanaCrearEditarLibro(this, videojuego);
+			new VentanaCrearEditarVideojuego(this, videojuego);
 		});
 		*/
 		botonReview.setFont(new Font("Arial", Font.BOLD, 17));		

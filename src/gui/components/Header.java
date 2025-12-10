@@ -6,7 +6,9 @@ import domain.Seccion;
 import domain.Usuario;
 import gui.VentanaInformacionUsuario;
 import gui.VentanaIniciarSesion;
+import gui.VentanaPeliculas;
 import gui.VentanaPortada;
+import gui.VentanaVideojuegos;
 import utils.Utils;
 
 import java.awt.BorderLayout;
@@ -132,11 +134,11 @@ public class Header extends JPanel {
 		JFrame nuevaVentana = null;
 		switch (seccion) {
 		case PELICULA:
-			//nuevaVentana = new VentanaLibros();
+			nuevaVentana = new VentanaPeliculas();
 			
 			break;
 		case VIDEOJUEGO:
-			//nuevaVentana = new VentanaVideojuegos();
+			nuevaVentana = new VentanaVideojuegos();
 			break;
 		}
 		nuevaVentana.setVisible(true);
