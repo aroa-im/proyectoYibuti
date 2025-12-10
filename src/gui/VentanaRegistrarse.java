@@ -115,40 +115,51 @@ public class VentanaRegistrarse extends JFrame {
 		JPanel tail = new JPanel(new GridLayout(2, 1, 0, 0));
 		tail.setBorder(new EmptyBorder(50, 0, 0, 0));
 
+		//falta cambiarlo a cliente 
 		JPanel registrarseButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		registrarseButtonPanel.add(registrarseButton);
 		registrarseButton.addActionListener(e -> {
-			if (!new String(tfContrasena.getPassword()).equals(new String(tfRepetirContrasenia.getPassword()))) {
-				JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden", "Error", JOptionPane.ERROR_MESSAGE);
-				tfContrasena.setText("");
-				tfRepetirContrasenia.setText("");
-
-			} else {
-				// Cliente nuevoUsuario = new Cliente(tfDNI.getText(), tfNombre.getText(),
-				// tfUsuarioEmail.getText(),new String(tfContrasena.getPassword()), new
-				// ArrayList<Producto>(), 0);
-				Cliente nuevoUsuario = new Cliente(tfDNI.getText(), tfNombre.getText(), tfUsuarioEmail.getText(),
-						new String(tfContrasena.getPassword()), new ArrayList<Producto>(),new ArrayList<Review>(), 0);
-				if (!main.getUsuarioDAO().addUsuario(nuevoUsuario)) {
-					JOptionPane.showMessageDialog(this, "Ya hay un usuario/a registrado con este DNI", "Error",
-							JOptionPane.ERROR_MESSAGE);
-					tfDNI.setText("");
-					tfNombre.setText("");
-					tfUsuarioEmail.setText("");
-					tfContrasena.setText("");
-					tfRepetirContrasenia.setText("");
-				} else {
-					main.setUsuario(nuevoUsuario);
-					try {
-						previousWindow.getClass().getConstructor().newInstance();
-					} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-							| InvocationTargetException | NoSuchMethodException | SecurityException e1) {
-						e1.printStackTrace();
-					}
-
-					dispose();
-				}
-			}
+		    if (!new String(tfContrasena.getPassword()).equals(new String(tfRepetirContrasenia.getPassword()))) {
+		        JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden", "Error", JOptionPane.ERROR_MESSAGE);
+		        tfContrasena.setText("");
+		        tfRepetirContrasenia.setText("");
+		    } else {
+		        
+		        Cliente nuevoUsuario = new Cliente(
+		            tfDNI.getText(), 
+		            tfNombre.getText(), 
+		            tfUsuarioEmail.getText(),
+		            new String(tfContrasena.getPassword()), 
+		            new ArrayList<Producto>(),  
+		            new ArrayList<Review>(),    
+		            0                            
+		        );
+		        
+		        // Intentar guardar en la base de datos
+		        if (!main.getUsuarioDAO().addUsuario(nuevoUsuario)) {
+		            JOptionPane.showMessageDialog(this, "Ya hay un usuario/a registrado con este DNI", "Error",
+		                    JOptionPane.ERROR_MESSAGE);
+		            tfDNI.setText("");
+		            tfNombre.setText("");
+		            tfUsuarioEmail.setText("");
+		            tfContrasena.setText("");
+		            tfRepetirContrasenia.setText("");
+		        } else {
+		            
+		            main.setUsuario(nuevoUsuario);
+		            
+		           
+		            try {
+		                previousWindow.getClass().getConstructor().newInstance();
+		                previousWindow.dispose();
+		            } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+		                    | InvocationTargetException | NoSuchMethodException | SecurityException e1) {
+		                e1.printStackTrace();
+		            }
+		            
+		            dispose();
+		        }
+		    }
 		});
 
 		JPanel yaCuentaLabelPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
