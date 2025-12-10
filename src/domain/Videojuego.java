@@ -71,24 +71,5 @@ public class Videojuego extends Producto{
 	    sb.append("]");
 	    
 	    return sb.toString();
-	}
-
-	@Override
-	public boolean crearAlquiler(Cliente cliente, Producto producto, LocalDate fechaDevolucion) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean avisoAlquilerTarde(Cliente cliente, Producto producto) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean terminarAlquiler(Cliente cliente, LocalDate fechaDevolucion) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
+	}	
 }

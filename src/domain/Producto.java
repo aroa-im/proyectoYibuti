@@ -8,7 +8,7 @@ import javax.swing.ImageIcon;
 import db.ProductoDTO;
 import main.main;
 
-public abstract class Producto implements Alquilable{
+public abstract class Producto{
 	private long id;
 	private String titulo;
 	private String sinopsis;
