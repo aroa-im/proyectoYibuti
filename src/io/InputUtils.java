@@ -1,4 +1,3 @@
-
 package io;
 
 import domain.Cliente;
@@ -11,196 +10,159 @@ import domain.TipoConsola;
 import domain.TipoPelicula;
 import domain.Videojuego;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import javax.swing.ImageIcon;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import javax.swing.ImageIcon;
 
 import utils.Utils;
 
 public class InputUtils {
-	public static ArrayList<Videojuego> cargarVideojuegos() {
 
-	    ArrayList<Videojuego> listaVideojuegos = new ArrayList<>();
-	    File f = new File("resources/data/videojuegos.csv");
+    private static Scanner getScannerFromResource(String path) {
+        InputStream input = InputUtils.class.getClassLoader().getResourceAsStream(path);
 
-	    try {
-	        Scanner sc = new Scanner(f);
+        if (input == null) {
+            System.err.println("ERROR: No se encontró el archivo: " + path);
+            return null;
+        }
 
-	      
-	        if (sc.hasNextLine()) sc.nextLine();
+        return new Scanner(input);
+    }
 
-	        while (sc.hasNextLine()) {
+    // --------------------------
+    // VIDEOJUEGOS
+    // --------------------------
+    public static ArrayList<Videojuego> cargarVideojuegos() {
 
-	            String linea = sc.nextLine();
-	            String[] datos = linea.split(";");
+        ArrayList<Videojuego> lista = new ArrayList<>();
 
-	            try {
-	                long id = Long.parseLong(datos[0]);
-	                String titulo = datos[1];
-	                String sinopsis = datos[2];
-	                float precio = Float.parseFloat(datos[3]);
+        Scanner sc = getScannerFromResource("data/videojuegos.csv");
+        if (sc == null) return lista;
 
-	                int rating = Integer.parseInt(datos[4]);
+        if (sc.hasNextLine()) sc.nextLine(); // Saltar cabecera
 
-	                GeneroVideoJuego genero = GeneroVideoJuego.valueOf(datos[5]);
-	                TipoConsola tipo = TipoConsola.valueOf(datos[6]);
-	                String autor = datos[7];
+        while (sc.hasNextLine()) {
+            String linea = sc.nextLine();
+            String[] datos = linea.split(";");
 
-	                ImageIcon foto = Utils.loadImage("videojuegos/" + id + ".jpg", 98, 151);
+            try {
+                long id = Long.parseLong(datos[0]);
+                String titulo = datos[1];
+                String sinopsis = datos[2];
+                float precio = Float.parseFloat(datos[3]);
+                int rating = Integer.parseInt(datos[4]);
+                GeneroVideoJuego genero = GeneroVideoJuego.valueOf(datos[5].toUpperCase());
+                TipoConsola tipo = TipoConsola.valueOf(datos[6].toUpperCase());
+                String autor = datos[7];
 
-	                ArrayList<Review> comentarios = new ArrayList<>();
+                // RUTA CORRECTA DE IMÁGENES
+                ImageIcon foto = Utils.loadImage("images.videojuegos/" + id + ".jpg", 98, 151);
 
-	                Videojuego videojuego = new Videojuego(
-	                        id,
-	                        titulo,
-	                        sinopsis,
-	                        precio,
-	                        rating,
-	                        comentarios,
-	                        genero,
-	                        tipo,
-	                        autor,
-	                        foto
-	                );
+                Videojuego v = new Videojuego(
+                        id, titulo, sinopsis, precio, rating,
+                        new ArrayList<>(), genero, tipo, autor, foto
+                );
 
-	                listaVideojuegos.add(videojuego);
+                lista.add(v);
 
-	            } catch (Exception e) {
-	                System.err.println("Error en línea: " + linea);
-	                e.printStackTrace();
-	            }
-	        }
+            } catch (Exception e) {
+                System.err.println("Error leyendo videojuego: " + linea);
+            }
+        }
 
-	        sc.close();
+        sc.close();
+        return lista;
+    }
 
-	    } catch (FileNotFoundException e) {
-	        System.err.println("ERROR: Archivo de videojuegos no encontrado");
-	    }
+    // --------------------------
+    // PELÍCULAS
+    // --------------------------
+    public static ArrayList<Pelicula> cargarPeliculas() {
 
-	    return listaVideojuegos;
-	}
-	
-	public static ArrayList<Pelicula> cargarPeliculas() {
-	    ArrayList<Pelicula> listaPeliculas = new ArrayList<>();
-	    File f = new File("resources/data/peliculas.csv");
+        ArrayList<Pelicula> lista = new ArrayList<>();
 
-	    try (Scanner sc = new Scanner(f)) {
+        Scanner sc = getScannerFromResource("data/peliculas.csv");
+        if (sc == null) return lista;
 
-	        if (sc.hasNextLine()) sc.nextLine();
+        if (sc.hasNextLine()) sc.nextLine(); // Saltar cabecera
 
-	        while (sc.hasNextLine()) {
-	            String linea = sc.nextLine();
-	            String[] datos = linea.split(";");
+        while (sc.hasNextLine()) {
 
-	            try {
+            String linea = sc.nextLine();
+            String[] datos = linea.split(";");
 
-	                long id = Long.parseLong(datos[0]);
-	                String titulo = datos[1];
-	                double precio = Double.parseDouble(datos[2]);
-	                String sinopsis = datos[3];
-	                String director = datos[4];       
-	                int duracion = Integer.parseInt(datos[5]);
-	                GeneroPelicula genero = GeneroPelicula.valueOf(datos[6].toUpperCase());
-	                TipoPelicula tipo = TipoPelicula.valueOf(datos[7].toUpperCase());
+            try {
+                long id = Long.parseLong(datos[0]);
+                String titulo = datos[1];
+                double precio = Double.parseDouble(datos[2]);
+                String sinopsis = datos[3];
+                String director = datos[4];
+                int duracion = Integer.parseInt(datos[5]);
 
-	                int rating = 0;
+                GeneroPelicula genero = GeneroPelicula.valueOf(datos[6].toUpperCase());
+                TipoPelicula tipo = TipoPelicula.valueOf(datos[7].toUpperCase());
 
-	                ImageIcon foto = Utils.loadImage("peliculas/" + id + ".jpg", 98, 151);
+                ImageIcon foto = Utils.loadImage("images.peliculas/" + id + ".jpg", 98, 151);
 
+                Pelicula p = new Pelicula(
+                        id, titulo, sinopsis, precio, 0,
+                        new ArrayList<>(), tipo, genero, director, duracion, foto
+                );
 
-	                ArrayList<Review> reviews = new ArrayList<>();
+                lista.add(p);
 
-	                Pelicula pelicula = new Pelicula(
-	                        id,
-	                        titulo,
-	                        sinopsis,
-	                        precio,
-	                        rating,
-	                        reviews,
-	                        tipo,
-	                        genero,
-	                        director,
-	                        duracion,
-	                        foto
-	                );
+            } catch (Exception e) {
+                System.err.println("Error leyendo película: " + linea);
+            }
+        }
 
-	                listaPeliculas.add(pelicula);
+        sc.close();
+        return lista;
+    }
 
-	            } catch (NumberFormatException e) {
-	                System.err.println("Error de número en línea: " + linea);
-	            } catch (IllegalArgumentException e) {
-	                System.err.println("Error de enum en línea: " + linea);
-	            } catch (Exception e) {
-	                System.err.println("Error inesperado en línea: " + linea);
-	                e.printStackTrace();
-	            }
-	        }
+    // --------------------------
+    // REVIEWS
+    // --------------------------
+    public static ArrayList<Review> cargarReviews(List<Producto> productos, List<Cliente> clientes) {
 
-	    } catch (FileNotFoundException e) {
-	        System.err.println("ERROR: Archivo de películas no encontrado");
-	    }
+        ArrayList<Review> lista = new ArrayList<>();
 
-	    return listaPeliculas;
-	}
+        Scanner sc = getScannerFromResource("data/reviews.csv");
+        if (sc == null) return lista;
 
+        if (sc.hasNextLine()) sc.nextLine();
 
-	public static ArrayList<Review> cargarReviews(List<Producto> productos, List<Cliente> clientes) {
-	    ArrayList<Review> listaReviews = new ArrayList<>();
-	    File f = new File("resources/data/reviews.csv");
-	
-	    try (Scanner sc = new Scanner(f)) {
-	        if (sc.hasNextLine()) sc.nextLine();
-	
-	        while (sc.hasNextLine()) {
-	            String linea = sc.nextLine();
-	            String[] datos = linea.split(";");
-	
-	            try {
-	                long id = Long.parseLong(datos[0]);
-	                long idProducto = Long.parseLong(datos[1]);
-	                String dniCliente = datos[2];
-	                String comentario = datos[3];
-	                int rating = Integer.parseInt(datos[4]);
-	
-	                
-	                Producto producto = productos.stream()
-	                    .filter(p -> p.getId() == idProducto)
-	                    .findFirst()
-	                    .orElse(null);
-	
-	                Cliente cliente = clientes.stream()
-	                    .filter(c -> c.getDni().equals(dniCliente))
-	                    .findFirst()
-	                    .orElse(null);
-	
-	                Review review = new Review(id, producto, cliente, comentario, rating);
-	                listaReviews.add(review);
-	
-	            } catch (Exception e) {
-	                System.err.println("Error en línea: " + linea);
-	                e.printStackTrace();
-	            }
-	        }
-	    } catch (FileNotFoundException e) {
-	        System.err.println("ERROR: Archivo de reviews no encontrado");
-	    }
-	
-	    return listaReviews;
-	}
-	
-	public static Producto buscarProductoPorId(ArrayList<Producto> productos, String id) {
-	    for (Producto producto : productos) {
-	        if (String.valueOf(producto.getId()).equals(id)) {
-	            return producto;
-	        }
-	    }
-	    return null;
-	}
+        while (sc.hasNextLine()) {
+            String linea = sc.nextLine();
+            String[] datos = linea.split(";");
 
+            try {
+                long id = Long.parseLong(datos[0]);
+                long idProducto = Long.parseLong(datos[1]);
+                String dniCliente = datos[2];
+                String comentario = datos[3];
+                int rating = Integer.parseInt(datos[4]);
 
+                Producto producto = productos.stream()
+                        .filter(p -> p.getId() == idProducto)
+                        .findFirst()
+                        .orElse(null);
+
+                Cliente cliente = clientes.stream()
+                        .filter(c -> c.getDni().equals(dniCliente))
+                        .findFirst()
+                        .orElse(null);
+
+                lista.add(new Review(id, producto, cliente, comentario, rating));
+
+            } catch (Exception e) {
+                System.err.println("Error leyendo review: " + linea);
+            }
+        }
+
+        sc.close();
+        return lista;
+    }
 }
-    	
-    
