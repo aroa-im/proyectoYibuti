@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import domain.Admin;
 import domain.Cliente;
 import domain.Producto;
+import domain.Review;
 import domain.LogAccion;
 import domain.Usuario;
 import main.main;
@@ -32,44 +33,137 @@ public class UsuarioDAO implements UsuarioDAOInterface {
 		this.conexionBD = conexionBD;
 		this.logger = logger;
 	}
-
+//	@Override
+//	public boolean addUsuario(Usuario usuario) {
+//	    PreparedStatement preparedStmt = null;
+//	    PreparedStatement preparedStmt2 = null;
+//	    
+//	    try {
+//	        String insertSQL = "INSERT INTO Usuario (dni, nombre, email, contrasena) VALUES (?, ?, ?, ?)";
+//	        preparedStmt = conexionBD.prepareStatement(insertSQL);
+//	        
+//	        preparedStmt.setString(1, usuario.getDni());
+//	        preparedStmt.setString(2, usuario.getNombre());
+//	        preparedStmt.setString(3, usuario.getEmail());
+//	        preparedStmt.setString(4, usuario.getContrasena());
+//	        
+//	        int filas = preparedStmt.executeUpdate();
+//	        
+//	        // Si no se insertó en Usuario, fallar inmediatamente
+//	        if (filas == 0) {
+//	            if (logger != null)
+//	                logger.log(Level.WARNING, "No se pudo insertar el usuario en la tabla Usuario");
+//	            return false;
+//	        }
+//	 
+//	        int filas2 = 0;
+//	        
+//	        if (usuario instanceof Cliente) {
+//	            
+//	            String insertSQL2 = "INSERT INTO Cliente (dni, amonestaciones) VALUES (?, ?)";
+//	            preparedStmt2 = conexionBD.prepareStatement(insertSQL2);
+//	            
+//	            preparedStmt2.setString(1, usuario.getDni());
+//	            preparedStmt2.setInt(2, ((Cliente) usuario).getAmonestaciones());
+//	            
+//	            filas2 = preparedStmt2.executeUpdate();
+//	            
+//	        } else if (usuario instanceof Admin) {
+//	           
+//	            String insertSQL2 = "INSERT INTO Admin (dni) VALUES (?)";
+//	            preparedStmt2 = conexionBD.prepareStatement(insertSQL2);
+//	            
+//	            preparedStmt2.setString(1, usuario.getDni());
+//	            
+//	            filas2 = preparedStmt2.executeUpdate();
+//	        } else {// Tipo de usuario desconocido
+//	            if (logger != null)
+//	                logger.log(Level.WARNING, "Tipo de usuario desconocido: " + usuario.getClass().getName());
+//	            return false;
+//	        }
+//	        
+//	        // Verificar que se insertó correctamente en la tabla secundaria
+//	        if (filas2 == 0) {
+//	            if (logger != null)
+//	                logger.log(Level.WARNING, "No se pudo insertar en la tabla Cliente/Admin");
+//	            return false;
+//	        }
+//	        
+//	        if (logger != null)
+//	            logger.log(Level.INFO, "Usuario añadido correctamente: " + usuario.getDni());
+//	        
+//	        return true;
+//	        
+//	    } catch (SQLException e) {
+//	        if (logger != null)
+//	            logger.log(Level.SEVERE, "Error al añadir el usuario: ", e);
+//	        
+//	        
+//	        try {
+//	            String deleteSQL = "DELETE FROM Usuario WHERE dni = ?";
+//	            PreparedStatement rollbackStmt = conexionBD.prepareStatement(deleteSQL);
+//	            rollbackStmt.setString(1, usuario.getDni());
+//	            rollbackStmt.executeUpdate();
+//	            rollbackStmt.close();
+//	            
+//	            if (logger != null)
+//	                logger.log(Level.INFO, "Rollback ejecutado: Usuario eliminado tras fallo");
+//	                
+//	        } catch (SQLException rollbackEx) {
+//	            if (logger != null)
+//	                logger.log(Level.SEVERE, "Error en rollback: ", rollbackEx);
+//	        }
+//	        
+//	        return false;
+//	        
+//	    } finally {
+//	       
+//	        try {
+//	            if (preparedStmt != null) preparedStmt.close();
+//	            if (preparedStmt2 != null) preparedStmt2.close();
+//	        } catch (SQLException e) {
+//	            if (logger != null)
+//	                logger.log(Level.WARNING, "Error al cerrar PreparedStatements: ", e);
+//	        }
+//	    }
+//	}
 	@Override
 	public boolean addUsuario(Usuario usuario) {
-		try {
-			String insertSQL = "INSERT INTO Usuario VALUES (?,?,?,?,?)";
-			PreparedStatement preparedStmt = conexionBD.prepareStatement(insertSQL);
-			preparedStmt.setString(1, usuario.getDni());
-			preparedStmt.setString(2, usuario.getNombre());
-			preparedStmt.setString(3, usuario.getEmail());
-			//preparedStmt.setString(4, usuario.getFechaCreacion().toString());
-			preparedStmt.setString(5, usuario.getContrasena());
+	    try {
+	        String insertSQL = "INSERT INTO Usuario (dni, nombre, email, contrasena) VALUES (?,?,?,?)";
+	        PreparedStatement preparedStmt = conexionBD.prepareStatement(insertSQL);
+	        preparedStmt.setString(1, usuario.getDni());
+	        preparedStmt.setString(2, usuario.getNombre());
+	        preparedStmt.setString(3, usuario.getEmail());
+	        preparedStmt.setString(4, usuario.getContrasena());
 
-			int filas = preparedStmt.executeUpdate();
+	        int filas = preparedStmt.executeUpdate();
+	        preparedStmt.close();
 
-			PreparedStatement preparedStmt2 = null;
-			if (usuario instanceof Cliente) {
-				String insertSQL2 = "INSERT INTO Cliente VALUES (?,?)";
-				preparedStmt2 = conexionBD.prepareStatement(insertSQL2);
-				preparedStmt2.setString(1, usuario.getDni());
-				preparedStmt2.setInt(2, ((Cliente) usuario).getAmonestaciones());
-			} else {
-				String insertSQL2 = "INSERT INTO Admin VALUES (?)";
-				preparedStmt2 = conexionBD.prepareStatement(insertSQL2);
-				preparedStmt2.setString(1, usuario.getDni());
-			}
+	        // Insertar en la tabla específica (Cliente o Admin)
+	        PreparedStatement preparedStmt2 = null;
+	        if (usuario instanceof Cliente) {
+	            String insertSQL2 = "INSERT INTO Cliente (dni, amonestaciones) VALUES (?,?)";
+	            preparedStmt2 = conexionBD.prepareStatement(insertSQL2);
+	            preparedStmt2.setString(1, usuario.getDni());
+	            preparedStmt2.setInt(2, ((Cliente) usuario).getAmonestaciones());
+	        } else {
+	            String insertSQL2 = "INSERT INTO Admin (dni) VALUES (?)";
+	            preparedStmt2 = conexionBD.prepareStatement(insertSQL2);
+	            preparedStmt2.setString(1, usuario.getDni());
+	        }
 
-			int filas2 = preparedStmt2.executeUpdate();
-
-			preparedStmt.close();
-			preparedStmt2.close();
-			return (filas > 0 && filas2 > 0) ? true : false;
-		} catch (SQLException e) {
-			if (logger != null)
-				logger.log(Level.SEVERE, "Error al añadir el usuario: ", e);
-			return false;
-		}
+	        int filas2 = preparedStmt2.executeUpdate();
+	        preparedStmt2.close();
+	        
+	        return (filas > 0 && filas2 > 0);
+	        
+	    } catch (SQLException e) {
+	        if (logger != null)
+	            logger.log(Level.SEVERE, "Error al añadir el usuario: ", e);
+	        return false;
+	    }
 	}
-
 	@Override
 	public boolean deleteUsuario(String dni) {
 		String deleteSQL = "DELETE FROM Usuario WHERE dni = ?";
@@ -156,40 +250,64 @@ public class UsuarioDAO implements UsuarioDAOInterface {
 		}
 		return usuario;
 	}
-	
+
 	@Override
 	public ArrayList<Usuario> getUsuarios() {
-		ArrayList<Usuario> result = new ArrayList<>();
-		
-		String selectSQL = "SELECT "
-				+ "Usuario.dni, Usuario.nombre, Usuario.email, Usuario.contrasena, IFNULL(Cliente.amonestaciones, 'Es admin') as amonestaciones "
-				+ "FROM Usuario LEFT JOIN Cliente ON Usuario.dni = Cliente.dni LEFT JOIN Admin ON Usuario.dni = Admin.dni;";
-		try {
-			PreparedStatement preparedStmt = conexionBD.prepareStatement(selectSQL);
-			ResultSet rs = preparedStmt.executeQuery();
-			
-			while (rs.next()) {
-				if (rs.getString("amonestaciones").equals("Es admin")) {
-					//result.add(new Admin(rs.getString("dni"), rs.getString("nombre"), rs.getString("email"), LocalDate.parse(rs.getString("fechaCreacion")), rs.getString("contrasena"), getLogAccionesByAdminDni(rs.getString("dni"))));
-				} else {
-					ArrayList<ProductoDTO> bufferDTO = main.getProductoDAO().getHistorialByCliente(selectSQL);
-					ArrayList<Producto> historial = new ArrayList<>();
-					
-					for(ProductoDTO productoDTO : bufferDTO) {
-						//historial.add(new Producto(productoDTO));
-					}
-					
-					//result.add(new Cliente(rs.getString("dni"), rs.getString("nombre"), rs.getString("email"), rs.getString("contrasena"), historial, main.getReviewDAO().getReviewsByUsuarioDni(rs.getString("dni")), rs.getInt("amonestaciones")));
-				}
-			}
-			
-			preparedStmt.close();
-		} catch (SQLException e) {
-			if (logger != null)
-				logger.log(Level.SEVERE, "Error al recuperar los usuarios: ", e);
-			return result;
-		}
-		return result;
+	    ArrayList<Usuario> result = new ArrayList<>();
+	    String selectSQL = 
+	        "SELECT Usuario.dni, Usuario.nombre,  Usuario.email, Usuario.contrasena, Cliente.amonestaciones, CASE " +
+			"WHEN Admin.dni IS NOT NULL THEN 'ADMIN' " +
+			"WHEN Cliente.dni IS NOT NULL THEN 'CLIENTE' " +
+			"ELSE 'DESCONOCIDO'  END AS tipo_usuario " +
+	        "FROM Usuario " +
+	        "LEFT JOIN Cliente ON Usuario.dni = Cliente.dni " +
+	        "LEFT JOIN Admin ON Usuario.dni = Admin.dni;";
+	    
+	    try (PreparedStatement preparedStmt = conexionBD.prepareStatement(selectSQL)) {
+	        ResultSet rs = preparedStmt.executeQuery();
+	        
+	        while (rs.next()) {
+	            String dni = rs.getString("dni");
+	            String nombre = rs.getString("nombre");
+	            String email = rs.getString("email");
+	            String contrasena = rs.getString("contrasena");
+	            String tipoUsuario = rs.getString("tipo_usuario");
+	            
+	            if ("ADMIN".equals(tipoUsuario)) {
+	                
+	                ArrayList<LogAccion> logAcciones = getLogAccionesByAdminDni(dni);
+	                
+	                Admin admin = new Admin(
+	                    dni, nombre, email, contrasena,
+	                    new ArrayList<>(), logAcciones
+	                );
+	                result.add(admin);
+	                
+	            } else if ("CLIENTE".equals(tipoUsuario)) {
+	                
+	                int amonestaciones = rs.getInt("amonestaciones");
+	                
+	                ArrayList<Review> reviews = new ArrayList<>();
+	                if (main.getReviewDAO() != null) {
+	                    reviews = main.getReviewDAO().getReviewsByUsuarioDni(dni);
+	                }
+	                
+	                Cliente cliente = new Cliente(
+	                    dni, nombre, email, contrasena, 
+	                    new ArrayList<>(),  
+	                    reviews,
+	                    amonestaciones
+	                );
+	                result.add(cliente);
+	            }
+	        }
+	        
+	    } catch (SQLException e) {
+	        if (logger != null)
+	            logger.log(Level.SEVERE, "Error al recuperar los usuarios: ", e);
+	    }
+	    
+	    return result;
 	}
 
 	@Override

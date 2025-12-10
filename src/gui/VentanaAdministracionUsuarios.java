@@ -38,7 +38,7 @@ public class VentanaAdministracionUsuarios extends JFrame {
         titleLabel.setAlignmentX(CENTER_ALIGNMENT);
         labelPanel.add(titleLabel);
         
-        // Obtener usuarios de la simulación
+        
         ArrayList<Usuario> usuarios = main.getUsuarioDAO().getUsuarios();
         
         String[][] tablaUsuarios = new String[usuarios.size()][4];
@@ -78,14 +78,13 @@ public class VentanaAdministracionUsuarios extends JFrame {
         
         JPanel buttonPanel = new JPanel();
         JButton amonestacionesButton = new JButton("Editar amonestaciones");
-		JButton cambiarTipoButton = new JButton("Cambiar tipo");
+//		JButton cambiarTipoButton = new JButton("Cambiar tipo");
 		JButton eliminarUsuarioButton = new JButton("Eliminar usuario");
-//        JButton volverButton = new JButton("Volver");
         
         buttonPanel.add(amonestacionesButton);
-        buttonPanel.add(cambiarTipoButton);
+//        buttonPanel.add(cambiarTipoButton);
         buttonPanel.add(eliminarUsuarioButton);
-//        buttonPanel.add(volverButton);
+
         
   
         amonestacionesButton.addActionListener(e -> {
@@ -119,47 +118,47 @@ public class VentanaAdministracionUsuarios extends JFrame {
 			}
 		});
 		
-        // Acción: Cambiar tipo de usuario
-        cambiarTipoButton.addActionListener(e -> {
-			if (historial.getSelectedRow() == -1) {
-				JOptionPane.showMessageDialog(null, "Por favor, selecciona un usuario/a", "Error", JOptionPane.ERROR_MESSAGE);
-			} else {
-				Usuario usuarioSeleccionado = usuarios.get(historial.getSelectedRow());
-				if (usuarioSeleccionado instanceof Admin) {
-					int opcion = JOptionPane.showConfirmDialog(null, "Seguro que quieres descender este usuario a Cliente?", "Cambiar tipo de Usuario de " + usuarioSeleccionado.getNombre(), JOptionPane.YES_NO_OPTION);
-					if (opcion == 0) {
-						if (main.getUsuarioDAO().deleteUsuario(usuarioSeleccionado.getDni())) {
-							main.getUsuarioDAO().addLogAccion(new LogAccion(0, LocalDateTime.now(), "Usuario eliminado con DNI: " + usuarioSeleccionado.getDni(), usuario.getDni()));
-							Cliente nuevoCliente = new Cliente(usuarioSeleccionado.getDni(), usuarioSeleccionado.getNombre(), usuarioSeleccionado.getEmail(), usuarioSeleccionado.getContrasena(), new ArrayList<>(),new ArrayList<>(), 0);
-							if (main.getUsuarioDAO().addUsuario(nuevoCliente)) {
-								main.getUsuarioDAO().addLogAccion(new LogAccion(0, LocalDateTime.now(), "Usuario añadido con DNI: " + usuarioSeleccionado.getDni(), usuario.getDni()));
-								JOptionPane.showMessageDialog(null, "Usuario descendido a Cliente", "Tipo modificado", JOptionPane.INFORMATION_MESSAGE);
-							} else {
-								JOptionPane.showMessageDialog(null, "Error al cambiar el tipo", "Error", JOptionPane.ERROR_MESSAGE);
-							}
-						} else {
-							JOptionPane.showMessageDialog(null, "Error al cambiar el tipo", "Error", JOptionPane.ERROR_MESSAGE);
-						}
-					}
-				} else {
-					int opcion = JOptionPane.showConfirmDialog(null, "Seguro que quieres ascender este usuario a Admin?",  "Cambiar tipo de Usuario de " + usuarioSeleccionado.getNombre(), JOptionPane.YES_NO_OPTION);
-					if (opcion == 0) {
-						if (main.getUsuarioDAO().deleteUsuario(usuarioSeleccionado.getDni())) {
-							main.getUsuarioDAO().addLogAccion(new LogAccion(0, LocalDateTime.now(), "Usuario eliminado con DNI: " + usuarioSeleccionado.getDni(), usuario.getDni()));
-							Admin nuevoAdmin = new Admin(usuarioSeleccionado.getDni(), usuarioSeleccionado.getNombre(), usuarioSeleccionado.getEmail(), usuarioSeleccionado.getContrasena()	, new ArrayList<>(), new ArrayList<>());
-							if (main.getUsuarioDAO().addUsuario(nuevoAdmin)) {
-								main.getUsuarioDAO().addLogAccion(new LogAccion(0, LocalDateTime.now(), "Usuario añadido con DNI: " + usuarioSeleccionado.getDni(), usuario.getDni()));
-								JOptionPane.showMessageDialog(null, "Usuario ascendido a Admin", "Tipo modificado", JOptionPane.INFORMATION_MESSAGE);
-							} else {
-								JOptionPane.showMessageDialog(null, "Error cambiar el tipo", "Error", JOptionPane.ERROR_MESSAGE);
-							}
-						} else {
-							JOptionPane.showMessageDialog(null, "Error cambiar el tipo", "Error", JOptionPane.ERROR_MESSAGE);
-						}
-					}
-				}
-			}
-		});
+//        // Acción: Cambiar tipo de usuario
+//        cambiarTipoButton.addActionListener(e -> {
+//			if (historial.getSelectedRow() == -1) {
+//				JOptionPane.showMessageDialog(null, "Por favor, selecciona un usuario/a", "Error", JOptionPane.ERROR_MESSAGE);
+//			} else {
+//				Usuario usuarioSeleccionado = usuarios.get(historial.getSelectedRow());
+//				if (usuarioSeleccionado instanceof Admin) {
+//					int opcion = JOptionPane.showConfirmDialog(null, "Seguro que quieres descender este usuario a Cliente?", "Cambiar tipo de Usuario de " + usuarioSeleccionado.getNombre(), JOptionPane.YES_NO_OPTION);
+//					if (opcion == 0) {
+//						if (main.getUsuarioDAO().deleteUsuario(usuarioSeleccionado.getDni())) {
+//							main.getUsuarioDAO().addLogAccion(new LogAccion(0, LocalDateTime.now(), "Usuario eliminado con DNI: " + usuarioSeleccionado.getDni(), usuario.getDni()));
+//							Cliente nuevoCliente = new Cliente(usuarioSeleccionado.getDni(), usuarioSeleccionado.getNombre(), usuarioSeleccionado.getEmail(), usuarioSeleccionado.getContrasena(), new ArrayList<>(),new ArrayList<>(), 0);
+//							if (main.getUsuarioDAO().addUsuario(nuevoCliente)) {
+//								main.getUsuarioDAO().addLogAccion(new LogAccion(0, LocalDateTime.now(), "Usuario añadido con DNI: " + usuarioSeleccionado.getDni(), usuario.getDni()));
+//								JOptionPane.showMessageDialog(null, "Usuario descendido a Cliente", "Tipo modificado", JOptionPane.INFORMATION_MESSAGE);
+//							} else {
+//								JOptionPane.showMessageDialog(null, "Error al cambiar el tipo", "Error", JOptionPane.ERROR_MESSAGE);
+//							}
+//						} else {
+//							JOptionPane.showMessageDialog(null, "Error al cambiar el tipo", "Error", JOptionPane.ERROR_MESSAGE);
+//						}
+//					}
+//				} else {
+//					int opcion = JOptionPane.showConfirmDialog(null, "Seguro que quieres ascender este usuario a Admin?",  "Cambiar tipo de Usuario de " + usuarioSeleccionado.getNombre(), JOptionPane.YES_NO_OPTION);
+//					if (opcion == 0) {
+//						if (main.getUsuarioDAO().deleteUsuario(usuarioSeleccionado.getDni())) {
+//							main.getUsuarioDAO().addLogAccion(new LogAccion(0, LocalDateTime.now(), "Usuario eliminado con DNI: " + usuarioSeleccionado.getDni(), usuario.getDni()));
+//							Admin nuevoAdmin = new Admin(usuarioSeleccionado.getDni(), usuarioSeleccionado.getNombre(), usuarioSeleccionado.getEmail(), usuarioSeleccionado.getContrasena()	, new ArrayList<>(), new ArrayList<>());
+//							if (main.getUsuarioDAO().addUsuario(nuevoAdmin)) {
+//								main.getUsuarioDAO().addLogAccion(new LogAccion(0, LocalDateTime.now(), "Usuario añadido con DNI: " + usuarioSeleccionado.getDni(), usuario.getDni()));
+//								JOptionPane.showMessageDialog(null, "Usuario ascendido a Admin", "Tipo modificado", JOptionPane.INFORMATION_MESSAGE);
+//							} else {
+//								JOptionPane.showMessageDialog(null, "Error cambiar el tipo", "Error", JOptionPane.ERROR_MESSAGE);
+//							}
+//						} else {
+//							JOptionPane.showMessageDialog(null, "Error cambiar el tipo", "Error", JOptionPane.ERROR_MESSAGE);
+//						}
+//					}
+//				}
+//			}
+//		});
         
         
         eliminarUsuarioButton.addActionListener(e -> {
@@ -179,13 +178,7 @@ public class VentanaAdministracionUsuarios extends JFrame {
 			}
 		});
         
-//        // Acción: Volver
-//        volverButton.addActionListener(e -> {
-//            if (ventanaPrevia != null) {
-//                ventanaPrevia.setVisible(true);
-//            }
-//            dispose();
-//        });
+
         
         add(labelPanel, BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
@@ -195,7 +188,6 @@ public class VentanaAdministracionUsuarios extends JFrame {
     }
     
     public static void main(String[] args) {
-        // Para pruebas
         new VentanaAdministracionUsuarios();
     }
 }

@@ -260,10 +260,12 @@ public class ProductoDAO implements ProductoDAOInterface {
     @Override
     public ArrayList<ProductoDTO> getHistorialByCliente(String dniCliente) {
         ArrayList<ProductoDTO> historialCliente = new ArrayList<>();
+
+        String selectSQL = "SELECT P.* FROM Producto P " +
+                          "INNER JOIN Alquiler A ON P.id = A.id_producto " +
+                          "WHERE A.dni_cliente = ?";
         
-        String insertSQL = "SELECT P.* FROM Reserva R, Producto P WHERE R.id_producto = P.id AND R.dni_cliente = ?;";
-        
-        try (PreparedStatement preparedStmt = conexionBD.prepareStatement(insertSQL)) {
+        try (PreparedStatement preparedStmt = conexionBD.prepareStatement(selectSQL)) {
             preparedStmt.setString(1, dniCliente);
             
             try (ResultSet rs = preparedStmt.executeQuery()) {
@@ -276,9 +278,10 @@ public class ProductoDAO implements ProductoDAOInterface {
             if (logger != null)
                 logger.log(Level.SEVERE, "Error al obtener el historial por cliente: ", e);
         }
+        
         return historialCliente;
     }
-
+    
     @Override
     public boolean productoUsadoByDniCliente(String dniCliente, Long id) {
         String query = "SELECT count(*) AS veces_usado FROM Reserva WHERE dni_cliente = ? AND id_producto = ?";
