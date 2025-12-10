@@ -71,7 +71,47 @@ public class CrearBBDD {
 					    "autor_videojuego" TEXT
 					);
 
-					
+					CREATE TABLE IF NOT EXISTS "Pelicula" (
+					    "id" INTEGER PRIMARY KEY,
+					    "id_tipo_pelicula" INTEGER NOT NULL,
+					    "id_genero_pelicula" INTEGER NOT NULL,
+					    "director" TEXT NOT NULL,
+					    "duracion" INTEGER NOT NULL,
+					    FOREIGN KEY("id") REFERENCES "Producto"("id") ON DELETE CASCADE,
+					    FOREIGN KEY("id_tipo_pelicula") REFERENCES "TipoPelicula"("id"),
+					    FOREIGN KEY("id_genero_pelicula") REFERENCES "GeneroPelicula"("id")
+					);
+
+					CREATE TABLE IF NOT EXISTS "TipoPelicula" (
+					    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+					    "nombre" TEXT UNIQUE
+
+					);
+					CREATE TABLE IF NOT EXISTS "GeneroPelicula" (
+					    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+					    "nombre" TEXT NOT NULL UNIQUE
+					);
+
+					CREATE TABLE IF NOT EXISTS "Videojuego" (
+					    "id" INTEGER PRIMARY KEY,
+					    "id_genero_videojuego" INTEGER NOT NULL,
+					    "id_tipo_consola" INTEGER NOT NULL,
+					    "autor" TEXT NOT NULL,
+					    FOREIGN KEY("id") REFERENCES "Producto"("id") ON DELETE CASCADE,
+					    FOREIGN KEY("id_genero_videojuego") REFERENCES "GeneroVideojuego"("id"),
+					    FOREIGN KEY("id_tipo_consola") REFERENCES "TipoConsola"("id")
+					);
+
+					CREATE TABLE IF NOT EXISTS "TipoConsola" (
+					    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+					    "nombre" TEXT NOT NULL
+					);
+
+					CREATE TABLE IF NOT EXISTS "GeneroVideojuego" (
+					    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+					    "nombre" TEXT NOT NULL UNIQUE
+					);
+
 					CREATE TABLE IF NOT EXISTS "Alquiler" (
 					    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
 					    "fecha_inicio" TEXT NOT NULL,
