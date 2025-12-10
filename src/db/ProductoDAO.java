@@ -48,20 +48,21 @@ public class ProductoDAO implements ProductoDAOInterface {
         dto.setPrecio(producto.getPrecio());
         dto.setRating(producto.getRating());
         
-
-        dto.setUrlFoto(producto instanceof Pelicula ? "peliculas/default.jpg" : "videojuegos/default.png");
-        
         if (producto instanceof Pelicula) {
-            Pelicula pelicula = (Pelicula) producto;
             dto.setTipoProducto("PELICULA");
+            dto.setUrlFoto("peliculas/" + producto.getId() + ".jpg");
+            
+            Pelicula pelicula = (Pelicula) producto;
             dto.setTipoPelicula(pelicula.getTipo());
             dto.setGeneroPelicula(pelicula.getGenero());
             dto.setDirector(pelicula.getDirector());
             dto.setDuracion(pelicula.getDuracion());
             
         } else if (producto instanceof Videojuego) {
-            Videojuego videojuego = (Videojuego) producto;
             dto.setTipoProducto("VIDEOJUEGO");
+            dto.setUrlFoto("videojuegos/" + producto.getId() + ".jpg");
+            
+            Videojuego videojuego = (Videojuego) producto;
             dto.setGeneroVideojuego(videojuego.getGenero());
             dto.setTipoConsola(videojuego.getTipo());
             dto.setAutorVideojuego(videojuego.getAutor());
@@ -71,12 +72,12 @@ public class ProductoDAO implements ProductoDAOInterface {
     
 
     private Producto crearProductoDesdeDTO(ProductoDTO dto) {
-
-        ImageIcon foto = Utils.loadImage(dto.getUrlFoto(), 115, 160);
+        // Cambiar de 115x160 a 98x151 para que coincida con inputUtils
+        ImageIcon foto = Utils.loadImage(dto.getUrlFoto(), 98, 151);
         
         ArrayList<domain.Review> reviews = new ArrayList<>();
         if (main.getReviewDAO() != null) {
-
+            // cargar reviews si es necesario
         }
 
         if ("PELICULA".equals(dto.getTipoProducto())) {
