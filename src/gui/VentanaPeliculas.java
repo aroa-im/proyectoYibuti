@@ -62,9 +62,9 @@ public class VentanaPeliculas extends JFrame {
 		JPanel panelPeli = new JPanel();
 		panelPeli.setLayout(new BoxLayout(panelPeli, BoxLayout.Y_AXIS));
 
-		ImageIcon imagen = Utils.loadImage("images.peliculas/" + pelicula.getId() + ".jpg", 115, 160);
+		ImageIcon imagen = Utils.loadImage("peliculas/" + pelicula.getId() + ".jpg", 115, 160);
 		if (imagen == null)
-			imagen = Utils.loadImage("images/noImagen.jpg", 115, 160);
+			imagen = Utils.loadImage("noImagen.jpg", 115, 160);
 
 		JLabel imagenLabel = new JLabel(imagen);
 		JLabel titulo = new JLabel(pelicula.getTitulo());
