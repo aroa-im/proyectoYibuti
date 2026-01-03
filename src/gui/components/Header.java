@@ -29,11 +29,9 @@ public class Header extends JPanel {
 
 	public Header(Seccion seccion, Usuario usuario,JFrame ventana) {
 		setLayout(new BorderLayout());
-//      setBackground(Color.GRAY);
         
         // Primer panel (izquierdo)
         JPanel panelIzquierdo = new JPanel(new GridBagLayout());
-//      panelIzquierdo.setBackground(Color.PINK);
         
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(0, 0, 0, 15); // Margen entre componentes (icono y texto)
@@ -77,7 +75,6 @@ public class Header extends JPanel {
         
         // Segundo panel (derecho)
         JPanel panelDerecho = new JPanel();
-//      panelDerecho.setBackground(Color.DARK_GRAY);
         
         String nombreIconoUsuario = obtenerNombreImagenUsuario(usuario);        
         ImageIcon icon2 = Utils.loadImage(nombreIconoUsuario, 48, 48);
@@ -141,8 +138,9 @@ public class Header extends JPanel {
 			nuevaVentana = new VentanaVideojuegos();
 			break;
 		}
-		nuevaVentana.setVisible(true);
-		ventana.dispose();
+		if (nuevaVentana != null) {
+			nuevaVentana.setVisible(true);
+			ventana.dispose();
+		}
 	}
-
 }
