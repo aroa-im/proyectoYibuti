@@ -73,7 +73,7 @@ public class ProductoDAO implements ProductoDAOInterface {
 
     private Producto crearProductoDesdeDTO(ProductoDTO dto) {
         // Cambiar de 115x160 a 98x151 para que coincida con inputUtils
-        ImageIcon foto = Utils.loadImage(dto.getUrlFoto(), 98, 151);
+        ImageIcon foto = Utils.loadImage(dto.getUrlFoto(), 115, 160);
         
         ArrayList<domain.Review> reviews = new ArrayList<>();
         if (main.getReviewDAO() != null) {
