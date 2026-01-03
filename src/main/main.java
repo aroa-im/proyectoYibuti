@@ -2,6 +2,7 @@ package main;
 
 import domain.Usuario;
 import gui.VentanaPortada;
+import io.CargarDatosBBDD;
 //import io.CargarDatosEnBBDD;
 import io.CrearBBDD;
 import java.io.FileReader;
@@ -124,7 +125,8 @@ public class main {
 
 		threads = new ArrayList<>();
 		//descomentar la primera vez y tras esto volver a comentarlo 
-		//new CrearBBDD();
+//		new CrearBBDD();
+//		new CargarDatosBBDD();
 
 		SwingUtilities.invokeLater(() -> new VentanaPortada());
 	}
