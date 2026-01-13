@@ -192,7 +192,7 @@ public class VentanaInformacionUsuario extends JFrame {
             botonDinamico.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    new VentanaHistorialUsuario().setVisible(true);
+                    new VentanaHistorialUsuario(usuario).setVisible(true);
                 }
             });
         }
