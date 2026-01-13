@@ -67,7 +67,7 @@ public class VentanaHistorialUsuario extends JFrame {
 			}
 		};
 
-		// 4. LLENADO DE DATOS (Usando el historial del Cliente)
+		
 		ArrayList<Producto> historial = clienteLogueado.getHistorial();
 
 		if (historial != null) {
@@ -105,7 +105,7 @@ public class VentanaHistorialUsuario extends JFrame {
 		}
 		
 		JTable tabla = new JTable(modelo);
-		tabla.setRowHeight(120); // Altura suficiente para la carátula
+		tabla.setRowHeight(120);
 		tabla.setFont(new Font("Arial", Font.PLAIN, 14));
 		tabla.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
 		
@@ -129,9 +129,8 @@ public class VentanaHistorialUsuario extends JFrame {
 		tabla.getColumnModel().getColumn(1).setCellRenderer(new DefaultTableCellRenderer() {
 			@Override
 			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-				// Usamos el render por defecto pero permitimos HTML
 				Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-				setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0)); // Un poco de margen
+				setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0)); 
 				return c;
 			}
 		});
