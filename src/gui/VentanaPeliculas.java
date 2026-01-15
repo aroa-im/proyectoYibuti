@@ -26,7 +26,6 @@ import javax.swing.JTextField;
 import domain.Admin;
 import domain.Pelicula;
 import domain.Seccion;
-import domain.TipoConsola;
 import domain.TipoPelicula;
 import domain.Usuario;
 import main.main;
@@ -61,46 +60,8 @@ public class VentanaPeliculas extends JFrame {
 		// Subpanel superior con controles (buscador, ordenar, añadir)
 		JPanel subPanelContenido1 = new JPanel(new BorderLayout());
 		panelContenido.add(subPanelContenido1, BorderLayout.NORTH);
-		TipoPelicula[] arrayPeliculas = new TipoPelicula[3];
-		int contador = 0;
 
-		TipoPelicula[] arrayPeliculas = new TipoPelicula[3];
-		int contador = 0;
-
-		for (TipoPelicula tipoPelicula : TipoPelicula.values()) {
-			arrayPeliculas[contador] = tipoPelicula;
-			contador++;
-		}
-
-		JComboBox<Object> ordenar = new JComboBox<>();
-		subPanelContenido1.add(ordenar, BorderLayout.EAST);
-		
-		ordenar.addItem("ORDENAR");
-		for (TipoPelicula tipo : TipoPelicula.values()) {
-			ordenar.addItem(tipo);
-		}
-
-		ordenar.setRenderer((list, value, index, isSelected, cellHasFocus) -> {
-			JLabel label = new JLabel();
-			if (value == null) {
-				label.setText(""); // texto que verá el usuario
-			} else if (value instanceof String) {
-				label.setText((String) value);
-			} else if (value instanceof TipoConsola) {
-				label.setText(((TipoConsola) value).toString());
-			} else {
-				label.setText(value.toString());
-			}
-			if (isSelected) {
-				label.setBackground(list.getSelectionBackground());
-				label.setForeground(list.getSelectionForeground());
-				label.setOpaque(true);
-			}
-			return label;
-		});
-		ordenar.setSelectedIndex(0);
-
-		TipoPelicula[] arrayPeliculas = new TipoPelicula[3];
+		TipoPelicula[] arrayPeliculas = new TipoPelicula[2];
 		int contador = 0;
 
 		for (TipoPelicula tipoPelicula : TipoPelicula.values()) {
@@ -122,8 +83,8 @@ public class VentanaPeliculas extends JFrame {
 				label.setText(""); // texto que verá el usuario
 			} else if (value instanceof String) {
 				label.setText((String) value);
-			} else if (value instanceof TipoConsola) {
-				label.setText(((TipoConsola) value).toString());
+			} else if (value instanceof TipoPelicula) {
+				label.setText(((TipoPelicula) value).toString());
 			} else {
 				label.setText(value.toString());
 			}
@@ -258,7 +219,7 @@ public class VentanaPeliculas extends JFrame {
 		for (Pelicula pelicula : listaPeliculasRenderizada) {
 			JPanel panelCentrarPelicula = crearPanelPelicula(pelicula);
 			subPanelContenido2.add(panelCentrarPelicula);
-			if (contadorPeliculas >= 20)
+			if (contadorPeliculas >= 60)
 				break;
 			contadorPeliculas++;
 		}
@@ -271,9 +232,8 @@ public class VentanaPeliculas extends JFrame {
 		if (item instanceof String && item.equals("ORDENAR")) {
 			listaPeliculasRenderizada = new ArrayList<>(listaPeliculas);
 		} else if (item instanceof TipoPelicula tipo) {
-			// Usamos la recursividad de Utils
-			listaPeliculasRenderizada = Utils.sortArrayTipoPeliula(new ArrayList<>(listaPeliculasRenderizada), tipo,
-					listaPeliculasRenderizada.size());
+			listaPeliculasRenderizada = new ArrayList<>(
+					listaPeliculas.stream().filter(v -> v.getTipo() == tipo).toList());
 		}
 		recargarPanelContenido(subPanelContenido2);
 	}

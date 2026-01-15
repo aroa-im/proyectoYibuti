@@ -19,10 +19,6 @@ public class Utils {
     private static final ImageIcon IMAGEN_DEFAULT = new ImageIcon(
             Utils.class.getResource("/images/noImagen.jpg")); // Coloca aquí tu default
 
-    /**
-     * Carga una imagen escalada de forma segura.
-     * Si no se encuentra la imagen, devuelve la default.
-     */
     public static ImageIcon loadImage(String imageName, int length, int height) {
         try {
             InputStream is = Utils.class.getResourceAsStream("/images/" + imageName);
