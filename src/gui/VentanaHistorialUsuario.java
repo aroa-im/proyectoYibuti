@@ -20,115 +20,161 @@ import domain.Cliente;
 import domain.Pelicula;
 import domain.Producto;
 import domain.Review;
-
 import domain.Usuario;
 
 public class VentanaHistorialUsuario extends JFrame {
 
-	private static final long serialVersionUID = 1L;
-	private Usuario usuario;
+    private static final long serialVersionUID = 1L;
+    private Usuario usuario;
 
-	public VentanaHistorialUsuario(Usuario usuario) {
-		this.usuario = usuario;
+    public VentanaHistorialUsuario(Usuario usuario) {
+        this.usuario = usuario;
 
-		if (usuario == null || !(usuario instanceof Cliente)) {
-			System.out.println("MODO DISEÑO: Cargando usuario de prueba...");
+        if (usuario == null || !(usuario instanceof Cliente)) {
+            System.out.println("MODO DISEÑO: Cargando usuario de prueba...");
+            this.usuario = new Cliente();
+        }
 
-			this.usuario = new Cliente();
-		}
+        Cliente clienteLogueado = (Cliente) this.usuario;
 
-		Cliente clienteLogueado = (Cliente) this.usuario;
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setSize(900, 600);
+        setTitle("Historial de " + clienteLogueado.getNombre());
+        setLocationRelativeTo(null);
+        setLayout(new BorderLayout());
 
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setSize(900, 600);
-		setTitle("Historial de " + clienteLogueado.getNombre());
-		setLocationRelativeTo(null);
-		setLayout(new BorderLayout());
+        // Panel de cabecera
+        JPanel headerPanel = new JPanel();
+        headerPanel.setBackground(new Color(50, 50, 50));
+        JLabel lblHeader = new JLabel("HISTORIAL DE " + clienteLogueado.getNombre().toUpperCase());
+        lblHeader.setForeground(Color.WHITE);
+        lblHeader.setFont(new Font("Arial", Font.BOLD, 20));
+        headerPanel.add(lblHeader);
+        add(headerPanel, BorderLayout.NORTH);
 
-		JPanel headerPanel = new JPanel();
-		headerPanel.setBackground(new Color(50, 50, 50));
-		JLabel lblHeader = new JLabel("HISTORIAL DE " + clienteLogueado.getNombre().toUpperCase());
-		lblHeader.setForeground(Color.WHITE);
-		lblHeader.setFont(new Font("Arial", Font.BOLD, 20));
-		headerPanel.add(lblHeader);
-		add(headerPanel, BorderLayout.NORTH);
+        String[] columnas = { "Imagen", "Producto", "Review" };
 
-		String[] columnas = { "Producto", "Detalles del Alquiler", "Tu Opinión" };
+        DefaultTableModel modelo = new DefaultTableModel(columnas, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
 
-		DefaultTableModel modelo = new DefaultTableModel(columnas, 0) {
+        // Obtener historial del cliente
+        ArrayList<Producto> historial = clienteLogueado.getHistorial();
 
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				return false;
-			}
-		};
+        if (historial != null && !historial.isEmpty()) {
+            for (Producto p : historial) {
+                ImageIcon foto = p.getFoto();
+                
+                String tipoProducto = (p instanceof Pelicula) ? "Película" : "Videojuego";
+                String descripcion = "<html><b>" + p.getTitulo() + "</b><br/>" 
+                                   + "<i>" + tipoProducto + "</i><br/>"
+                                   + "Precio alquiler: " + p.getPrecio() + "€</html>";
 
-		ArrayList<Producto> historial = clienteLogueado.getHistorial();
+                String estadoReview = "Sin valorar";
+                ArrayList<Review> misReviews = clienteLogueado.getListaReviews();
 
-		if (historial != null) {
-			for (Producto p : historial) {
+                if (misReviews != null) {
+                    for (Review r : misReviews) {
+                        if (r != null && r.getProducto() != null && r.getProducto().getId() == p.getId()) {
+                            estadoReview = "<html><b>Valorado:</b> " + r.getRating() + "/10<br/>"
+                                         + r.getComentario() + "</html>";
+                            break;
+                        }
+                    }
+                }
 
-				ImageIcon foto = p.getFoto();
+                Object[] fila = { foto, descripcion, estadoReview };
+                modelo.addRow(fila);
+            }
+        }
 
-				String tipoProducto = (p instanceof Pelicula) ? "Película" : "Videojuego";
-				String descripcion = "<html><b>" + p.getTitulo() + "</b><br/>" + "<i>" + tipoProducto + "</i><br/>"
-						+ "Precio alquiler: " + p.getPrecio() + "€</html>";
 
-				String estadoReview = "Sin valorar";
-				ArrayList<Review> misReviews = clienteLogueado.getListaReviews();
+        JTable tabla = new JTable(modelo);
+        tabla.setRowHeight(120);
+        tabla.setFont(new Font("Arial", Font.PLAIN, 14));
+        tabla.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
+        tabla.getTableHeader().setReorderingAllowed(false);
 
-				if (misReviews != null) {
-					for (Review r : misReviews) {
 
-						if (r != null && r.getProducto() != null && r.getProducto().getId() == p.getId()) {
-							estadoReview = "Valorado: " + r.getRating() + "/10";
-							break;
-						}
-					}
-				}
+        tabla.getColumnModel().getColumn(0).setPreferredWidth(150);
+        tabla.getColumnModel().getColumn(1).setPreferredWidth(350);
+        tabla.getColumnModel().getColumn(2).setPreferredWidth(400);
 
-				Object[] fila = { foto, descripcion, estadoReview };
-				modelo.addRow(fila);
-			}
-		}
 
-		JTable tabla = new JTable(modelo);
-		tabla.setRowHeight(120);
-		tabla.setFont(new Font("Arial", Font.PLAIN, 14));
-		tabla.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
+        tabla.getColumnModel().getColumn(0).setCellRenderer(new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, 
+                    boolean isSelected, boolean hasFocus, int row, int column) {
+                
+                JLabel label = new JLabel();
+                label.setHorizontalAlignment(JLabel.CENTER);
+                label.setOpaque(true);
 
-		tabla.getColumnModel().getColumn(0).setCellRenderer(new DefaultTableCellRenderer() {
-			@Override
-			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-					boolean hasFocus, int row, int column) {
-				JLabel label = new JLabel();
-				label.setHorizontalAlignment(JLabel.CENTER);
-				if (value != null && value instanceof ImageIcon) {
+                label.setBackground(new Color(255, 200, 200));
+                
+                if (value instanceof ImageIcon) {
+                    label.setIcon((ImageIcon) value);
+                } else {
+                    label.setText("Sin imagen");
+                }
+                
+                if (isSelected) {
+                    label.setBackground(table.getSelectionBackground());
+                }
+                
+                return label;
+            }
+        });
 
-					label.setIcon((ImageIcon) value);
-				} else {
-					label.setText("Sin Foto");
-				}
-				if (isSelected)
-					label.setBackground(table.getSelectionBackground());
-				return label;
-			}
-		});
 
-		tabla.getColumnModel().getColumn(1).setCellRenderer(new DefaultTableCellRenderer() {
-			@Override
-			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-					boolean hasFocus, int row, int column) {
-				Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-				setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
-				return c;
-			}
-		});
+        tabla.getColumnModel().getColumn(1).setCellRenderer(new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, 
+                    boolean isSelected, boolean hasFocus, int row, int column) {
+                
+                JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, 
+                        isSelected, hasFocus, row, column);
+                
+                label.setOpaque(true);
+                label.setVerticalAlignment(JLabel.TOP);
+                label.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-		JScrollPane scroll = new JScrollPane(tabla);
-		add(scroll, BorderLayout.CENTER);
+                if (!isSelected) {
+                    label.setBackground(new Color(255, 255, 200));
+                }
+                
+                return label;
+            }
+        });
 
-		setVisible(true);
-	}
+        tabla.getColumnModel().getColumn(2).setCellRenderer(new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, 
+                    boolean isSelected, boolean hasFocus, int row, int column) {
+                
+                JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, 
+                        isSelected, hasFocus, row, column);
+                
+                label.setOpaque(true);
+                label.setVerticalAlignment(JLabel.TOP);
+                label.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+                
+                // Color de fondo verde clarito
+                if (!isSelected) {
+                    label.setBackground(new Color(200, 255, 200));
+                }
+                
+                return label;
+            }
+        });
 
+
+        JScrollPane scroll = new JScrollPane(tabla);
+        add(scroll, BorderLayout.CENTER);
+
+        setVisible(true);
+    }
 }
