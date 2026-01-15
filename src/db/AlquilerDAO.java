@@ -12,7 +12,7 @@ import domain.Cliente;
 import domain.Producto;
 import main.main;
 
-public class AlquilerDAO {
+public class AlquilerDAO implements AlquilerDAOInterface{
     private Connection conexionBD;
     private Logger logger;
     private ProductoDAO productoDAO;
@@ -246,7 +246,7 @@ public class AlquilerDAO {
     }
     
     // Método auxiliar para crear un Cliente básico desde la BD
-    private Cliente obtenerClienteBasico(String dni) {
+    public Cliente obtenerClienteBasico(String dni) {
         String sql = "SELECT u.dni, u.nombre, u.email, u.contrasena, c.amonestaciones " +
                      "FROM Usuario u INNER JOIN Cliente c ON u.dni = c.dni WHERE u.dni = ?";
         

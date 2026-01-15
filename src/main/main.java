@@ -15,6 +15,9 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
+
+import db.AlquilerDAO;
+import db.AlquilerDAOInterface;
 import db.ProductoDAO;
 import db.ProductoDAOInterface;
 import db.ReviewDAO;
@@ -38,6 +41,7 @@ public class main {
 	private static UsuarioDAOInterface usuarioDAO;
 	private static ReviewDAOInterface reviewDAO;
 	private static ProductoDAOInterface productoDAO;
+	private static AlquilerDAOInterface alquilerDAO;
 	
 	public static UsuarioDAOInterface getUsuarioDAO() {
 		return usuarioDAO;
@@ -55,6 +59,14 @@ public class main {
 		main.reviewDAO = reviewDAO;
 	}
     
+	public static AlquilerDAOInterface getAlquilerDAO() {
+		return alquilerDAO;
+	}
+
+	public static void setAlquilerDAO(AlquilerDAOInterface alquilerDAO) {
+		main.alquilerDAO = alquilerDAO;
+	}
+
 	public static Usuario getUsuario() {
 		return usuario;
 	}
@@ -122,6 +134,7 @@ public class main {
 		usuarioDAO = new UsuarioDAO();
 		reviewDAO = new ReviewDAO();
 		productoDAO = new ProductoDAO();
+		alquilerDAO= new AlquilerDAO();
 
 		threads = new ArrayList<>();
 		//descomentar la primera vez y tras esto volver a comentarlo 
