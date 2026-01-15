@@ -83,8 +83,8 @@ public class VentanaInformacionUsuario extends JFrame {
 					}
 				}
 				ventanaPrevia.setVisible(true);
-				dispose();
 			}
+			dispose();
 		});
       
 		setVisible(true);
