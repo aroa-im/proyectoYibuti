@@ -159,12 +159,20 @@ public class VentanaAñadirReviewVideojuego extends JFrame {
 
 					long id = main.getReviewDAO().generarIdUnico();
 					Review review = new Review(id,videojuego, cliente, comentario, rating);
-					videojuego.getReviews().add(review);
+//					videojuego.getReviews().add(review);
+//					dispose();
+//					VentanaInformacionRecurso redirigirVentana = new VentanaInformacionRecurso(videojuego);
+//					JOptionPane.showMessageDialog(redirigirVentana, "Gracias por tu review!", 
+//						"Review publicada correctamente", JOptionPane.INFORMATION_MESSAGE);
+					if(main.getReviewDAO().addReview(review)) {
+						videojuego.getReviews().add(review);
+						dispose();
+						VentanaInformacionRecurso redirigirVentana= new VentanaInformacionRecurso(videojuego);
+						JOptionPane.showMessageDialog(redirigirVentana,"Review", "Review publicada",JOptionPane.INFORMATION_MESSAGE);
+					} else {
+						JOptionPane.showMessageDialog(VentanaAñadirReviewVideojuego.this, "Error al guardar la review","Error" ,JOptionPane.ERROR_MESSAGE);
+					}
 					
-					dispose();
-					VentanaInformacionRecurso redirigirVentana = new VentanaInformacionRecurso(videojuego);
-					JOptionPane.showMessageDialog(redirigirVentana, "Gracias por tu review!", 
-						"Review publicada correctamente", JOptionPane.INFORMATION_MESSAGE);
 				}
 			};
 			worker.execute();

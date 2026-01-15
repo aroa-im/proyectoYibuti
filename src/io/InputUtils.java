@@ -30,7 +30,7 @@ public class InputUtils {
 
         return new Scanner(input);
     }
-    
+
     public static ArrayList<Videojuego> cargarVideojuegos() {
 
         ArrayList<Videojuego> lista = new ArrayList<>();
@@ -75,7 +75,7 @@ public class InputUtils {
         sc.close();
         return lista;
     }
-  
+
     public static ArrayList<Pelicula> cargarPeliculas() {
 
         ArrayList<Pelicula> lista = new ArrayList<>();
@@ -119,9 +119,7 @@ public class InputUtils {
         sc.close();
         return lista;
     }
-    
 
-    // REVIEWS
     public static ArrayList<Review> cargarReviews(List<Producto> productos, List<Cliente> clientes) {
 
         ArrayList<Review> lista = new ArrayList<>();

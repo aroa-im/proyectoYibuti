@@ -157,13 +157,21 @@ public class VentanaAñadirReviewPelicula extends JFrame {
 					
 					long id = main.getReviewDAO().generarIdUnico();
 					Review review = new Review(id, pelicula, cliente, comentario, rating);
-					pelicula.getReviews().add(review);
+					//pelicula.getReviews().add(review);
+					if(main.getReviewDAO().addReview(review)) {
+						pelicula.getReviews().add(review);
+						dispose();
+						VentanaInformacionRecurso redirigirVentana= new VentanaInformacionRecurso(pelicula);
+						JOptionPane.showMessageDialog(redirigirVentana,"Review", "Review publicada",JOptionPane.INFORMATION_MESSAGE);
+					} else {
+						JOptionPane.showMessageDialog(VentanaAñadirReviewPelicula.this, "Error al guardar la review","Error" ,JOptionPane.ERROR_MESSAGE);
+					}
 					
 
-					dispose();
-					VentanaInformacionRecurso redirigirVentana = new VentanaInformacionRecurso(pelicula);
-					JOptionPane.showMessageDialog(redirigirVentana, "Gracias por tu review!", 
-						"Review publicada correctamente", JOptionPane.INFORMATION_MESSAGE);
+//					dispose();
+//					VentanaInformacionRecurso redirigirVentana = new VentanaInformacionRecurso(pelicula);
+//					JOptionPane.showMessageDialog(redirigirVentana, "Gracias por tu review!", 
+//						"Review publicada correctamente", JOptionPane.INFORMATION_MESSAGE);
 				}
 			};
 			
