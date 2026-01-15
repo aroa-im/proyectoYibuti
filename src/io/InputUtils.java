@@ -30,53 +30,7 @@ public class InputUtils {
 
         return new Scanner(input);
     }
-
-    // --------------------------
-    // VIDEOJUEGOS
-    // --------------------------
-//    public static ArrayList<Videojuego> cargarVideojuegos() {
-//
-//        ArrayList<Videojuego> lista = new ArrayList<>();
-//
-//        Scanner sc = getScannerFromResource("data/videojuegos.csv");
-//        if (sc == null) return lista;
-//
-//        if (sc.hasNextLine()) sc.nextLine(); // Saltar cabecera
-//
-//        while (sc.hasNextLine()) {
-//            String linea = sc.nextLine();
-//            String[] datos = linea.split(";");
-//
-//            try {
-//                long id = Long.parseLong(datos[0]);
-//                String titulo = datos[1];
-//                String sinopsis = datos[2];
-//                float precio = Float.parseFloat(datos[3]);
-//                int rating = Integer.parseInt(datos[4]);
-//                GeneroVideoJuego genero = GeneroVideoJuego.valueOf(datos[5].toUpperCase());
-//                TipoConsola tipo = TipoConsola.valueOf(datos[6].toUpperCase());
-//                String autor = datos[7];
-//
-//                // RUTA CORRECTA DE IMÁGENES
-//                ImageIcon foto = Utils.loadImage("images.videojuegos/" + id + ".jpg", 98, 151);
-//
-//                Videojuego v = new Videojuego(
-//                        id, titulo, sinopsis, precio, rating,
-//                        new ArrayList<>(), genero, tipo, autor, foto
-//                );
-//
-//                lista.add(v);
-//
-//            } catch (Exception e) {
-//                System.err.println("Error leyendo videojuego: " + linea);
-//                System.err.println("Detalle del error: " + e.getMessage());
-//                e.printStackTrace();
-//            }
-//        }
-//
-//        sc.close();
-//        return lista;
-//    }
+    
     public static ArrayList<Videojuego> cargarVideojuegos() {
 
         ArrayList<Videojuego> lista = new ArrayList<>();
@@ -121,53 +75,7 @@ public class InputUtils {
         sc.close();
         return lista;
     }
-    // --------------------------
-    // PELÍCULAS
-    // --------------------------
-//    public static ArrayList<Pelicula> cargarPeliculas() {
-//
-//        ArrayList<Pelicula> lista = new ArrayList<>();
-//
-//        Scanner sc = getScannerFromResource("data/peliculas.csv");
-//        if (sc == null) return lista;
-//
-//        if (sc.hasNextLine()) sc.nextLine(); // Saltar cabecera
-//
-//        while (sc.hasNextLine()) {
-//
-//            String linea = sc.nextLine();
-//            String[] datos = linea.split(";");
-//
-//            try {
-//                long id = Long.parseLong(datos[0]);
-//                String titulo = datos[1];
-//                double precio = Double.parseDouble(datos[2]);
-//                String sinopsis = datos[3];
-//                String director = datos[4];
-//                int duracion = Integer.parseInt(datos[5]);
-//
-//                GeneroPelicula genero = GeneroPelicula.valueOf(datos[6].toUpperCase());
-//                TipoPelicula tipo = TipoPelicula.valueOf(datos[7].toUpperCase());
-//
-//                ImageIcon foto = Utils.loadImage("images.peliculas/" + id + ".jpg", 98, 151);
-//
-//                Pelicula p = new Pelicula(
-//                        id, titulo, sinopsis, precio, 0,
-//                        new ArrayList<>(), tipo, genero, director, duracion, foto
-//                );
-//
-//                lista.add(p);
-//
-//            } catch (Exception e) {
-//                System.err.println("Error leyendo película: " + linea);
-//                System.err.println("Detalle del error: " + e.getMessage());
-//                e.printStackTrace();
-//            }
-//        }
-//
-//        sc.close();
-//        return lista;
-//    }
+  
     public static ArrayList<Pelicula> cargarPeliculas() {
 
         ArrayList<Pelicula> lista = new ArrayList<>();
@@ -211,9 +119,9 @@ public class InputUtils {
         sc.close();
         return lista;
     }
-    // --------------------------
+    
+
     // REVIEWS
-    // --------------------------
     public static ArrayList<Review> cargarReviews(List<Producto> productos, List<Cliente> clientes) {
 
         ArrayList<Review> lista = new ArrayList<>();
