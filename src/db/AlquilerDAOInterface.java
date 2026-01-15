@@ -1,9 +1,11 @@
 package db;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import domain.Alquiler;
 import domain.Cliente;
+import domain.Producto;
 
 public interface AlquilerDAOInterface {
 	boolean insertar(Alquiler alquiler);
@@ -19,4 +21,5 @@ public interface AlquilerDAOInterface {
 	boolean eliminar(int id);
 	Cliente obtenerClienteBasico(String dni);
 	void borrarRegistros();
+	ArrayList<Producto> getProductosAlquiladosByUsuario(String dniCliente);
 }
