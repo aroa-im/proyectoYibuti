@@ -39,7 +39,7 @@ public class VentanaAñadirReviewVideojuego extends JFrame {
 	public VentanaAñadirReviewVideojuego(Videojuego videojuego) {
 		
 		setTitle("Anadir review");
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setSize(500, 400);
 		setLocationRelativeTo(null);
 		

@@ -47,6 +47,8 @@ public class VentanaInformacionRecurso extends JFrame {
     private static final long serialVersionUID = 1647556562163809896L;
     private JPanel pOeste, pEste, pSur, pCentro, pHeader;
     private Usuario usuario = main.getUsuario();
+    private Pelicula pelicula;
+    private Videojuego videojuego;
 
     public void setMainWindowProperties(Seccion seccion) {
         
@@ -78,8 +80,9 @@ public class VentanaInformacionRecurso extends JFrame {
     }
     
     public VentanaInformacionRecurso(Pelicula pelicula) {
-    	
-
+    	 this.pelicula = pelicula;
+    	 this.videojuego = null;
+    	 
         setMainWindowProperties(Seccion.PELICULA);
 
         setTitle ("Videoclub: " + pelicula.getTitulo());
@@ -205,8 +208,6 @@ public class VentanaInformacionRecurso extends JFrame {
        
         pOeste.add(reviews);
         
-        //PANEL BOTONES
-        
         JPanel botonesPanel = new JPanel();
         
         botonesPanel.setBackground(Color.WHITE);
@@ -259,12 +260,15 @@ public class VentanaInformacionRecurso extends JFrame {
                 vInformacionProducto.dispose();
             }
         });
-
+        
         setVisible(true);
     }
 
 	
 	public VentanaInformacionRecurso(Videojuego videojuego) {
+		this.videojuego = videojuego;
+	    this.pelicula = null;
+	    
 		setMainWindowProperties(Seccion.VIDEOJUEGO);
 		setTitle ("Videoclub: " + videojuego.getTitulo());
 		//PANEL OESTE
@@ -391,9 +395,7 @@ public class VentanaInformacionRecurso extends JFrame {
 		pOeste.add(reviews);
 		
 		//PANEL BOTONES
-		
 		JPanel botonesPanel = new JPanel();
-		
 		
 		botonesPanel.setBackground(Color.WHITE);
 		botonesPanel.setBorder(new EmptyBorder(110,0,45, 0));
@@ -429,7 +431,6 @@ public class VentanaInformacionRecurso extends JFrame {
 			botonesPanel.add(botonReview);
 			botonesPanel.add(botonReservar);
 		}
-
 		pCentro.add(botonesPanel);
 		
 		botonReview.addActionListener(new ActionListener() {
@@ -439,7 +440,6 @@ public class VentanaInformacionRecurso extends JFrame {
 				new VentanaAñadirReviewVideojuego(videojuego);
 			}
 		});
-		
 		
 		pOeste.setBorder(new EmptyBorder(0,20,0,0));
 		pCentro.setBorder(new EmptyBorder(70, 50, 0, 0));
@@ -454,14 +454,20 @@ public class VentanaInformacionRecurso extends JFrame {
 			}
 		});
 		
-		
 		setVisible(true);
+	}
+
+	public void refrescar() {
+	 
+	    if (pelicula != null) {
+	        new VentanaInformacionRecurso(pelicula);
+	    } else if (videojuego != null) {
+	        new VentanaInformacionRecurso(videojuego);
+	    }
+	    dispose();
 	}
 	
 	public static void main(String[] args) {
-			
-			
-			
 		    ImageIcon fotoVide = Utils.loadImage("videojuegos.png", 128, 200);
 		    Videojuego videojuego = new Videojuego(
 	            // ID añadido (1L)
@@ -479,7 +485,6 @@ public class VentanaInformacionRecurso extends JFrame {
 		    
 		    ImageIcon fotoPeli = Utils.loadImage("peliculas/pelicula1.jpg", 128, 200); 
 		    
-		    
 		    Pelicula pelicula = new Pelicula(
 	            2L,
 		        "Pelicula1",                              
@@ -493,11 +498,7 @@ public class VentanaInformacionRecurso extends JFrame {
 		        120,                                      
 		        fotoPeli                                      
 		    );
-		        
 		     new VentanaInformacionRecurso(videojuego);
 		     new VentanaInformacionRecurso(pelicula);
-			    
-		    
-	
 		}
 }
