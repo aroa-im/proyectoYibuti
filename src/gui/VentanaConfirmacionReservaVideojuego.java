@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
-
+import domain.Alquiler;
 import domain.Cliente;
 import domain.GeneroVideoJuego;
 import domain.Pelicula;
@@ -153,14 +154,30 @@ public class VentanaConfirmacionReservaVideojuego extends JFrame {
 		botonesPanel.setBorder(new EmptyBorder(0,0,50,0));
 		
 		pCentro.add(botonesPanel);
-		
-		//TODO: HACER EL LISTENER DEL BOTON
-		
+
 		botonConfirmar.addActionListener(e -> {
-			dispose();
-			VentanaInformacionRecurso redirectWindow = new VentanaInformacionRecurso(videojuego);
-			JOptionPane.showMessageDialog(redirectWindow, "Gracias por hacer tu reserva!", "Reserva hecha correctamente", JOptionPane.INFORMATION_MESSAGE);
-			
+		    Cliente cliente = (Cliente) main.getUsuario();
+		    
+		    // Crear alquiler
+		    Alquiler nuevoAlquiler = new Alquiler();
+		    nuevoAlquiler.setCliente(cliente);
+		    nuevoAlquiler.setProducto(videojuego);
+		    nuevoAlquiler.setFechaInicio(LocalDate.now());
+		    nuevoAlquiler.setFechaFin(LocalDate.now().plusDays(7)); 
+		    nuevoAlquiler.setDevuelto(0);
+		    
+		    // Guardar en BD
+		    if (main.getAlquilerDAO().insertar(nuevoAlquiler)) {
+		        dispose();
+		        VentanaInformacionRecurso redirectWindow = new VentanaInformacionRecurso(videojuego);
+		        JOptionPane.showMessageDialog(redirectWindow, 
+		            "Reserva confirmada. Devolver antes del: " + nuevoAlquiler.getFechaFin(),
+		            "Reserva exitosa", JOptionPane.INFORMATION_MESSAGE);
+		    } else {
+		        JOptionPane.showMessageDialog(this, 
+		            "Error al crear la reserva. Inténtalo de nuevo.",
+		            "Error", JOptionPane.ERROR_MESSAGE);
+		    }
 		});
 		
 		botonVolver.addActionListener(new ActionListener() {
