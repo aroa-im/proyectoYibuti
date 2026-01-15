@@ -285,4 +285,37 @@ public class AlquilerDAO implements AlquilerDAOInterface{
                 logger.log(Level.SEVERE, "Error al borrar los registros de Alquiler: ", e);
         }
     }
+    
+    public ArrayList<Producto> getProductosAlquiladosByUsuario(String dniCliente) {
+        ArrayList<Producto> productos = new ArrayList<>();
+
+        String sql = "SELECT DISTINCT id_producto FROM Alquiler " +
+                     "WHERE dni_cliente = ? " +
+                     "ORDER BY id DESC";
+        
+        try (PreparedStatement pstmt = conexionBD.prepareStatement(sql)) {
+            pstmt.setString(1, dniCliente);
+            ResultSet rs = pstmt.executeQuery();
+            
+            while (rs.next()) {
+                int idProducto = rs.getInt("id_producto");
+                
+                List<Producto> todosProductos = productoDAO.getProductos();
+                for (Producto p : todosProductos) {
+                    if (p.getId() == idProducto) {
+                        productos.add(p);
+                        break;
+                    }
+                }
+            }
+            
+            logger.log(Level.INFO, "Se obtuvieron " + productos.size() + 
+                       " productos del historial del cliente " + dniCliente);
+                       
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error al obtener productos alquilados por usuario: ", e);
+        }
+        
+        return productos;
+    }
 }
