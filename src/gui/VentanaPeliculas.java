@@ -100,6 +100,42 @@ public class VentanaPeliculas extends JFrame {
 		});
 		ordenar.setSelectedIndex(0);
 
+		TipoPelicula[] arrayPeliculas = new TipoPelicula[3];
+		int contador = 0;
+
+		for (TipoPelicula tipoPelicula : TipoPelicula.values()) {
+			arrayPeliculas[contador] = tipoPelicula;
+			contador++;
+		}
+
+		JComboBox<Object> ordenar = new JComboBox<>();
+		subPanelContenido1.add(ordenar, BorderLayout.EAST);
+		
+		ordenar.addItem("ORDENAR");
+		for (TipoPelicula tipo : TipoPelicula.values()) {
+			ordenar.addItem(tipo);
+		}
+
+		ordenar.setRenderer((list, value, index, isSelected, cellHasFocus) -> {
+			JLabel label = new JLabel();
+			if (value == null) {
+				label.setText(""); // texto que verá el usuario
+			} else if (value instanceof String) {
+				label.setText((String) value);
+			} else if (value instanceof TipoConsola) {
+				label.setText(((TipoConsola) value).toString());
+			} else {
+				label.setText(value.toString());
+			}
+			if (isSelected) {
+				label.setBackground(list.getSelectionBackground());
+				label.setForeground(list.getSelectionForeground());
+				label.setOpaque(true);
+			}
+			return label;
+		});
+		ordenar.setSelectedIndex(0);
+
 		// Buscador (centro)
 		JTextField buscador = new JTextField("Buscador");
 		buscador.addMouseListener(new MouseAdapter() {
