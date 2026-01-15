@@ -215,11 +215,11 @@ public class VentanaInformacionRecurso extends JFrame {
         
         JButton botonReview = new JButton("Añadir review");
         JButton botonReservar = new JButton("Reservar");
-        JButton botonEditar = new JButton("Editar");
-        botonEditar.addActionListener(e -> {
-            dispose();
+        //JButton botonEditar = new JButton("Editar");
+        //botonEditar.addActionListener(e -> {
+            //dispose();
             //new VentanaCrearEditarPelicula(this, pelicula);
-        });
+        //});
         botonReview.setFont(new Font("Arial", Font.BOLD, 17));        
         botonReservar.setFont(new Font("Arial", Font.BOLD, 17));
         
@@ -230,8 +230,8 @@ public class VentanaInformacionRecurso extends JFrame {
             botonReservar.setToolTipText("No puedes reservar peliculas sin estar registrado");
             botonReservar.setEnabled(false);
             botonReview.setToolTipText("No puedes hacer una review sin estar registrado");
-        } else if (usuario instanceof Admin) {
-            botonesPanel.add(botonEditar);
+        //} else if (usuario instanceof Admin) {
+            //botonesPanel.add(botonEditar);
         } else {
             botonesPanel.add(botonReview);
             botonesPanel.add(botonReservar);
@@ -324,7 +324,7 @@ public class VentanaInformacionRecurso extends JFrame {
 		areas.add(taAutor);
 		areas.add(taGenero);
 		areas.add(taTipoConsola);
-		areas.add(taRating); // TODO: ?
+		areas.add(taRating); 
 		areas.add(taSinopsis);
 
 		for (JTextArea ta : areas) {
@@ -409,7 +409,7 @@ public class VentanaInformacionRecurso extends JFrame {
 		
 		JButton botonReview = new JButton("Añadir review");
 		JButton botonReservar = new JButton("Reservar");
-		JButton botonEditar = new JButton("Editar");
+		//JButton botonEditar = new JButton("Editar");
 		/*botonEditar.addActionListener(e -> {
 			dispose();
 			new VentanaCrearEditarVideojuego(this, videojuego);
@@ -425,8 +425,8 @@ public class VentanaInformacionRecurso extends JFrame {
 			botonReservar.setToolTipText("No puedes reservar videojuegos sin estar registrado");
 			botonReservar.setEnabled(false);
 			botonReview.setToolTipText("No puedes hacer una review sin estar registrado");
-		}else if (usuario instanceof Admin) {
-			botonesPanel.add(botonEditar);
+		//}else if (usuario instanceof Admin) {
+			//botonesPanel.add(botonEditar);
 		} else {
 			botonesPanel.add(botonReview);
 			botonesPanel.add(botonReservar);
