@@ -31,18 +31,18 @@ public class ReviewDAO implements ReviewDAOInterface {
 	@Override
 	public boolean addReview(Review review) {
 		try {
-            String insertSQL = "INSERT INTO Review(comentario, rating, id_producto, dni_cliente) VALUES (?, ?, ?, ?)";
+            String insertSQL = "INSERT INTO Review(comentario, rating, id_producto, dni_cliente,fecha_creacion) VALUES (?, ?, ?, ?,?)";
             PreparedStatement preparedStmt = conexionBD.prepareStatement(insertSQL);
             preparedStmt.setString(1, review.getComentario());
             preparedStmt.setInt(2, review.getRating());
-            //preparedStmt.setLong(3, review.getProductoDTO().getId());
+            preparedStmt.setLong(3, review.getProducto().getId());
             preparedStmt.setString(4, review.getCliente().getDni());
-
+            preparedStmt.setString(5, java.time.LocalDateTime.now().toString());
             
-            preparedStmt.executeUpdate();
+           int filas= preparedStmt.executeUpdate();
 
             preparedStmt.close();
-            return true;
+            return filas > 0;
         } catch (SQLException e) {
             if (logger != null)
                 logger.log(Level.SEVERE, "Error al añadir el usuario: ", e);
