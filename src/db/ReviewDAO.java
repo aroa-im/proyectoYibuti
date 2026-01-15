@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import domain.Cliente;
+import domain.Producto;
 import domain.Review;
 import main.main;
 
@@ -49,7 +51,6 @@ public class ReviewDAO implements ReviewDAOInterface {
             return false;
         }
 	}
-
 	@Override
 	public ArrayList<Review> getReviewsByUsuarioDni(String dniCliente) {
 		ArrayList<Review> result = null;
@@ -66,9 +67,30 @@ public class ReviewDAO implements ReviewDAOInterface {
                 while (rs.next()) {
                    Review review = new Review();
                    
-             
+                   review.setId(rs.getLong("id"));
                    review.setRating(rs.getInt("rating"));
                    review.setComentario(rs.getString("comentario"));
+                   
+                   // Asociar producto 
+                   long idProducto = rs.getLong("id_producto");
+                   try {
+                       if (main.getProductoDAO() != null) {
+                           for (Producto p : main.getProductoDAO().getProductos()) {
+                               if (p != null && p.getId() == idProducto) {
+                                   review.setProducto(p);
+                                   break;
+                               }
+                           }
+                       }
+                   } catch (Exception e) {
+                       
+                       if (logger != null) logger.log(Level.WARNING, "No se pudo asociar producto a review: " + idProducto, e);
+                   }
+
+                   // Asociar cliente
+                   Cliente cliente = new Cliente();
+                   cliente.setDni(dniCliente);
+                   review.setCliente(cliente);
                    
                    result.add(review);
                 }
@@ -78,7 +100,7 @@ public class ReviewDAO implements ReviewDAOInterface {
 	        	        
 		} catch (SQLException e) {
 			if (logger != null) {
-				logger.log(Level.SEVERE, "Error al recuperar la sala: ", e);
+				logger.log(Level.SEVERE, "Error al recuperar reviews por usuario: ", e);
 				return result;
 			}
 		} 
@@ -102,8 +124,29 @@ public class ReviewDAO implements ReviewDAOInterface {
                 while (rs.next()) {
                    Review review = new Review();
                   
+                   review.setId(rs.getLong("id"));
                    review.setRating(rs.getInt("rating"));
                    review.setComentario(rs.getString("comentario"));
+                   
+                   // Asociar producto 
+                   try {
+                       if (main.getProductoDAO() != null) {
+                           for (Producto p : main.getProductoDAO().getProductos()) {
+                               if (p != null && p.getId() == idproducto) {
+                                   review.setProducto(p);
+                                   break;
+                               }
+                           }
+                       }
+                   } catch (Exception e) {
+                       if (logger != null) logger.log(Level.WARNING, "No se pudo asociar producto a review (byProduct): " + idproducto, e);
+                   }
+
+                   // Asociar cliente 
+                   String dni = rs.getString("dni_cliente");
+                   Cliente cliente = new Cliente();
+                   if (dni != null) cliente.setDni(dni);
+                   review.setCliente(cliente);
                    
                    result.add(review);
                 }
@@ -113,7 +156,7 @@ public class ReviewDAO implements ReviewDAOInterface {
 	        	        
 		} catch (SQLException e) {
 			if (logger != null) {
-				logger.log(Level.SEVERE, "Error al recuperar la sala: ", e);
+				logger.log(Level.SEVERE, "Error al recuperar reviews por producto: ", e);
 				return result;
 			}
 		} 
