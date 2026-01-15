@@ -39,7 +39,7 @@ public class VentanaPeliculas extends JFrame {
 	private Usuario usuario = main.getUsuario();
 	private final ArrayList<Pelicula> listaPeliculas = main.getProductoDAO().getPeliculas();
 	private ArrayList<Pelicula> listaPeliculasRenderizada = new ArrayList<Pelicula>(listaPeliculas);
-	
+
 	public VentanaPeliculas() {
 		// Configuración básica de la ventana
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -64,6 +64,9 @@ public class VentanaPeliculas extends JFrame {
 		TipoPelicula[] arrayPeliculas = new TipoPelicula[3];
 		int contador = 0;
 
+		TipoPelicula[] arrayPeliculas = new TipoPelicula[3];
+		int contador = 0;
+
 		for (TipoPelicula tipoPelicula : TipoPelicula.values()) {
 			arrayPeliculas[contador] = tipoPelicula;
 			contador++;
@@ -71,7 +74,7 @@ public class VentanaPeliculas extends JFrame {
 
 		JComboBox<Object> ordenar = new JComboBox<>();
 		subPanelContenido1.add(ordenar, BorderLayout.EAST);
-
+		
 		ordenar.addItem("ORDENAR");
 		for (TipoPelicula tipo : TipoPelicula.values()) {
 			ordenar.addItem(tipo);
@@ -83,8 +86,8 @@ public class VentanaPeliculas extends JFrame {
 				label.setText(""); // texto que verá el usuario
 			} else if (value instanceof String) {
 				label.setText((String) value);
-			} else if (value instanceof TipoPelicula) {
-				label.setText(((TipoPelicula) value).toString());
+			} else if (value instanceof TipoConsola) {
+				label.setText(((TipoConsola) value).toString());
 			} else {
 				label.setText(value.toString());
 			}
@@ -105,7 +108,6 @@ public class VentanaPeliculas extends JFrame {
 				buscador.setText("");
 			}
 		});
-
 		subPanelContenido1.add(buscador, BorderLayout.CENTER);
 
 		if (usuario instanceof Admin) {
@@ -133,6 +135,7 @@ public class VentanaPeliculas extends JFrame {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					// recargar pagina con la lista filtrada
 					List<Pelicula> listaFiltrada = listaPeliculas.stream().filter(
 							pelicula -> pelicula.getTitulo().toLowerCase().contains(buscador.getText().toLowerCase()))
 							.toList();
@@ -143,15 +146,14 @@ public class VentanaPeliculas extends JFrame {
 				}
 			}
 		});
-		subPanelContenido1.add(buscador, BorderLayout.CENTER);
-		
+
 		ordenar.addItemListener(e -> {
 			if (e.getStateChange() == ItemEvent.SELECTED) {
 				Object item = e.getItem();
 				ordenarPeliculas(item, subPanelContenido2);
 			}
 		});
-		
+
 		setVisible(true);
 	}
 
@@ -220,7 +222,7 @@ public class VentanaPeliculas extends JFrame {
 		for (Pelicula pelicula : listaPeliculasRenderizada) {
 			JPanel panelCentrarPelicula = crearPanelPelicula(pelicula);
 			subPanelContenido2.add(panelCentrarPelicula);
-			if (contadorPeliculas >= 60)
+			if (contadorPeliculas >= 20)
 				break;
 			contadorPeliculas++;
 		}
@@ -233,8 +235,9 @@ public class VentanaPeliculas extends JFrame {
 		if (item instanceof String && item.equals("ORDENAR")) {
 			listaPeliculasRenderizada = new ArrayList<>(listaPeliculas);
 		} else if (item instanceof TipoPelicula tipo) {
-			listaPeliculasRenderizada = new ArrayList<>(
-					listaPeliculas.stream().filter(v -> v.getTipo() == tipo).toList());
+			// Usamos la recursividad de Utils
+			listaPeliculasRenderizada = Utils.sortArrayTipoPeliula(new ArrayList<>(listaPeliculasRenderizada), tipo,
+					listaPeliculasRenderizada.size());
 		}
 		recargarPanelContenido(subPanelContenido2);
 	}

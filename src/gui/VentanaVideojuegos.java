@@ -24,6 +24,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import domain.Admin;
+import domain.Pelicula;
 import domain.Videojuego;
 import domain.Usuario;
 import domain.Seccion;
