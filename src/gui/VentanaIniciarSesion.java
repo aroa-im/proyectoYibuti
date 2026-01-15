@@ -78,26 +78,46 @@ public class VentanaIniciarSesion extends JFrame {
                 UsuarioDTO usuarioLogueado = main.getUsuarioDAO().getUsuario(dni);
 
                 if (usuarioLogueado.isAdmin()) {
+
                     main.setUsuario(new Admin(usuarioLogueado));
+
                 } else {
-                    main.setUsuario(new Cliente(usuarioLogueado));
+
+                    Cliente cliente = new Cliente(usuarioLogueado);
+
+                    if (main.getAlquilerDAO() != null) {
+                        cliente.setHistorial(
+                                main.getAlquilerDAO()
+                                        .getProductosAlquiladosByUsuario(cliente.getDni())
+                        );
+                    }
+
+                    if (main.getReviewDAO() != null) {
+                        cliente.setListaReviews(
+                                main.getReviewDAO()
+                                        .getReviewsByUsuarioDni(cliente.getDni())
+                        );
+                    }
+
+                    main.setUsuario(cliente);
                 }
 
                 if (previousWindow != null) {
-                    
+
                     if (previousWindow instanceof VentanaPeliculas) {
                         new VentanaPeliculas();
                     } else if (previousWindow instanceof VentanaVideojuegos) {
                         new VentanaVideojuegos();
-                    }else if(previousWindow instanceof VentanaInformacionRecurso) {
-                    	((VentanaInformacionRecurso) previousWindow).refrescar();
-                    }else {
+                    } else if (previousWindow instanceof VentanaInformacionRecurso) {
+                        ((VentanaInformacionRecurso) previousWindow).refrescar();
+                    } else {
                         new VentanaPortada();
                     }
+
                     previousWindow.dispose();
                 }
 
-                dispose(); 
+                dispose();
             }
         });
 
