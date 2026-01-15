@@ -7,11 +7,13 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.event.ItemEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -20,16 +22,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.event.PopupMenuEvent;
-import javax.swing.event.PopupMenuListener;
 
-import db.ProductoDAO;
 import domain.Admin;
 import domain.Videojuego;
 import domain.Usuario;
 import domain.Seccion;
 import domain.TipoConsola;
-import io.InputUtils;
 import main.main;
 import gui.components.Header;
 import utils.Utils;
@@ -38,14 +36,11 @@ public class VentanaVideojuegos extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private Usuario usuario = main.getUsuario();
-	private ProductoDAO productoDAO;
-	private ArrayList<Videojuego> videojuegos;
-
+	private final ArrayList<Videojuego> listaVideojuegos = main.getProductoDAO().getVideojuegos();
+	private ArrayList<Videojuego> listaVideojuegosRenderizada = new ArrayList<Videojuego>(listaVideojuegos);
+	
 	public VentanaVideojuegos() {
 		// Inicializar DAO y cargar videojuegos
-		this.productoDAO = new ProductoDAO();
-		this.videojuegos = productoDAO.getVideojuegos();
-		
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		if (usuario == null) {
 			setTitle("Videojuegos - No logueado");
@@ -65,37 +60,32 @@ public class VentanaVideojuegos extends JFrame {
 
 		// SubPanel 1: Barra de búsqueda, ComboBox y botón añadir
 		JPanel subPanelContenido1 = new JPanel(new BorderLayout());
+		panelContenido.add(subPanelContenido1, BorderLayout.NORTH);
 
-		// Buscador (Centro)
-		JTextField buscador = new JTextField("Buscador");
-		buscador.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				buscador.setText("");
-			}
-		});
-		buscador.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					System.out.println("Buscar: " + buscador.getText());
-					// Aquí puedes implementar la lógica de búsqueda
-				}
-			}
-		});
-		subPanelContenido1.add(buscador, BorderLayout.CENTER);
+		TipoConsola[] arrayVideojuegos = new TipoConsola[4];
+		int contador = 0;
 
-		// ComboBox de consolas (Derecha)
-		TipoConsola[] arrayConsolas = TipoConsola.values();
-		JComboBox<TipoConsola> ordenar = new JComboBox<>(arrayConsolas);
-		ordenar.insertItemAt(null, 0);
-		ordenar.setSelectedIndex(0);
-		
-		// Renderizar "Ordenar" en la primera posición
+		for (TipoConsola tipoConsola : TipoConsola.values()) {
+			arrayVideojuegos[contador] = tipoConsola;
+			contador++;
+		}
+
+		JComboBox<Object> ordenar = new JComboBox<>();
+		subPanelContenido1.add(ordenar, BorderLayout.EAST);
+
+		ordenar.addItem("ORDENAR");
+		for (TipoConsola tipo : TipoConsola.values()) {
+			ordenar.addItem(tipo);
+		}
+
 		ordenar.setRenderer((list, value, index, isSelected, cellHasFocus) -> {
 			JLabel label = new JLabel();
 			if (value == null) {
-				label.setText("Ordenar");
+				label.setText(""); // texto que verá el usuario
+			} else if (value instanceof String) {
+				label.setText((String) value);
+			} else if (value instanceof TipoConsola) {
+				label.setText(((TipoConsola) value).toString());
 			} else {
 				label.setText(value.toString());
 			}
@@ -106,45 +96,32 @@ public class VentanaVideojuegos extends JFrame {
 			}
 			return label;
 		});
-		
-		ordenar.addPopupMenuListener(new PopupMenuListener() {
-			@Override
-			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-				if (ordenar.getSelectedIndex() == 0) {
-					ordenar.removeItemAt(0);
-					if (ordenar.getItemCount() > 0) {
-						ordenar.setSelectedIndex(0);
-					}
-				}
-			}
+		ordenar.setSelectedIndex(0);
 
+		// Buscador (Centro)
+		JTextField buscador = new JTextField("Buscador");
+		buscador.addMouseListener(new MouseAdapter() {
 			@Override
-			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-				// No es necesario implementar
-			}
-
-			@Override
-			public void popupMenuCanceled(PopupMenuEvent e) {
-				// No es necesario implementar
+			public void mouseClicked(MouseEvent e) {
+				buscador.setText("");
 			}
 		});
-		subPanelContenido1.add(ordenar, BorderLayout.EAST);
+		subPanelContenido1.add(buscador, BorderLayout.CENTER);
 
-		// Panel añadir videojuego (Izquierda - solo si es Admin)
 		if (usuario instanceof Admin) {
 			JPanel panelAddVideojuego = createPanelAddVideojuego();
 			subPanelContenido1.add(panelAddVideojuego, BorderLayout.WEST);
 		}
 
-		panelContenido.add(subPanelContenido1, BorderLayout.NORTH);
-
-		// SubPanel 2: Grid de videojuegos
 		JPanel subPanelContenido2 = new JPanel(new GridLayout(0, 4));
 
-		// Cargar videojuegos
-		for (Videojuego videojuego : videojuegos) {
-			JPanel panelCentrarVideojuego = crearPaneVideojuego(videojuego);
-			subPanelContenido2.add(panelCentrarVideojuego);
+		int contadorVideojuegos = 0;
+		for (Videojuego videojuego : listaVideojuegosRenderizada) {
+			JPanel panelcentrarVideojuego = crearPanelVideojuego(videojuego);
+			subPanelContenido2.add(panelcentrarVideojuego);
+			if (contadorVideojuegos >= 60)
+				break;
+			contadorVideojuegos++;
 		}
 
 		JScrollPane scrollBar = new JScrollPane(subPanelContenido2);
@@ -152,26 +129,42 @@ public class VentanaVideojuegos extends JFrame {
 
 		add(panelContenido, BorderLayout.CENTER);
 
+		buscador.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					List<Videojuego> listaFiltrada = listaVideojuegos.stream().filter(videojuego -> videojuego
+							.getTitulo().toLowerCase().contains(buscador.getText().toLowerCase())).toList();
+					listaVideojuegosRenderizada = new ArrayList<Videojuego>(listaFiltrada);
+
+					// Llamar a recargar el panel
+					recargarPanelContenido(subPanelContenido2);
+				}
+			}
+		});
+
+		ordenar.addItemListener(e -> {
+			if (e.getStateChange() == ItemEvent.SELECTED) {
+				Object item = e.getItem();
+				ordenarVideojuegos(item, subPanelContenido2);
+			}
+		});
+
 		setVisible(true);
 	}
 
-	private JPanel crearPaneVideojuego(Videojuego videojuego) {
+	private JPanel crearPanelVideojuego(Videojuego videojuego) {
 		JPanel panelCentrarVideojuego = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
 		JPanel panelVideojuego = new JPanel();
 		panelVideojuego.setLayout(new BoxLayout(panelVideojuego, BoxLayout.Y_AXIS));
 
-		// Debug: ver qué foto trae el videojuego desde la BD
-		ImageIcon imagenVideojuego = videojuego.getFoto();
-		System.out.println("ID: " + videojuego.getId() + " - Foto desde BD: " + (imagenVideojuego != null ? "OK" : "NULL"));
-		
-		// Si no tiene foto, intentar cargar manualmente
-		if (imagenVideojuego == null) {
-			String ruta = "images/videojuegos/" + videojuego.getId() + ".jpg";
-			System.out.println("Intentando cargar: " + ruta);
-			imagenVideojuego = Utils.loadImage(ruta, 115, 160);
+		ImageIcon imagenVideojuego;
+		if (videojuego.getFoto() != null) {
+			imagenVideojuego = videojuego.getFoto();
+		} else {
+			imagenVideojuego = Utils.loadImage("noImagen.jpg", 115, 160);
 		}
-
 		JLabel iconLabel = new JLabel(imagenVideojuego);
 		panelVideojuego.add(iconLabel);
 
@@ -216,6 +209,31 @@ public class VentanaVideojuegos extends JFrame {
 		panelAddVideojuego.add(textLabel, gbc);
 
 		return panelAddVideojuego;
+	}
+
+	private void recargarPanelContenido(JPanel subPanelContenido2) {
+		subPanelContenido2.removeAll(); // Eliminar todos los componentes actuales.
+
+		int contadorVideojuegos = 0;
+		for (Videojuego videojuego : listaVideojuegosRenderizada) {
+			JPanel panelCentrarVideojuego = crearPanelVideojuego(videojuego);
+			subPanelContenido2.add(panelCentrarVideojuego);
+			if (contadorVideojuegos >= 60)
+				break;
+			contadorVideojuegos++;
+		}
+		subPanelContenido2.revalidate(); // Informar al layout que actualice la UI.
+		subPanelContenido2.repaint(); // Redibujar el panel.
+	}
+
+	private void ordenarVideojuegos(Object item, JPanel subPanelContenido2) {
+		if (item instanceof String && item.equals("ORDENAR")) {
+			listaVideojuegosRenderizada = new ArrayList<>(listaVideojuegos);
+		} else if (item instanceof TipoConsola tipo) {
+			listaVideojuegosRenderizada = new ArrayList<>(
+					listaVideojuegos.stream().filter(v -> v.getTipo() == tipo).toList());
+		}
+		recargarPanelContenido(subPanelContenido2);
 	}
 
 	public static void main(String[] args) {
